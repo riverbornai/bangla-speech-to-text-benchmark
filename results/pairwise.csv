@@ -1,0 +1,14 @@
+mode,model_a,model_b,shared_files,cer_gap_b_minus_a,gap_ci_low,gap_ci_high,p_a_better
+batch,sarvam_saarika,soniox,1001,0.0128,0.0044,0.0212,0.9985
+batch,soniox,deepgram_nova3,1000,0.0198,0.0104,0.0293,1.0
+batch,deepgram_nova3,gemini_25_flash,1000,0.0322,0.0195,0.0452,1.0
+batch,gemini_25_flash,elevenlabs_scribe,1001,0.0134,-0.0033,0.0304,0.9396
+batch,elevenlabs_scribe,google_chirp2,1000,0.0725,0.0482,0.0968,1.0
+batch,google_chirp2,openai_4o,1000,0.0677,0.0372,0.0993,1.0
+batch,openai_4o,groq_whisper,1001,0.0203,0.0002,0.0409,0.9766
+streaming,soniox_rt_streaming,sarvam_saaras_realtime_streaming,1001,0.0159,0.0016,0.0314,0.9859
+streaming,sarvam_saaras_realtime_streaming,deepgram_nova3_streaming,1001,0.0853,0.0681,0.1011,1.0
+streaming,deepgram_nova3_streaming,google_chirp2_streaming,1000,0.0614,0.0374,0.086,1.0
+streaming,google_chirp2_streaming,openai_4o_streaming,994,0.0092,-0.0228,0.0406,0.7036
+streaming,openai_4o_streaming,elevenlabs_scribe_streaming,995,0.1403,0.1022,0.1772,1.0
+streaming,elevenlabs_scribe_streaming,gemini_25_flash_streaming,997,0.3111,0.2766,0.3436,1.0

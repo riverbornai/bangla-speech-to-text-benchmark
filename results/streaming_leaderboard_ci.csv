@@ -1,0 +1,8 @@
+model,files_scored,CER,CER_ci_low,CER_ci_high,WER,WER_ci_low,WER_ci_high
+soniox_rt_streaming,1001,0.0736,0.0654,0.0829,0.1969,0.1831,0.2114
+sarvam_saaras_realtime_streaming,1001,0.0896,0.0782,0.1031,0.2028,0.188,0.2193
+deepgram_nova3_streaming,1001,0.1749,0.163,0.1868,0.3326,0.317,0.3482
+google_chirp2_streaming,1000,0.2363,0.2153,0.2577,0.4378,0.4129,0.463
+openai_4o_streaming,995,0.2458,0.2208,0.2713,0.4236,0.3987,0.449
+elevenlabs_scribe_streaming,1001,0.3855,0.3591,0.4127,0.5542,0.5249,0.5851
+gemini_25_flash_streaming,997,0.6957,0.6766,0.7143,0.7915,0.7769,0.8054
