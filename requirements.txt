@@ -1,0 +1,20 @@
+# Core harness
+PyYAML
+tqdm
+jiwer
+numpy
+pandas
+openpyxl               # only for xlsx test sets written by build_benchmark_set.py
+tabulate               # pandas.to_markdown for the report
+
+# Provider SDKs / HTTP
+requests
+websockets             # streaming adapters (Sarvam, ElevenLabs, Deepgram, Soniox, OpenAI Realtime)
+openai                 # Groq (OpenAI-compatible) + OpenAI gpt-4o-transcribe
+google-genai           # Gemini 2.5
+google-cloud-speech    # Google Cloud STT v2 / Chirp 2
+
+# Only needed to (re)download the BanSpeech audio
+soundfile
+huggingface_hub
+pyarrow                # pd.read_parquet in download_benchmark_audio.py

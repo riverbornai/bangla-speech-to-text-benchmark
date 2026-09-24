@@ -1,0 +1,21 @@
+# Environments and secrets -- never commit these
+.env
+.venv/
+*service-account*.json
+*svc-acct*.json
+gcp-*.json
+
+# Audio (BanSpeech is CC BY-NC 4.0: download it, don't redistribute it)
+wavs/
+wavs_[0-9]*/
+banspeech/
+*.wav
+
+# Generated / local
+results/raw/
+results/raw_streaming/
+*.xlsx
+src/pricing.json
+__pycache__/
+*.pyc
+.DS_Store

@@ -1,0 +1,27 @@
+# Bangla ASR Streaming Benchmark Results
+
+Test set: 1001 utterances across 13 domains (BanSpeech), streamed at simulated real-time pace. Metric: **CER** (primary), WER (secondary), plus streaming latency percentiles and partial-result stability (see src/score_streaming.py docstring for metric definitions).
+
+## Leaderboard (lower is better)
+
+| model                            |   files_scored |   coverage |    CER |    WER |   first_partial_p50_s |   first_partial_p95_s |   first_final_p50_s |   first_final_p95_s |   finalization_p50_s |   finalization_p95_s |   total_latency_mean_s |   rtfp50 |   rtfp95 |   partial_stability_cer |
+|:---------------------------------|---------------:|-----------:|-------:|-------:|----------------------:|----------------------:|--------------------:|--------------------:|---------------------:|---------------------:|-----------------------:|---------:|---------:|------------------------:|
+| soniox_rt_streaming              |           1001 |      1     | 0.0736 | 0.1969 |                 1.853 |                 2.21  |               3.244 |               7.399 |                2.457 |                2.797 |                  5.484 |    2.183 |    3.859 |                   0.617 |
+| sarvam_saaras_realtime_streaming |           1001 |      1     | 0.0896 | 0.2028 |                 1.35  |                 1.597 |               2.818 |               8.532 |                0.879 |                1.423 |                  3.977 |    1.426 |    1.912 |                   0.579 |
+| deepgram_nova3_streaming         |           1001 |      1     | 0.1749 | 0.3326 |                 2.327 |                 3.16  |               3.338 |               6.491 |                1.55  |                1.969 |                  4.589 |    1.74  |    2.785 |                   0.605 |
+| google_chirp2_streaming          |           1000 |      0.999 | 0.2363 | 0.4378 |                 7.154 |                 8.976 |               4.147 |               9.334 |                2.167 |                2.935 |                  5.303 |    1.985 |    4.045 |                   0.501 |
+| openai_4o_streaming              |            995 |      0.994 | 0.2458 | 0.4236 |                 3.595 |                 8.681 |               3.97  |               9.15  |                4.219 |                4.762 |                  7.321 |    3.057 |    5.975 |                   0.566 |
+| elevenlabs_scribe_streaming      |           1001 |      1     | 0.3855 | 0.5542 |                 3.126 |                 3.396 |               3.222 |               8.782 |                1.359 |                1.785 |                  4.41  |    1.669 |    2.492 |                   0.607 |
+| gemini_25_flash_streaming        |            997 |      0.996 | 0.6957 | 0.7915 |               nan     |               nan     |               3.462 |               4.655 |               10.438 |               30.92  |                 15.554 |    6.22  |   17.873 |                 nan     |
+
+## CER by domain
+
+| model                            |   audio_books |   biography |   celebrity_interview |   class_lecture |   documentary |   drama_series |   kid_cartoon |   kid_voice |   medicine |   parliament_speech |   political_talkshow |   sports |   television_news |
+|:---------------------------------|--------------:|------------:|----------------------:|----------------:|--------------:|---------------:|--------------:|------------:|-----------:|--------------------:|---------------------:|---------:|------------------:|
+| deepgram_nova3_streaming         |        0.0971 |      0.0941 |                0.1615 |          0.2501 |        0.1088 |         0.2026 |        0.2044 |      0.2137 |     0.1459 |              0.1623 |               0.1421 |   0.173  |            0.2069 |
+| elevenlabs_scribe_streaming      |        0.2612 |      0.3312 |                0.3321 |          0.4339 |        0.385  |         0.2957 |        0.3671 |      0.3224 |     0.7462 |              0.3599 |               0.3686 |   0.5581 |            0.27   |
+| gemini_25_flash_streaming        |        0.4937 |      0.6077 |                0.747  |          0.7638 |        0.6173 |         0.7497 |        0.7705 |      0.7819 |     0.7424 |              0.6612 |               0.5965 |   0.675  |            0.644  |
+| google_chirp2_streaming          |        0.2421 |      0.1284 |                0.2236 |          0.1879 |        0.1373 |         0.3435 |        0.2519 |      0.2669 |     0.2382 |              0.141  |               0.3522 |   0.341  |            0.1824 |
+| openai_4o_streaming              |        0.0914 |      0.0975 |                0.2178 |          0.3709 |        0.1289 |         0.4033 |        0.3536 |      0.295  |     0.1924 |              0.2102 |               0.2308 |   0.2363 |            0.1827 |
+| sarvam_saaras_realtime_streaming |        0.0966 |      0.0829 |                0.0473 |          0.0615 |        0.0687 |         0.1534 |        0.1731 |      0.1029 |     0.0808 |              0.0597 |               0.0873 |   0.0948 |            0.0823 |
+| soniox_rt_streaming              |        0.0353 |      0.0477 |                0.0453 |          0.1319 |        0.0459 |         0.0834 |        0.08   |      0.0424 |     0.0859 |              0.0664 |               0.0616 |   0.1453 |            0.0588 |

@@ -1,0 +1,28 @@
+[project]
+name = "bangla-speech-to-text-benchmark"
+version = "1.0.0"
+description = "Benchmark of hosted Bangla (Bengali) speech-to-text / ASR APIs on BanSpeech: CER, WER, latency and real-time streaming metrics."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+keywords = ["asr", "speech-to-text", "stt", "bangla", "bengali", "benchmark", "speech-recognition"]
+dependencies = [
+    "PyYAML",
+    "tqdm",
+    "jiwer",
+    "numpy",
+    "pandas",
+    "openpyxl",
+    "tabulate",
+    "requests",
+    "websockets",
+    "openai",
+    "google-genai",
+    "google-cloud-speech",
+    "soundfile",
+    "huggingface_hub",
+    "pyarrow",
+]
+
+[project.urls]
+Repository = "https://github.com/riverbornai/bangla-speech-to-text-benchmark"

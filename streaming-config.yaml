@@ -1,0 +1,109 @@
+# Streaming benchmark configuration -- separate from config.yaml (batch
+# providers) because real-time-paced streaming takes as long as the audio
+# itself, so you'll often point this at a smaller audio_dir/test_set than the
+# full batch run. Read by src/run_streaming_transcription.py and
+# src/score_streaming.py. See README.md's "Streaming benchmark" section.
+#
+# Keys are read from environment variables (never hard-code them here).
+# Disable a provider by setting `enabled: false` or removing the block.
+
+audio_dir: wavs_1001
+test_set: data/test_set.csv   # file_path, domain, ground_truth_transcription_bn (.csv or .xlsx)
+results_dir: results
+streaming_concurrency: 1   # parallel real-time-paced streams
+
+providers:
+
+  # Chirp 2: real-time-verified against the installed google-cloud-speech
+  # client (src/providers/google_stt_streaming.py).
+  google_chirp2_streaming:
+    type: google_stt_streaming
+    enabled: true
+    project_env: GOOGLE_CLOUD_PROJECT
+    location: us-central1     # Chirp 2 regions: us-central1, europe-west4, asia-southeast1
+    model: chirp_2
+    language_code: bn-BD      # try bn-IN too and keep the better one
+    chunk_ms: 100              # simulated live-mic chunk size, paced in real time
+
+  # Sarvam Realtime Streaming (saaras:v3-realtime) -- protocol verified
+  # against https://docs.sarvam.ai/api/api-guides-tutorials/speech-to-text/realtime-streaming
+  # (see src/providers/sarvam_streaming.py docstring). Not the same model
+  # family as the batch adapter's saarika:v2.5 -- Sarvam's older
+  # speech-to-text/ws streaming endpoint uses saarika/saaras:v3 but never
+  # emits partial transcripts, so it can't produce these metrics.
+  sarvam_saaras_realtime_streaming:
+    type: sarvam_streaming
+    enabled: true
+    api_key_env: SARVAM_API_KEY
+    model: saaras:v3-realtime
+    language_code: bn-IN
+    stream_type: balanced      # fast | balanced | simulated -- see README
+    chunk_ms: 100
+
+  # OpenAI Realtime API, transcription-only session (gpt-4o-transcribe) --
+  # live-tested against the Realtime API. See
+  # src/providers/openai_realtime_streaming.py docstring. Audio is
+  # resampled 16kHz -> 24kHz internally since that's the only rate the
+  # Realtime API's PCM format accepts.
+  openai_4o_streaming:
+    type: openai_realtime_streaming
+    enabled: true
+    api_key_env: OPENAI_API_KEY
+    model: gpt-4o-transcribe      # the ASR model, set inside the transcription-session config
+    language: bn
+    vad_silence_ms: 500        # server VAD silence duration marking end of turn
+    chunk_ms: 100
+
+  # ElevenLabs Scribe Realtime -- protocol verified against ElevenLabs'
+  # published AsyncAPI spec:
+  # https://elevenlabs.io/docs/api-reference/speech-to-text/v-1-speech-to-text-realtime
+  # (see src/providers/elevenlabs_streaming.py docstring). Native 16kHz PCM
+  # support -- no resampling needed for BanSpeech audio.
+  elevenlabs_scribe_streaming:
+    type: elevenlabs_streaming
+    enabled: true
+    api_key_env: ELEVENLABS_API_KEY
+    model_id: scribe_v2_realtime
+    language_code: ben        # ISO-639-3, same as the batch adapter
+    commit_strategy: vad      # manual | vad
+    chunk_ms: 100
+
+  # Gemini Live API input audio transcription -- live-tested against the
+  # Gemini Live API. See
+  # src/providers/gemini_streaming.py docstring. Native 16kHz PCM support
+  # -- no resampling needed. Live/preview model ids are date-versioned and
+  # get replaced frequently; check ai.google.dev/gemini-api/docs/models if
+  # this 404s.
+  gemini_25_flash_streaming:
+    type: gemini_streaming
+    enabled: true
+    api_key_env: GEMINI_API_KEY
+    model: gemini-2.5-flash-native-audio-preview-12-2025
+    chunk_ms: 100
+
+  # Deepgram Nova-3 -- protocol verified against Deepgram's published
+  # AsyncAPI spec: https://developers.deepgram.com/reference/speech-to-text/listen-streaming
+  # (see src/providers/deepgram_streaming.py docstring). Native 16kHz PCM
+  # support -- no resampling needed.
+  deepgram_nova3_streaming:
+    type: deepgram_streaming
+    enabled: true
+    api_key_env: DEEPGRAM_API_KEY
+    model: nova-3
+    language: bn
+    smart_format: true
+    chunk_ms: 100
+
+  # Soniox real-time -- protocol verified against Soniox's own reference
+  # implementation (speech_to_text/python/soniox_realtime.py in
+  # github.com/soniox/soniox_examples), not just prose docs. See
+  # src/providers/soniox_streaming.py docstring. Different model family
+  # from the batch adapter's stt-async-v5 -- "rt" vs "async" are separate
+  # model lines. Native 16kHz PCM support, no resampling needed.
+  soniox_rt_streaming:
+    type: soniox_streaming
+    enabled: true
+    api_key_env: SONIOX_API_KEY
+    model: stt-rt-v5
+    language_hints: [bn]
+    chunk_ms: 100

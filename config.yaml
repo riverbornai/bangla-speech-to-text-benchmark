@@ -1,0 +1,69 @@
+# Bangla ASR benchmark configuration.
+# Keys are read from environment variables (never hard-code them here).
+# Disable a provider by setting `enabled: false` or removing the block.
+
+audio_dir: wavs_1001
+test_set: data/test_set.csv   # file_path, domain, ground_truth_transcription_bn (.csv or .xlsx)
+results_dir: results
+concurrency: 1         # parallel requests per provider
+
+providers:
+
+  groq_whisper:
+    type: openai_compatible
+    enabled: true
+    base_url: https://api.groq.com/openai/v1
+    api_key_env: GROQ_API_KEY
+    model: whisper-large-v3
+    language: bn
+
+  openai_4o:
+    type: openai_compatible
+    enabled: true
+    base_url: https://api.openai.com/v1
+    api_key_env: OPENAI_API_KEY
+    model: gpt-4o-transcribe
+    language: bn
+
+  sarvam_saarika:
+    type: sarvam
+    enabled: true
+    api_key_env: SARVAM_API_KEY
+    model: saarika:v2.5
+    language_code: bn-IN      # Saarika is India-trained; bn-IN is the supported tag
+
+  elevenlabs_scribe:
+    type: elevenlabs
+    enabled: true
+    api_key_env: ELEVENLABS_API_KEY
+    model_id: scribe_v1
+    language_code: ben        # ISO-639-3
+
+  deepgram_nova3:
+    type: deepgram
+    enabled: true
+    api_key_env: DEEPGRAM_API_KEY
+    model: nova-3
+    language: bn
+
+  soniox:
+    type: soniox
+    enabled: true
+    api_key_env: SONIOX_API_KEY
+    base_url_env: SONIOX_API_BASE_URL   # e.g. https://api.eu.soniox.com/v1 for the EU-hosted API
+    model: stt-async-v5
+    language_hints: [bn]
+
+  google_chirp2:
+    type: google_stt
+    enabled: true
+    project_env: GOOGLE_CLOUD_PROJECT
+    location: us-central1     # Chirp 2 regions: us-central1, europe-west4, asia-southeast1
+    model: chirp_2
+    language_code: bn-BD      # try bn-IN too and keep the better one
+
+  gemini_25_flash:
+    type: gemini
+    enabled: true
+    api_key_env: GEMINI_API_KEY
+    model: gemini-2.5-flash

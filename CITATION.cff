@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this benchmark, please cite it as below, and also cite the BanSpeech dataset."
+title: "Bangla Speech-to-Text Benchmark: Hosted Bengali ASR APIs on BanSpeech"
+version: 1.0.0
+date-released: 2026-09-30
+license: MIT
+repository-code: "https://github.com/riverbornai/bangla-speech-to-text-benchmark"
+keywords:
+  - speech-to-text
+  - ASR
+  - STT
+  - Bangla
+  - Bengali
+  - benchmark
+authors:
+  - family-names: Uddin
+    given-names: Nasim
+    affiliation: Riverborn AI
+  - family-names: Azad
+    given-names: Saiful
+    affiliation: Riverborn AI
+references:
+  - type: dataset
+    title: "BanSpeech"
+    authors:
+      - name: "SUST CSE Speech Group"
+    url: "https://huggingface.co/datasets/SUST-CSE-Speech/banspeech"
+    license: CC-BY-NC-4.0
