@@ -47,13 +47,13 @@ the ranking is ordered by it. Brackets show 95% bootstrap confidence intervals.
 | # | Provider | Model | CER | WER | Mean latency | List price / hour |
 |---|---|---|---|---|---|---|
 | 1 | Sarvam AI | `saarika:v2.5` | **6.9%** [6.2–7.5] | **18.2%** [17.0–19.3] | 0.99 s | $0.31 (₹30) |
-| 2 | Soniox | `stt-async-v5` | 8.1% [7.3–9.0] | 21.5% [20.1–22.9] | 7.58 s | **$0.10** ᵉ |
+| 2 | Soniox | `stt-async-v5` | 8.1% [7.3–9.0] | 21.5% [20.1–22.9] | 7.58 s | **$0.10** (estimate) |
 | 3 | Deepgram | `nova-3` | 10.1% [9.2–11.1] | 23.9% [22.5–25.4] | 2.15 s | $0.26 |
-| 4 | Google Gemini | `gemini-2.5-flash` | 13.3% [12.3–14.5] | 27.0% [25.5–28.6] | 3.85 s | ≥ $0.12 ᵐ |
-| 5 | ElevenLabs | `scribe_v1` ⁱ | 14.7% [13.3–16.1] | 26.0% [24.4–27.7] | 1.39 s | $0.22 ⁱ |
+| 4 | Google Gemini | `gemini-2.5-flash` | 13.3% [12.3–14.5] | 27.0% [25.5–28.6] | 3.85 s | at least $0.12 |
+| 5 | ElevenLabs | `scribe_v1` (see notes) | 14.7% [13.3–16.1] | 26.0% [24.4–27.7] | 1.39 s | $0.22 (Scribe v2 price) |
 | 6 | Google Cloud | `chirp_2` | 21.9% [19.9–24.1] | 41.4% [38.9–44.1] | 4.13 s | $0.96 |
-| 7 | OpenAI | `gpt-4o-transcribe` | 28.7% [26.4–31.1] | 45.1% [42.9–47.3] | 1.11 s | $0.36 ᵉ |
-| 8 | Groq | `whisper-large-v3` | 30.7% [29.2–32.4] | 71.7% [70.0–73.3] | 0.66 s | $0.11 ˢ |
+| 7 | OpenAI | `gpt-4o-transcribe` | 28.7% [26.4–31.1] | 45.1% [42.9–47.3] | 1.11 s | $0.36 (estimate) |
+| 8 | Groq | `whisper-large-v3` | 30.7% [29.2–32.4] | 71.7% [70.0–73.3] | 0.66 s | $0.11 (10-second minimum per request) |
 
 ### Streaming (real-time, audio paced like a live microphone)
 
@@ -61,24 +61,29 @@ the ranking is ordered by it. Brackets show 95% bootstrap confidence intervals.
 
 | # | Provider | Model | CER | WER | Time to first partial (p50) | Final result after speech ends (p50) | List price / hour |
 |---|---|---|---|---|---|---|---|
-| 1 | Soniox | `stt-rt-v5` | **7.4%** [6.5–8.3] | **19.7%** | 1.85 s | 2.46 s | **$0.12** ᵉ |
+| 1 | Soniox | `stt-rt-v5` | **7.4%** [6.5–8.3] | **19.7%** | 1.85 s | 2.46 s | **$0.12** (estimate) |
 | 2 | Sarvam AI | `saaras:v3-realtime` | 9.0% [7.8–10.3] | 20.3% | **1.35 s** | **0.88 s** | $0.31 (₹30) |
-| 3 | Deepgram | `nova-3` | 17.5% [16.3–18.7] | 33.3% | 2.33 s | 1.55 s | $0.46 ᵖ |
+| 3 | Deepgram | `nova-3` | 17.5% [16.3–18.7] | 33.3% | 2.33 s | 1.55 s | $0.46 (regular price) |
 | 4 | Google Cloud | `chirp_2` | 23.6% [21.5–25.8] | 43.8% | 7.15 s | 2.17 s | $0.96 |
-| 5 | OpenAI | `gpt-4o-transcribe` (Realtime API) | 24.6% [22.1–27.1] | 42.4% | 3.60 s | 4.22 s | $0.36 ᵉ |
+| 5 | OpenAI | `gpt-4o-transcribe` (Realtime API) | 24.6% [22.1–27.1] | 42.4% | 3.60 s | 4.22 s | $0.36 (estimate) |
 | 6 | ElevenLabs | `scribe_v2_realtime` | 38.6% [35.9–41.3] | 55.4% | 3.13 s | 1.36 s | $0.39 |
-| 7 | Google Gemini | `gemini-2.5-flash-native-audio-preview-12-2025` (Live API) | 69.6% [67.7–71.4] | 79.2% | n/a | 10.44 s | ≥ $0.35 ᵐ |
+| 7 | Google Gemini | `gemini-2.5-flash-native-audio-preview-12-2025` (Live API) | 69.6% [67.7–71.4] | 79.2% | n/a | 10.44 s | at least $0.35 |
 
 Groq has no streaming speech-to-text API, so it is not in the streaming table.
 
 List prices are the providers' published pay-as-you-go rates in USD per hour
 of audio, checked on each provider's own pricing page on **24 September
-2026** (details and sources in [Cost](#cost)). ᵉ Billed per token; this is
-the provider's own per-hour estimate. ᵐ Minimum: covers audio input only
-(see [Cost](#cost)). ˢ Minimum of 10 seconds billed per request.
-ᵖ Regular price; Deepgram showed a temporary discount ($0.29/hour) when
-checked. ⁱ ElevenLabs no longer lists `scribe_v1`; the Scribe v2 price is
-shown (see [Limitations](#limitations)).
+2026** (details and sources in [Cost](#cost)). Notes on the price column:
+
+- **(estimate):** the provider bills per token; the price shown is the
+  provider's own per-hour estimate.
+- **at least:** a minimum; it covers audio input only (see [Cost](#cost)).
+- **10-second minimum per request:** Groq bills every request as at least
+  10 seconds of audio.
+- **(regular price):** Deepgram showed a temporary discount ($0.29 per hour)
+  when we checked; the regular price is shown.
+- **Scribe v2 price:** ElevenLabs no longer lists `scribe_v1`, so the
+  Scribe v2 price is shown (see [Limitations](#limitations)).
 
 ### Streaming latency
 
@@ -114,10 +119,10 @@ average), which is typical of voice commands and conversational turns. With
 that kind of audio, a per-request minimum or rounding up to the next second
 can cost much more than the list price.
 
-| Mode | Provider | List price / hour | Effective price / hour on our clips | Cost of our run ¹ | How firm |
+| Mode | Provider | List price / hour | Effective price / hour on our clips | Cost of our run (see note below) | How firm |
 |---|---|---|---|---|---|
 | Batch | Soniox | $0.10 | $0.10 | $0.09 | estimate |
-| Batch | Gemini 2.5 Flash | ≥ $0.12 | ≥ $0.12 | ≥ $0.10 | minimum |
+| Batch | Gemini 2.5 Flash | at least $0.12 | at least $0.12 | at least $0.10 | minimum |
 | Batch | ElevenLabs Scribe | $0.22 | $0.22 | $0.18 | estimate |
 | Batch | Deepgram Nova-3 | $0.26 | $0.26 | $0.21 | exact |
 | Batch | Sarvam Saarika | $0.31 | $0.36 | $0.30 | estimate |
@@ -129,7 +134,7 @@ can cost much more than the list price.
 | Streaming | Deepgram Nova-3 | $0.46 | $0.46 | $0.38 | exact |
 | Streaming | OpenAI gpt-4o-transcribe | $0.36 | $0.36 | $0.30 | estimate |
 | Streaming | ElevenLabs Scribe v2 Realtime | $0.39 | $0.39 | $0.32 | estimate |
-| Streaming | Gemini 2.5 Flash Live | ≥ $0.35 | ≥ $0.35 | ≥ $0.29 | minimum |
+| Streaming | Gemini 2.5 Flash Live | at least $0.35 | at least $0.35 | at least $0.29 | minimum |
 | Streaming | Google Chirp 2 | $0.96 | $1.12 | $0.93 | exact |
 
 - **exact:** the published rate multiplied by billed time, where the
@@ -144,7 +149,7 @@ can cost much more than the list price.
   benchmark didn't record those, so only audio input is priced and the real
   cost is higher.
 
-¹ All 1,001 clips, except where a provider failed on a few (Deepgram and
+Note on cost of our run: all 1,001 clips, except where a provider failed on a few (Deepgram and
 Chirp 2: 1,000; OpenAI streaming: 995; Gemini streaming: 997).
 
 Notes:
