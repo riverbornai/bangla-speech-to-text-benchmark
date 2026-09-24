@@ -1,5 +1,14 @@
 # Bangla Speech-to-Text Benchmark
 
+![Providers: 8](https://img.shields.io/badge/providers-8-2a78d6)
+![Audio clips: 1,001](https://img.shields.io/badge/audio%20clips-1%2C001-1baf7a)
+![Domains: 13](https://img.shields.io/badge/domains-13-4a3aa7)
+![Modes: batch and streaming](https://img.shields.io/badge/modes-batch%20%7C%20streaming-eb6834)
+![Best batch CER: Sarvam 6.9%](https://img.shields.io/badge/best%20batch%20CER-Sarvam%206.9%25-008300)
+![Best streaming CER: Soniox 7.4%](https://img.shields.io/badge/best%20streaming%20CER-Soniox%207.4%25-008300)
+![Tested: September 2026](https://img.shields.io/badge/tested-Sep%202026-eda100)
+[![License: MIT](https://img.shields.io/badge/license-MIT-e87ba4)](LICENSE)
+
 **An open benchmark of 8 hosted Bengali speech-to-text (ASR) APIs on 1,001
 real Bangla audio clips across 13 domains, covering both batch
 transcription and real-time streaming.**
@@ -8,6 +17,7 @@ Providers tested: Sarvam AI, Soniox, Deepgram, Google (Gemini and Chirp 2),
 ElevenLabs, OpenAI and Groq (Whisper). Version 1.0, tested in **September
 2026**.
 
+> [!WARNING]
 > Results reflect each provider's API as it behaved when we tested it.
 > Vendors update models often, so check the [exact model IDs](#providers-and-exact-model-versions)
 > and rerun the benchmark before relying on these numbers for a purchase decision.
@@ -38,8 +48,14 @@ ElevenLabs, OpenAI and Groq (Whisper). Version 1.0, tested in **September
 
 ## Results
 
+> [!TIP]
+> **In short:** Sarvam AI is the most accurate batch API (6.9% CER) and
+> Soniox the most accurate streaming API (7.4% CER). Both are also among
+> the cheapest. See [Key findings](#key-findings).
+
 Lower is better. **CER** (character error rate) is the primary metric, and
 the ranking is ordered by it. Brackets show 95% bootstrap confidence intervals.
+Each provider keeps the same colour in every chart.
 
 ### Batch (whole-file transcription)
 
@@ -47,9 +63,9 @@ the ranking is ordered by it. Brackets show 95% bootstrap confidence intervals.
 
 | # | Provider | Model | CER | WER | Mean latency | List price / hour |
 |---|---|---|---|---|---|---|
-| 1 | Sarvam AI | `saarika:v2.5` | **6.9%** [6.2–7.5] | **18.2%** [17.0–19.3] | 0.99 s | $0.31 (₹30) |
-| 2 | Soniox | `stt-async-v5` | 8.1% [7.3–9.0] | 21.5% [20.1–22.9] | 7.58 s | **$0.10** (estimate) |
-| 3 | Deepgram | `nova-3` | 10.1% [9.2–11.1] | 23.9% [22.5–25.4] | 2.15 s | $0.26 |
+| 🥇 1 | Sarvam AI | `saarika:v2.5` | **6.9%** [6.2–7.5] | **18.2%** [17.0–19.3] | 0.99 s | $0.31 (₹30) |
+| 🥈 2 | Soniox | `stt-async-v5` | 8.1% [7.3–9.0] | 21.5% [20.1–22.9] | 7.58 s | **$0.10** (estimate) |
+| 🥉 3 | Deepgram | `nova-3` | 10.1% [9.2–11.1] | 23.9% [22.5–25.4] | 2.15 s | $0.26 |
 | 4 | Google Gemini | `gemini-2.5-flash` | 13.3% [12.3–14.5] | 27.0% [25.5–28.6] | 3.85 s | at least $0.12 |
 | 5 | ElevenLabs | `scribe_v1` (see notes) | 14.7% [13.3–16.1] | 26.0% [24.4–27.7] | 1.39 s | $0.22 (Scribe v2 price) |
 | 6 | Google Cloud | `chirp_2` | 21.9% [19.9–24.1] | 41.4% [38.9–44.1] | 4.13 s | $0.96 |
@@ -62,9 +78,9 @@ the ranking is ordered by it. Brackets show 95% bootstrap confidence intervals.
 
 | # | Provider | Model | CER | WER | Time to first partial (p50) | Final result after speech ends (p50) | List price / hour |
 |---|---|---|---|---|---|---|---|
-| 1 | Soniox | `stt-rt-v5` | **7.4%** [6.5–8.3] | **19.7%** | 1.85 s | 2.46 s | **$0.12** (estimate) |
-| 2 | Sarvam AI | `saaras:v3-realtime` | 9.0% [7.8–10.3] | 20.3% | **1.35 s** | **0.88 s** | $0.31 (₹30) |
-| 3 | Deepgram | `nova-3` | 17.5% [16.3–18.7] | 33.3% | 2.33 s | 1.55 s | $0.46 (regular price) |
+| 🥇 1 | Soniox | `stt-rt-v5` | **7.4%** [6.5–8.3] | **19.7%** | 1.85 s | 2.46 s | **$0.12** (estimate) |
+| 🥈 2 | Sarvam AI | `saaras:v3-realtime` | 9.0% [7.8–10.3] | 20.3% | **1.35 s** | **0.88 s** | $0.31 (₹30) |
+| 🥉 3 | Deepgram | `nova-3` | 17.5% [16.3–18.7] | 33.3% | 2.33 s | 1.55 s | $0.46 (regular price) |
 | 4 | Google Cloud | `chirp_2` | 23.6% [21.5–25.8] | 43.8% | 7.15 s | 2.17 s | $0.96 |
 | 5 | OpenAI | `gpt-4o-transcribe` (Realtime API) | 24.6% [22.1–27.1] | 42.4% | 3.60 s | 4.22 s | $0.36 (estimate) |
 | 6 | ElevenLabs | `scribe_v2_realtime` | 38.6% [35.9–41.3] | 55.4% | 3.13 s | 1.36 s | $0.39 |
@@ -91,7 +107,8 @@ of audio, checked on each provider's own pricing page on **24 September
 
 ### Streaming latency
 
-> **Heads-up: network distance affects these numbers.** The benchmark was run
+> [!IMPORTANT]
+> **Network distance affects these numbers.** The benchmark was run
 > from a laptop (MacBook) in Bangladesh over a regular internet connection.
 > Every latency figure includes the network round trip to the provider's
 > servers. Some providers served our requests from India, some from Europe

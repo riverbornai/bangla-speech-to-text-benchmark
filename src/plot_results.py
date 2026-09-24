@@ -23,15 +23,27 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RESULTS = os.path.join(ROOT, "results")
 PLOTS = os.path.join(RESULTS, "plots")
 
-# Colours: one accent hue for single-series charts, a second for the
-# second series of a paired chart, a one-hue sequential ramp for heatmaps.
+# Colours: each provider keeps one hue across every chart (batch and streaming
+# alike), two fixed hues for the paired latency chart, and a warm light-to-dark
+# ramp for the heatmaps (hotter = more errors).
 SURFACE = "#fcfcfb"
 INK = "#0b0b0b"
 INK_2 = "#52514e"
 GRID = "#e4e3df"
 BLUE = "#2a78d6"
 ORANGE = "#eb6834"
-SEQ = ["#cde2fb", "#9ec5f4", "#6da7ec", "#3987e5", "#256abf", "#184f95", "#0d366b"]
+SEQ = ["#fff4d6", "#fed98e", "#fdb04f", "#f5813a", "#e3572b", "#b8321e", "#7f1d12"]
+
+PROVIDER_COLOR = {
+    "sarvam": "#eb6834",      # orange
+    "soniox": "#4a3aa7",      # violet
+    "deepgram": "#1baf7a",    # aqua
+    "gemini": "#2a78d6",      # blue
+    "elevenlabs": "#e87ba4",  # magenta
+    "google": "#e34948",      # red
+    "openai": "#008300",      # green
+    "groq": "#eda100",        # yellow
+}
 
 NAMES = {
     "sarvam_saarika": "Sarvam\nsaarika:v2.5",
@@ -74,6 +86,10 @@ def label_at(ax, text, x, y, model):
                 ha="right" if dx < 0 else "left")
 
 
+def color(model: str) -> str:
+    return PROVIDER_COLOR[model.split("_")[0]]
+
+
 def short(model: str) -> str:
     return NAMES[model].split("\n")[0]
 
@@ -114,10 +130,12 @@ def cer_bars(ci_csv, title, name):
     cer = df["CER"] * 100
     err = [cer - df["CER_ci_low"] * 100, df["CER_ci_high"] * 100 - cer]
     fig, ax = figure(12, 5)
-    ax.bar(x, cer, width=0.55, color=BLUE, zorder=2)
+    ax.bar(x, cer, width=0.55, color=[color(m) for m in df["model"]], zorder=2)
     ax.errorbar(x, cer, yerr=err, fmt="none", ecolor=INK_2, elinewidth=1.2, capsize=4, zorder=3)
-    for xi, v, hi in zip(x, cer, df["CER_ci_high"] * 100):
-        ax.text(xi, hi + 0.8, f"{v:.1f}%", ha="center", va="bottom", fontsize=9, color=INK)
+    for i, (xi, v, hi) in enumerate(zip(x, cer, df["CER_ci_high"] * 100)):
+        label = f"Best\n{v:.1f}%" if i == 0 else f"{v:.1f}%"
+        ax.text(xi, hi + 0.8, label, ha="center", va="bottom", fontsize=9, color=INK,
+                fontweight="bold" if i == 0 else "normal")
     ax.set_xticks(x, [NAMES[m] for m in df["model"]], fontsize=8)
     ax.yaxis.set_major_formatter(pct)
     ax.set_ylabel("Character error rate (lower is better)", color=INK_2, fontsize=10)
@@ -133,7 +151,8 @@ def cer_vs_cost(cost_csv, title, name):
     for _, r in df.iterrows():
         minimum = r["cost_type"] == "minimum"
         ax.scatter(r["list_usd_per_hour"], r["CER"] * 100, s=90, zorder=3,
-                   facecolor=SURFACE if minimum else BLUE, edgecolor=BLUE, linewidth=2)
+                   facecolor=SURFACE if minimum else color(r["model"]), edgecolor=color(r["model"]),
+                   linewidth=2)
         label = short(r["model"]) + (" (min. cost)" if minimum else "")
         label_at(ax, label, r["list_usd_per_hour"], r["CER"] * 100, r["model"])
     ax.set_xlabel("List price, USD per hour of audio (lower is better)", color=INK_2, fontsize=10)
@@ -151,7 +170,8 @@ def cer_vs_cost(cost_csv, title, name):
 def cer_vs_latency(name):
     lb = pd.read_csv(os.path.join(RESULTS, "streaming_leaderboard.csv"))
     fig, ax = figure(9, 6)
-    ax.scatter(lb["finalization_p50_s"], lb["CER"] * 100, s=90, color=BLUE, zorder=3)
+    ax.scatter(lb["finalization_p50_s"], lb["CER"] * 100, s=90, zorder=3,
+               color=[color(m) for m in lb["model"]], edgecolor=SURFACE, linewidth=2)
     for _, r in lb.iterrows():
         label_at(ax, short(r["model"]), r["finalization_p50_s"], r["CER"] * 100, r["model"])
     ax.set_xlabel("Median time from end of speech to final transcript, seconds (lower is better)",
