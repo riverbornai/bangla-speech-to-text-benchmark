@@ -25,6 +25,7 @@ ElevenLabs, OpenAI and Groq (Whisper). Version 1.0, tested in **September
 - [Metrics](#metrics)
 - [Methodology](#methodology)
   - [Test set](#test-set) and [test set statistics](#test-set-statistics)
+  - [Test environment](#test-environment)
   - [Providers and exact model versions](#providers-and-exact-model-versions)
   - [Limitations](#limitations)
 - [Reproduce it](#reproduce-it)
@@ -71,6 +72,9 @@ the ranking is ordered by it. Brackets show 95% bootstrap confidence intervals.
 
 Groq has no streaming speech-to-text API, so it is not in the streaming table.
 
+Latency columns in both tables were measured from Bangladesh and include
+network time; see the note under [Streaming latency](#streaming-latency).
+
 List prices are the providers' published pay-as-you-go rates in USD per hour
 of audio, checked on each provider's own pricing page on **24 September
 2026** (details and sources in [Cost](#cost)). Notes on the price column:
@@ -86,6 +90,16 @@ of audio, checked on each provider's own pricing page on **24 September
   Scribe v2 price is shown (see [Limitations](#limitations)).
 
 ### Streaming latency
+
+> **Heads-up: network distance affects these numbers.** The benchmark was run
+> from a laptop (MacBook) in Bangladesh over a regular internet connection.
+> Every latency figure includes the network round trip to the provider's
+> servers. Some providers served our requests from India, some from Europe
+> and most from the United States (Google Chirp 2 was called in
+> `us-central1`). Providers with servers far from Bangladesh are at a
+> disadvantage, so treat the latency figures as what a client in Bangladesh
+> sees, not as each provider's best-case speed. Latency will be different
+> from your location, especially if you run close to the provider's servers.
 
 How quickly each streaming API responds, measured on every clip while audio
 was sent at real-time pace (see [Streaming setup](#streaming-setup)). Values
@@ -400,6 +414,19 @@ context across a long file.
   provider's score and not counted as 100% error. Coverage was at least
   99.4% for every provider (see `files_scored` in the leaderboards).
 
+### Test environment
+
+- **Client:** a MacBook laptop in Bangladesh, on a regular internet
+  connection. All batch and streaming requests were sent from there.
+- **Servers:** requests went to each provider's standard public endpoint.
+  Depending on the provider, these were served from India, Europe or the
+  United States (most were in the US). Google Chirp 2 was called in the
+  `us-central1` region.
+- **Effect:** accuracy (CER/WER) and cost don't depend on where the client
+  is. Latency does: every latency figure includes the network round trip
+  from Bangladesh to the provider's servers, so providers with servers
+  farther away look slower than they would for a nearby client.
+
 ### Batch setup
 
 Each clip is sent to the provider in a single request, using the settings
@@ -470,6 +497,10 @@ Provider documentation:
   affect results slightly (for Chirp 2 we used `bn-BD`).
 - **Latency depends on the network.** All requests were sent from a single
   client location, and absolute latencies will vary with region and time.
+  That location was a MacBook in Bangladesh, and provider servers were in
+  India, Europe or (mostly) the United States, so distance to the server
+  adds to every latency figure and affects providers unequally (see
+  [Test environment](#test-environment)).
 - **Gemini Live API partials.** No interim transcripts were received from
   the Gemini Live API during our run, so its first-partial and stability
   metrics are empty. The Live API adapter also sets no language hint, which
