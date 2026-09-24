@@ -545,12 +545,10 @@ Provider documentation:
 
 ### Conflict of interest
 
-<!-- TODO before publishing: state any commercial relationship (partner,
-reseller, customer, investor, etc.) Riverborn Limited has with the providers
-tested, or write "None." -->
-
-The benchmark was designed, run and funded by Riverborn Limited. No provider
-sponsored or reviewed this benchmark before publication.
+The benchmark was designed, run and funded by Riverborn Limited, which paid
+for all API usage. Riverborn Limited has no commercial relationship with any
+of the providers tested: it is not a partner, reseller or investor of any of
+them. No provider sponsored or reviewed this benchmark before publication.
 
 ---
 
