@@ -6,6 +6,7 @@ numpy
 pandas
 openpyxl               # only for xlsx test sets written by build_benchmark_set.py
 tabulate               # pandas.to_markdown for the report
+matplotlib             # src/plot_results.py (README charts)
 
 # Provider SDKs / HTTP
 requests

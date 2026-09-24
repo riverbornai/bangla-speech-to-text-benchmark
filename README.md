@@ -12,6 +12,27 @@ ElevenLabs, OpenAI and Groq (Whisper). Version 1.0, tested in **September
 > Vendors update models often, so check the [exact model IDs](#providers-and-exact-model-versions)
 > and rerun the benchmark before relying on these numbers for a purchase decision.
 
+
+## Table of contents
+
+- [Results](#results)
+  - [Batch](#batch-whole-file-transcription)
+  - [Streaming](#streaming-real-time-audio-paced-like-a-live-microphone)
+  - [Streaming latency](#streaming-latency)
+  - [Cost](#cost)
+  - [Results by domain](#results-by-domain)
+  - [Key findings](#key-findings)
+- [Metrics](#metrics)
+- [Methodology](#methodology)
+  - [Test set](#test-set) and [test set statistics](#test-set-statistics)
+  - [Providers and exact model versions](#providers-and-exact-model-versions)
+  - [Limitations](#limitations)
+- [Reproduce it](#reproduce-it)
+  - [Per-provider setup](#per-provider-setup)
+- [Add a provider](#add-a-provider)
+- [Repository layout](#repository-layout)
+- [License](#license) · [Citation](#citation)
+
 ---
 
 ## Results
@@ -20,6 +41,8 @@ Lower is better. **CER** (character error rate) is the primary metric, and
 the ranking is ordered by it. Brackets show 95% bootstrap confidence intervals.
 
 ### Batch (whole-file transcription)
+
+![Batch character error rate by provider, with 95% confidence intervals](results/plots/cer_batch.png)
 
 | # | Provider | Model | CER | WER | Mean latency | List price / hour |
 |---|---|---|---|---|---|---|
@@ -33,6 +56,8 @@ the ranking is ordered by it. Brackets show 95% bootstrap confidence intervals.
 | 8 | Groq | `whisper-large-v3` | 30.7% [29.2–32.4] | 71.7% [70.0–73.3] | 0.66 s | $0.11 ˢ |
 
 ### Streaming (real-time, audio paced like a live microphone)
+
+![Streaming character error rate by provider, with 95% confidence intervals](results/plots/cer_streaming.png)
 
 | # | Provider | Model | CER | WER | Time to first partial (p50) | Final result after speech ends (p50) | List price / hour |
 |---|---|---|---|---|---|---|---|
@@ -54,6 +79,32 @@ the provider's own per-hour estimate. ᵐ Minimum: covers audio input only
 ᵖ Regular price; Deepgram showed a temporary discount ($0.29/hour) when
 checked. ⁱ ElevenLabs no longer lists `scribe_v1`; the Scribe v2 price is
 shown (see [Limitations](#limitations)).
+
+### Streaming latency
+
+How quickly each streaming API responds, measured on every clip while audio
+was sent at real-time pace (see [Streaming setup](#streaming-setup)). Values
+are median (p50) / 95th percentile (p95).
+
+![Streaming latency: time to first partial result and time to final result after speech ends](results/plots/latency_streaming.png)
+
+| Provider | First partial result | First final segment | Final result after speech ends | Mean session time | Real-time factor | Partial-result CER |
+|---|---|---|---|---|---|---|
+| Soniox `stt-rt-v5` | 1.85 s / 2.21 s | 3.24 s / 7.40 s | 2.46 s / 2.80 s | 5.48 s | 2.18 / 3.86 | 61.7% |
+| Sarvam `saaras:v3-realtime` | 1.35 s / 1.60 s | 2.82 s / 8.53 s | 0.88 s / 1.42 s | 3.98 s | 1.43 / 1.91 | 57.9% |
+| Deepgram `nova-3` | 2.33 s / 3.16 s | 3.34 s / 6.49 s | 1.55 s / 1.97 s | 4.59 s | 1.74 / 2.79 | 60.5% |
+| Google `chirp_2` | 7.15 s / 8.98 s | 4.15 s / 9.33 s | 2.17 s / 2.94 s | 5.30 s | 1.99 / 4.04 | 50.1% |
+| OpenAI `gpt-4o-transcribe` | 3.60 s / 8.68 s | 3.97 s / 9.15 s | 4.22 s / 4.76 s | 7.32 s | 3.06 / 5.97 | 56.6% |
+| ElevenLabs `scribe_v2_realtime` | 3.13 s / 3.40 s | 3.22 s / 8.78 s | 1.36 s / 1.78 s | 4.41 s | 1.67 / 2.49 | 60.7% |
+| Gemini Live (native audio) | n/a / n/a | 3.46 s / 4.66 s | 10.44 s / 30.92 s | 15.55 s | 6.22 / 17.87 | n/a |
+
+The real-time factor here is total session time divided by audio length.
+It is above 1 for every provider because audio is sent at real-time pace and
+the session also includes the wait for the final result, which is a large
+share of a 3-second clip. Gemini Live returned no interim results, so its
+first-partial and partial-result figures are n/a.
+
+![Streaming accuracy vs. time to final result](results/plots/cer_vs_latency_streaming.png)
 
 ### Cost
 
@@ -113,9 +164,61 @@ Notes:
 - Only the base pay-as-you-go rate is used. Free credits, volume tiers,
   committed-use discounts and promotions are excluded.
 
+![Batch accuracy vs. list price](results/plots/cer_vs_cost_batch.png)
+
+![Streaming accuracy vs. list price](results/plots/cer_vs_cost_streaming.png)
+
 Every rate, with the exact text quoted from the provider's page, its URL
 and the date checked, is in [`pricing/prices.yaml`](pricing/prices.yaml).
 [`src/cost.py`](src/cost.py) recomputes the table above.
+
+### Results by domain
+
+CER for each of the 13 BanSpeech domains (77 clips each). The best provider
+in each domain is in **bold**. Columns are ordered by overall accuracy.
+
+![Batch CER by domain](results/plots/cer_by_domain_batch.png)
+
+**Batch**
+
+| Domain | Sarvam `saarika:v2.5` | Soniox `stt-async-v5` | Deepgram `nova-3` | Gemini `gemini-2.5-flash` | ElevenLabs `scribe_v1` | Google `chirp_2` | OpenAI `gpt-4o-transcribe` | Groq `whisper-large-v3` |
+|---|---|---|---|---|---|---|---|---|
+| Audiobooks | 9.7% | 5.8% | **5.2%** | 22.6% | 9.8% | 24.2% | 11.6% | 24.1% |
+| Biography | 8.3% | **4.9%** | 8.8% | 8.8% | 9.2% | 12.8% | 17.1% | 23.0% |
+| Celebrity interview | **4.6%** | 6.2% | 9.0% | 13.7% | 9.8% | 21.6% | 30.4% | 31.8% |
+| Class lecture | **6.0%** | 12.2% | 12.4% | 11.3% | 20.8% | 17.4% | 33.9% | 34.1% |
+| Documentary | 6.9% | 5.9% | **4.6%** | 13.2% | 8.1% | 12.5% | 22.5% | 23.2% |
+| Drama series | **5.8%** | 8.0% | 10.8% | 15.8% | 11.1% | 25.6% | 31.6% | 32.8% |
+| Kids' cartoon | **8.0%** | 9.1% | 11.1% | 20.5% | 8.6% | 25.1% | 40.6% | 27.1% |
+| Kids' voices | 4.7% | **4.6%** | 11.3% | 5.8% | 6.3% | 19.9% | 19.2% | 25.5% |
+| Medicine | **8.0%** | 10.0% | 9.4% | 14.8% | 47.1% | 23.8% | 27.0% | 33.9% |
+| Parliament | **5.7%** | 7.0% | 10.7% | 14.7% | 13.5% | 15.1% | 37.9% | 38.6% |
+| Political talk show | 8.6% | **8.3%** | 10.2% | 15.8% | 13.3% | 35.2% | 32.7% | 31.5% |
+| Sports | **9.1%** | 13.8% | 13.1% | 10.8% | 25.4% | 34.1% | 34.6% | 35.5% |
+| TV news | **8.0%** | 8.5% | 10.6% | 12.5% | 8.5% | 18.8% | 26.1% | 30.9% |
+
+![Streaming CER by domain](results/plots/cer_by_domain_streaming.png)
+
+**Streaming**
+
+| Domain | Soniox `stt-rt-v5` | Sarvam `saaras:v3-realtime` | Deepgram `nova-3` | Google `chirp_2` | OpenAI `gpt-4o-transcribe` | ElevenLabs `scribe_v2_realtime` | Gemini Live (native audio) |
+|---|---|---|---|---|---|---|---|
+| Audiobooks | **3.5%** | 9.7% | 9.7% | 24.2% | 9.1% | 26.1% | 49.4% |
+| Biography | **4.8%** | 8.3% | 9.4% | 12.8% | 9.8% | 33.1% | 60.8% |
+| Celebrity interview | **4.5%** | 4.7% | 16.2% | 22.4% | 21.8% | 33.2% | 74.7% |
+| Class lecture | 13.2% | **6.2%** | 25.0% | 18.8% | 37.1% | 43.4% | 76.4% |
+| Documentary | **4.6%** | 6.9% | 10.9% | 13.7% | 12.9% | 38.5% | 61.7% |
+| Drama series | **8.3%** | 15.3% | 20.3% | 34.4% | 40.3% | 29.6% | 75.0% |
+| Kids' cartoon | **8.0%** | 17.3% | 20.4% | 25.2% | 35.4% | 36.7% | 77.0% |
+| Kids' voices | **4.2%** | 10.3% | 21.4% | 26.7% | 29.5% | 32.2% | 78.2% |
+| Medicine | 8.6% | **8.1%** | 14.6% | 23.8% | 19.2% | 74.6% | 74.2% |
+| Parliament | 6.6% | **6.0%** | 16.2% | 14.1% | 21.0% | 36.0% | 66.1% |
+| Political talk show | **6.2%** | 8.7% | 14.2% | 35.2% | 23.1% | 36.9% | 59.7% |
+| Sports | 14.5% | **9.5%** | 17.3% | 34.1% | 23.6% | 55.8% | 67.5% |
+| TV news | **5.9%** | 8.2% | 20.7% | 18.2% | 18.3% | 27.0% | 64.4% |
+
+With 77 clips per domain, per-domain numbers are much noisier than the
+overall scores. Treat small differences within a domain as ties.
 
 ### Key findings
 
@@ -161,6 +264,69 @@ Full results:
 
 ---
 
+## Metrics
+
+### Character error rate (CER), the primary metric
+
+CER is the number of character edits needed to turn a provider's transcript
+into the reference transcript, divided by the number of characters in the
+reference:
+
+```
+CER = (S + D + I) / N
+```
+
+where S, D and I are character substitutions, deletions and insertions, and
+N is the number of characters in the reference. Both texts are normalized
+first (see [Scoring](#scoring)). We report **corpus-level** CER: edits and
+reference characters are summed over all clips before dividing. A CER of
+6.9% means about 7 characters in every 100 are wrong. CER can exceed 100%
+when a transcript contains many inserted characters.
+
+### Word error rate (WER)
+
+The same formula with words instead of characters. WER is the standard
+metric for English, but Bangla word boundaries are inconsistent, so one
+spacing difference (for example a split compound) counts as two word
+errors even when every letter is right. That is why WER is much higher
+than CER for every provider here, and why CER is the primary metric.
+
+### Confidence interval
+
+The range the true CER likely falls in (95% confidence), given that the
+test set is a sample of 1,001 clips. Two providers whose intervals overlap
+may not really differ; [`results/pairwise.csv`](results/pairwise.csv) tests
+each adjacent pair directly.
+
+### Streaming latency metrics
+
+Measured on every clip while audio is sent at real-time pace, timed from
+the start of each streaming session:
+
+- **First partial result:** time until the first interim (not yet final)
+  transcript arrives. This is how quickly a live caption starts appearing.
+- **First final segment:** time until the first finalized piece of text
+  arrives.
+- **Final result after speech ends:** total session time minus audio
+  length. This is the wait a user notices between finishing speaking and
+  getting the finished transcript, which matters most for voice agents.
+- **Real-time factor (RTF):** total session time divided by audio length.
+  For batch it is request time divided by audio length; below 1 means
+  faster than real time.
+- **Partial-result CER:** mean CER of all interim transcripts against the
+  reference. Lower means partial results are closer to the final text and
+  safer to show before the result is final.
+
+### Cost metrics
+
+- **List price per hour:** the provider's published pay-as-you-go rate per
+  hour of audio.
+- **Effective price per hour:** what our clips actually cost per hour of
+  audio once each provider's billing rules (minimums, rounding, session
+  billing) are applied per request.
+
+See [Cost](#cost) for sources and how firm each figure is.
+
 ## Methodology
 
 ### Test set
@@ -176,6 +342,35 @@ Full results:
 - **Fixed for every provider.** The exact clip list and reference
   transcripts are in [`data/test_set.csv`](data/test_set.csv), so every
   provider was scored on the same audio against the same references.
+
+### Test set statistics
+
+| Domain | Clips | Audio (minutes) | Mean clip length | Reference words |
+|---|---|---|---|---|
+| Audiobooks | 77 | 2.2 | 1.7 s | 409 |
+| Biography | 77 | 3.0 | 2.3 s | 396 |
+| Celebrity interview | 77 | 5.2 | 4.1 s | 854 |
+| Class lecture | 77 | 5.0 | 3.9 s | 943 |
+| Documentary | 77 | 3.1 | 2.4 s | 457 |
+| Drama series | 77 | 4.4 | 3.4 s | 774 |
+| Kids' cartoon | 77 | 3.4 | 2.7 s | 524 |
+| Kids' voices | 77 | 6.5 | 5.0 s | 947 |
+| Medicine | 77 | 3.5 | 2.7 s | 481 |
+| Parliament | 77 | 3.9 | 3.0 s | 596 |
+| Political talk show | 77 | 3.0 | 2.4 s | 498 |
+| Sports | 77 | 3.3 | 2.6 s | 586 |
+| TV news | 77 | 3.4 | 2.6 s | 531 |
+| **Total** | **1,001** | **50.0** | **3.0 s** | **7,996** |
+
+- Clip length ranges from 0.7 s to 26.8 s (median 2.1 s; 80% of clips are
+  between 1.0 s and 5.8 s). 97% of clips are under 10 seconds.
+- References total 7,996 words and 43,411 characters.
+- Audio is 16 kHz WAV, as distributed by BanSpeech.
+
+These are short utterances, like voice commands or conversational turns.
+Results on long recordings (meetings, podcasts, calls) may differ,
+particularly for cost (see [Cost](#cost)) and for providers that use
+context across a long file.
 
 ### Scoring
 
@@ -246,6 +441,17 @@ general-purpose model rather than a dedicated ASR endpoint, so it receives
 a short fixed instruction to transcribe the Bangla audio verbatim (see
 [`src/providers/gemini.py`](src/providers/gemini.py)). No other provider
 received a prompt.
+
+
+Provider documentation:
+[Sarvam AI](https://www.sarvam.ai/apis/speech-to-text) ·
+[Soniox](https://soniox.com/docs/stt/get-started) ·
+[Deepgram](https://developers.deepgram.com/docs/pre-recorded-audio) ·
+[Gemini API](https://ai.google.dev/gemini-api/docs/audio) ·
+[ElevenLabs](https://elevenlabs.io/docs/overview/capabilities/speech-to-text) ·
+[Google Cloud Chirp 2](https://cloud.google.com/speech-to-text/v2/docs/chirp_2-model) ·
+[OpenAI](https://developers.openai.com/api/docs/guides/speech-to-text) ·
+[Groq](https://console.groq.com/docs/speech-to-text)
 
 ### Limitations
 
@@ -338,11 +544,59 @@ python src/score_streaming.py                          # -> results/streaming_le
 # Confidence intervals and dashboard
 python src/confidence_intervals.py
 python generate_dashboard.py                           # -> results/dashboard.html
+
+# Cost and README charts
+python src/cost.py                                     # -> results/cost.csv, streaming_cost.csv
+python src/plot_results.py                             # -> results/plots/*.png
 ```
 
 Transcripts are cached in `results/raw/` and `results/raw_streaming/`, and
 reruns only fill gaps, so a paid API is never called twice for the same
 clip. A failed request is logged per clip and doesn't stop the run.
+
+### Per-provider setup
+
+Each provider needs its own key in `.env`. A provider whose key is missing
+is skipped. Model IDs, language codes and regions are set in
+[`config.yaml`](config.yaml) (batch) and
+[`streaming-config.yaml`](streaming-config.yaml) (streaming).
+
+| Provider | Environment variables | Batch name | Streaming name |
+|---|---|---|---|
+| Sarvam AI | `SARVAM_API_KEY` | `sarvam_saarika` | `sarvam_saaras_realtime_streaming` |
+| Soniox | `SONIOX_API_KEY` (optional `SONIOX_API_BASE_URL` for a regional endpoint) | `soniox` | `soniox_rt_streaming` |
+| Deepgram | `DEEPGRAM_API_KEY` | `deepgram_nova3` | `deepgram_nova3_streaming` |
+| Gemini API | `GEMINI_API_KEY` | `gemini_25_flash` | `gemini_25_flash_streaming` |
+| ElevenLabs | `ELEVENLABS_API_KEY` | `elevenlabs_scribe` | `elevenlabs_scribe_streaming` |
+| Google Cloud Chirp 2 | `GOOGLE_CLOUD_PROJECT`, `GOOGLE_APPLICATION_CREDENTIALS` | `google_chirp2` | `google_chirp2_streaming` |
+| OpenAI | `OPENAI_API_KEY` | `openai_4o` | `openai_4o_streaming` |
+| Groq | `GROQ_API_KEY` | `groq_whisper` | — |
+
+Run one provider by passing its name:
+
+```bash
+python src/smoke_test.py --provider deepgram_nova3            # one clip, checks the key works
+python src/run_transcription.py deepgram_nova3 --limit 3       # batch, first 3 clips
+python src/run_transcription.py deepgram_nova3                 # batch, full test set
+python src/run_streaming_transcription.py deepgram_nova3_streaming --limit 3
+```
+
+Provider-specific notes:
+
+- **Google Chirp 2** needs the Cloud Speech-to-Text API enabled in
+  `GOOGLE_CLOUD_PROJECT`, and a service account key with only the Cloud
+  Speech-to-Text role. Chirp 2 is only available in some regions
+  (`us-central1`, `europe-west4`, `asia-southeast1`); set `location` in the
+  config.
+- **Sarvam** accepts `bn-IN` as the Bangla language code.
+- **ElevenLabs** takes ISO 639-3 language codes (`ben`). `scribe_v1` is
+  deprecated (ElevenLabs scheduled its removal for 9 July 2026), so consider
+  `model_id: scribe_v2` in `config.yaml` for new runs.
+- **OpenAI streaming** resamples the 16 kHz audio to 24 kHz inside the
+  adapter, because the Realtime API only accepts 24 kHz PCM.
+- **Gemini Live** preview model IDs are date-stamped and replaced often; if
+  the configured ID returns 404, pick the current one from the Gemini
+  models page.
 
 ### Build a different sample
 
@@ -398,6 +652,7 @@ src/score.py                   batch scoring -> results/
 src/score_streaming.py         streaming scoring -> results/
 src/confidence_intervals.py    bootstrap CIs and pairwise significance tests
 src/cost.py                    prices every model from pricing/prices.yaml -> results/cost.csv
+src/plot_results.py            renders the README charts -> results/plots/
 pricing/prices.yaml            published rates with source URLs, quoted text and date checked
 src/build_benchmark_set.py     draws a new stratified sample from a full BanSpeech dump
 generate_dashboard.py          results CSVs -> results/dashboard.html
