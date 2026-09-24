@@ -8,6 +8,7 @@
 ![Best streaming CER: Soniox 7.4%](https://img.shields.io/badge/best%20streaming%20CER-Soniox%207.4%25-008300)
 ![Tested: September 2026](https://img.shields.io/badge/tested-Sep%202026-eda100)
 [![License: MIT](https://img.shields.io/badge/license-MIT-e87ba4)](LICENSE)
+[![Research by Riverborn Limited](https://img.shields.io/badge/research%20by-Riverborn%20Limited-0b0b0b)](https://riverborn.com)
 
 **An open benchmark of 8 hosted Bengali speech-to-text (ASR) APIs on 1,001
 real Bangla audio clips across 13 domains, covering both batch
@@ -16,6 +17,14 @@ transcription and real-time streaming.**
 Providers tested: Sarvam AI, Soniox, Deepgram, Google (Gemini and Chirp 2),
 ElevenLabs, OpenAI and Groq (Whisper). Version 1.0, tested in **September
 2026**.
+
+> [!NOTE]
+> **Research by [Riverborn Limited](https://riverborn.com)**, an AI solutions
+> company from Dhaka, Bangladesh. We build voice AI agents, chatbots, AI
+> agents and RAG systems. If you need help choosing
+> a speech-to-text provider or building an AI product,
+> **[book a call](https://riverborn.com/#book)** or email
+> **[hello@riverborn.com](mailto:hello@riverborn.com)**.
 
 > [!WARNING]
 > Results reflect each provider's API as it behaved when we tested it.
@@ -42,6 +51,7 @@ ElevenLabs, OpenAI and Groq (Whisper). Version 1.0, tested in **September
   - [Per-provider setup](#per-provider-setup)
 - [Add a provider](#add-a-provider)
 - [Repository layout](#repository-layout)
+- [About Riverborn](#about-riverborn)
 - [License](#license) · [Citation](#citation)
 
 ---
@@ -536,10 +546,10 @@ Provider documentation:
 ### Conflict of interest
 
 <!-- TODO before publishing: state any commercial relationship (partner,
-reseller, customer, investor, etc.) Riverborn AI has with the providers
+reseller, customer, investor, etc.) Riverborn Limited has with the providers
 tested, or write "None." -->
 
-The benchmark was designed, run and funded by Riverborn AI. No provider
+The benchmark was designed, run and funded by Riverborn Limited. No provider
 sponsored or reviewed this benchmark before publication.
 
 ---
@@ -711,6 +721,29 @@ src/build_benchmark_set.py     draws a new stratified sample from a full BanSpee
 generate_dashboard.py          results CSVs -> results/dashboard.html
 results/                       published v1.0 results
 ```
+
+## About Riverborn
+
+This benchmark was designed and run by **[Riverborn Limited](https://riverborn.com)**,
+an AI solutions company based in Dhaka, Bangladesh that builds AI systems for
+clients worldwide. We build voice AI products, and we ran this benchmark to
+find out which speech-to-text API actually works for Bangla.
+
+What we build:
+
+- **Voice AI agents** for calls, customer support and assistants
+- **AI agents and multi-agent systems** that automate real workflows
+- **Chatbots, NLP and RAG systems** over your own documents and data
+- **Generative AI products and MVPs**, from prototype to production
+- **AI consulting**: picking models and providers, estimating costs,
+  evaluating quality (like this benchmark)
+
+Need help with AI? We'd like to hear from you.
+
+- 🌐 Website: [riverborn.com](https://riverborn.com)
+- 📅 Book a discovery call: [riverborn.com/#book](https://riverborn.com/#book)
+- ✉️ Email: [hello@riverborn.com](mailto:hello@riverborn.com)
+- 💼 [LinkedIn](https://www.linkedin.com/company/74964253) · [X](https://x.com/riverbornai) · [Facebook](https://facebook.com/riverbornai) · [GitHub](https://github.com/riverbornai)
 
 ## License
 

@@ -15,10 +15,10 @@ keywords:
 authors:
   - family-names: Uddin
     given-names: Nasim
-    affiliation: Riverborn AI
+    affiliation: Riverborn Limited
   - family-names: Azad
     given-names: Saiful
-    affiliation: Riverborn AI
+    affiliation: Riverborn Limited
 references:
   - type: dataset
     title: "BanSpeech"
