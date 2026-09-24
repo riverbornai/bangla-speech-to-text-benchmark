@@ -20,8 +20,8 @@ ElevenLabs, OpenAI and Groq (Whisper). Version 1.0, tested in **September
 
 > [!NOTE]
 > **Research by [Riverborn Limited](https://riverborn.com)**, an AI solutions
-> company from Dhaka, Bangladesh. We build voice AI agents, chatbots, AI
-> agents and RAG systems. If you need help choosing
+> company from Dhaka, Bangladesh. We build agentic AI, generative AI and
+> conversational AI (voice, chat and RAG). If you need help choosing
 > a speech-to-text provider or building an AI product,
 > **[book a call](https://riverborn.com/#book)** or email
 > **[hello@riverborn.com](mailto:hello@riverborn.com)**.
@@ -731,12 +731,12 @@ find out which speech-to-text API actually works for Bangla.
 
 What we build:
 
-- **Voice AI agents** for calls, customer support and assistants
-- **AI agents and multi-agent systems** that automate real workflows
-- **Chatbots, NLP and RAG systems** over your own documents and data
-- **Generative AI products and MVPs**, from prototype to production
-- **AI consulting**: picking models and providers, estimating costs,
-  evaluating quality (like this benchmark)
+- 🤖 **Agentic AI:** autonomous AI agents and multi-agent systems that
+  automate real business workflows
+- ✨ **Generative AI:** AI products and MVPs built on large language
+  models, taken from prototype to production
+- 💬 **Conversational AI:** voice AI agents, chatbots, and RAG systems that
+  answer from your own documents and data
 
 Need help with AI? We'd like to hear from you.
 
