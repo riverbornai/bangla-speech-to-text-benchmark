@@ -21,30 +21,101 @@ the ranking is ordered by it. Brackets show 95% bootstrap confidence intervals.
 
 ### Batch (whole-file transcription)
 
-| # | Provider | Model | CER | WER | Mean latency |
-|---|---|---|---|---|---|
-| 1 | Sarvam AI | `saarika:v2.5` | **6.9%** [6.2–7.5] | **18.2%** [17.0–19.3] | 0.99 s |
-| 2 | Soniox | `stt-async-v5` | 8.1% [7.3–9.0] | 21.5% [20.1–22.9] | 7.58 s |
-| 3 | Deepgram | `nova-3` | 10.1% [9.2–11.1] | 23.9% [22.5–25.4] | 2.15 s |
-| 4 | Google Gemini | `gemini-2.5-flash` | 13.3% [12.3–14.5] | 27.0% [25.5–28.6] | 3.85 s |
-| 5 | ElevenLabs | `scribe_v1` | 14.7% [13.3–16.1] | 26.0% [24.4–27.7] | 1.39 s |
-| 6 | Google Cloud | `chirp_2` | 21.9% [19.9–24.1] | 41.4% [38.9–44.1] | 4.13 s |
-| 7 | OpenAI | `gpt-4o-transcribe` | 28.7% [26.4–31.1] | 45.1% [42.9–47.3] | 1.11 s |
-| 8 | Groq | `whisper-large-v3` | 30.7% [29.2–32.4] | 71.7% [70.0–73.3] | 0.66 s |
+| # | Provider | Model | CER | WER | Mean latency | List price / hour |
+|---|---|---|---|---|---|---|
+| 1 | Sarvam AI | `saarika:v2.5` | **6.9%** [6.2–7.5] | **18.2%** [17.0–19.3] | 0.99 s | $0.31 (₹30) |
+| 2 | Soniox | `stt-async-v5` | 8.1% [7.3–9.0] | 21.5% [20.1–22.9] | 7.58 s | **$0.10** ᵉ |
+| 3 | Deepgram | `nova-3` | 10.1% [9.2–11.1] | 23.9% [22.5–25.4] | 2.15 s | $0.26 |
+| 4 | Google Gemini | `gemini-2.5-flash` | 13.3% [12.3–14.5] | 27.0% [25.5–28.6] | 3.85 s | ≥ $0.12 ᵐ |
+| 5 | ElevenLabs | `scribe_v1` ⁱ | 14.7% [13.3–16.1] | 26.0% [24.4–27.7] | 1.39 s | $0.22 ⁱ |
+| 6 | Google Cloud | `chirp_2` | 21.9% [19.9–24.1] | 41.4% [38.9–44.1] | 4.13 s | $0.96 |
+| 7 | OpenAI | `gpt-4o-transcribe` | 28.7% [26.4–31.1] | 45.1% [42.9–47.3] | 1.11 s | $0.36 ᵉ |
+| 8 | Groq | `whisper-large-v3` | 30.7% [29.2–32.4] | 71.7% [70.0–73.3] | 0.66 s | $0.11 ˢ |
 
 ### Streaming (real-time, audio paced like a live microphone)
 
-| # | Provider | Model | CER | WER | Time to first partial (p50) | Final result after speech ends (p50) |
-|---|---|---|---|---|---|---|
-| 1 | Soniox | `stt-rt-v5` | **7.4%** [6.5–8.3] | **19.7%** | 1.85 s | 2.46 s |
-| 2 | Sarvam AI | `saaras:v3-realtime` | 9.0% [7.8–10.3] | 20.3% | **1.35 s** | **0.88 s** |
-| 3 | Deepgram | `nova-3` | 17.5% [16.3–18.7] | 33.3% | 2.33 s | 1.55 s |
-| 4 | Google Cloud | `chirp_2` | 23.6% [21.5–25.8] | 43.8% | 7.15 s | 2.17 s |
-| 5 | OpenAI | `gpt-4o-transcribe` (Realtime API) | 24.6% [22.1–27.1] | 42.4% | 3.60 s | 4.22 s |
-| 6 | ElevenLabs | `scribe_v2_realtime` | 38.6% [35.9–41.3] | 55.4% | 3.13 s | 1.36 s |
-| 7 | Google Gemini | `gemini-2.5-flash-native-audio-preview-12-2025` (Live API) | 69.6% [67.7–71.4] | 79.2% | n/a | 10.44 s |
+| # | Provider | Model | CER | WER | Time to first partial (p50) | Final result after speech ends (p50) | List price / hour |
+|---|---|---|---|---|---|---|---|
+| 1 | Soniox | `stt-rt-v5` | **7.4%** [6.5–8.3] | **19.7%** | 1.85 s | 2.46 s | **$0.12** ᵉ |
+| 2 | Sarvam AI | `saaras:v3-realtime` | 9.0% [7.8–10.3] | 20.3% | **1.35 s** | **0.88 s** | $0.31 (₹30) |
+| 3 | Deepgram | `nova-3` | 17.5% [16.3–18.7] | 33.3% | 2.33 s | 1.55 s | $0.46 ᵖ |
+| 4 | Google Cloud | `chirp_2` | 23.6% [21.5–25.8] | 43.8% | 7.15 s | 2.17 s | $0.96 |
+| 5 | OpenAI | `gpt-4o-transcribe` (Realtime API) | 24.6% [22.1–27.1] | 42.4% | 3.60 s | 4.22 s | $0.36 ᵉ |
+| 6 | ElevenLabs | `scribe_v2_realtime` | 38.6% [35.9–41.3] | 55.4% | 3.13 s | 1.36 s | $0.39 |
+| 7 | Google Gemini | `gemini-2.5-flash-native-audio-preview-12-2025` (Live API) | 69.6% [67.7–71.4] | 79.2% | n/a | 10.44 s | ≥ $0.35 ᵐ |
 
 Groq has no streaming speech-to-text API, so it is not in the streaming table.
+
+List prices are the providers' published pay-as-you-go rates in USD per hour
+of audio, checked on each provider's own pricing page on **24 September
+2026** (details and sources in [Cost](#cost)). ᵉ Billed per token; this is
+the provider's own per-hour estimate. ᵐ Minimum: covers audio input only
+(see [Cost](#cost)). ˢ Minimum of 10 seconds billed per request.
+ᵖ Regular price; Deepgram showed a temporary discount ($0.29/hour) when
+checked. ⁱ ElevenLabs no longer lists `scribe_v1`; the Scribe v2 price is
+shown (see [Limitations](#limitations)).
+
+### Cost
+
+What you pay depends on two things: the provider's list price and how it
+rounds each request. Our clips are short (97% are under 10 seconds, 3 s on
+average), which is typical of voice commands and conversational turns. With
+that kind of audio, a per-request minimum or rounding up to the next second
+can cost much more than the list price.
+
+| Mode | Provider | List price / hour | Effective price / hour on our clips | Cost of our run ¹ | How firm |
+|---|---|---|---|---|---|
+| Batch | Soniox | $0.10 | $0.10 | $0.09 | estimate |
+| Batch | Gemini 2.5 Flash | ≥ $0.12 | ≥ $0.12 | ≥ $0.10 | minimum |
+| Batch | ElevenLabs Scribe | $0.22 | $0.22 | $0.18 | estimate |
+| Batch | Deepgram Nova-3 | $0.26 | $0.26 | $0.21 | exact |
+| Batch | Sarvam Saarika | $0.31 | $0.36 | $0.30 | estimate |
+| Batch | OpenAI gpt-4o-transcribe | $0.36 | $0.36 | $0.30 | estimate |
+| Batch | Groq Whisper large-v3 | $0.11 | **$0.38** | $0.31 | estimate |
+| Batch | Google Chirp 2 | $0.96 | $1.12 | $0.93 | exact |
+| Streaming | Soniox | $0.12 | $0.17 | $0.15 | estimate |
+| Streaming | Sarvam Saaras | $0.31 | $0.36 | $0.30 | estimate |
+| Streaming | Deepgram Nova-3 | $0.46 | $0.46 | $0.38 | exact |
+| Streaming | OpenAI gpt-4o-transcribe | $0.36 | $0.36 | $0.30 | estimate |
+| Streaming | ElevenLabs Scribe v2 Realtime | $0.39 | $0.39 | $0.32 | estimate |
+| Streaming | Gemini 2.5 Flash Live | ≥ $0.35 | ≥ $0.35 | ≥ $0.29 | minimum |
+| Streaming | Google Chirp 2 | $0.96 | $1.12 | $0.93 | exact |
+
+- **exact:** the published rate multiplied by billed time, where the
+  provider publishes all of its billing rules (Deepgram, Google).
+- **estimate:** the provider bills per token, or doesn't publish exactly
+  how each request is rounded. We used the provider's own conversion
+  figures (Soniox, OpenAI), billed exact audio length (ElevenLabs, Groq
+  above its 10-second minimum), or rounded each request up to the next
+  second (Sarvam).
+- **minimum:** Gemini also bills output tokens: thinking tokens for
+  `gemini-2.5-flash`, and a generated spoken reply for the Live API. The
+  benchmark didn't record those, so only audio input is priced and the real
+  cost is higher.
+
+¹ All 1,001 clips, except where a provider failed on a few (Deepgram and
+Chirp 2: 1,000; OpenAI streaming: 995; Gemini streaming: 997).
+
+Notes:
+
+- **Groq** bills at least 10 seconds per request, so on short clips it costs
+  3.4× its list price.
+- **Sarvam** and **Google** round every request up to the next second, which
+  adds about 17% on our clips (3 seconds on average). Sarvam's rounding is our reading of "billed
+  per second"; Google states it explicitly. Google also offers Dynamic
+  Batch recognition at $0.003/minute ($0.18/hour) for jobs that can wait,
+  which we did not test.
+- **Soniox real-time** bills on streaming-session time, which includes the
+  wait for the final transcript after the audio ends. On our short clips
+  that adds about 40% to the input cost.
+- **Sarvam prices in rupees.** We converted at the European Central Bank
+  reference rate for 24 September 2026 (₹95.96 per US$).
+- Only the base pay-as-you-go rate is used. Free credits, volume tiers,
+  committed-use discounts and promotions are excluded.
+
+Every rate, with the exact text quoted from the provider's page, its URL
+and the date checked, is in [`pricing/prices.yaml`](pricing/prices.yaml).
+[`src/cost.py`](src/cost.py) recomputes the table above.
 
 ### Key findings
 
@@ -56,6 +127,10 @@ Groq has no streaming speech-to-text API, so it is not in the streaming table.
 - **Gemini 2.5 Flash and ElevenLabs Scribe are a statistical tie** in batch
   mode, as are Chirp 2 and OpenAI in streaming mode (their confidence
   intervals overlap; see [`results/pairwise.csv`](results/pairwise.csv)).
+- **The most accurate providers are also among the cheapest.** Soniox
+  ($0.10/hour) and Sarvam (₹30 ≈ $0.31/hour) lead on accuracy and cost less
+  than Deepgram streaming, OpenAI, ElevenLabs streaming and Google Chirp 2.
+  Chirp 2 is the most expensive option and ranks 6th in batch.
 - **General-purpose models struggle with Bangla.** OpenAI
   `gpt-4o-transcribe` and Whisper large-v3 have 4–5× the character error
   rate of the leaders.
@@ -78,6 +153,9 @@ Full results:
 | [`results/streaming_leaderboard_ci.csv`](results/streaming_leaderboard_ci.csv) | streaming: CER/WER with 95% confidence intervals |
 | [`results/streaming_by_domain.csv`](results/streaming_by_domain.csv) | streaming: CER per provider × domain |
 | [`results/streaming_per_file.csv`](results/streaming_per_file.csv) | streaming: every clip × provider, with timings and transcripts |
+| [`results/cost.csv`](results/cost.csv) | batch: list and effective price per hour, cost of the run, sources |
+| [`results/streaming_cost.csv`](results/streaming_cost.csv) | streaming: the same |
+| [`pricing/prices.yaml`](pricing/prices.yaml) | every rate with its source URL, quoted page text and date checked |
 | [`results/pairwise.csv`](results/pairwise.csv) | paired bootstrap tests between providers adjacent in the ranking |
 | [`results/dashboard.html`](results/dashboard.html) | interactive charts (download and open it in a browser) |
 
@@ -185,6 +263,14 @@ received a prompt.
   the Gemini Live API during our run, so its first-partial and stability
   metrics are empty. The Live API adapter also sets no language hint, which
   may partly explain Gemini's much weaker streaming accuracy.
+- **ElevenLabs batch model.** The batch run requested `scribe_v1`.
+  ElevenLabs' changelog (8 June 2026) said `scribe_v1` would be removed on
+  9 July 2026, before our run in September, yet every request succeeded. We
+  can't tell from the API response whether `scribe_v1` or `scribe_v2`
+  served these requests.
+- **Prices change.** They were checked on 24 September 2026. Token-billed
+  costs (Soniox, OpenAI) are estimates, and Gemini costs are minimums; see
+  [Cost](#cost).
 - **Hosted APIs only.** Open-weight models run locally are not included in
   v1.0.
 
@@ -214,6 +300,7 @@ pip install -r requirements.txt
 
 ```bash
 python src/confidence_intervals.py    # recomputes CER/WER + CIs from results/*per_file.csv
+python src/cost.py                    # recomputes cost from pricing/prices.yaml + clip durations
 ```
 
 ### 3. Download the audio
@@ -256,12 +343,6 @@ python generate_dashboard.py                           # -> results/dashboard.ht
 Transcripts are cached in `results/raw/` and `results/raw_streaming/`, and
 reruns only fill gaps, so a paid API is never called twice for the same
 clip. A failed request is logged per clip and doesn't stop the run.
-
-### Estimate the cost before running
-
-```bash
-python src/estimate_stt_cost.py --source wavs_1001 --providers all --out costs.xlsx
-```
 
 ### Build a different sample
 
@@ -316,7 +397,8 @@ src/run_streaming_transcription.py  cached, real-time-paced streaming runner
 src/score.py                   batch scoring -> results/
 src/score_streaming.py         streaming scoring -> results/
 src/confidence_intervals.py    bootstrap CIs and pairwise significance tests
-src/estimate_stt_cost.py       cost estimate per provider before a run
+src/cost.py                    prices every model from pricing/prices.yaml -> results/cost.csv
+pricing/prices.yaml            published rates with source URLs, quoted text and date checked
 src/build_benchmark_set.py     draws a new stratified sample from a full BanSpeech dump
 generate_dashboard.py          results CSVs -> results/dashboard.html
 results/                       published v1.0 results
