@@ -15,7 +15,6 @@ banspeech/
 results/raw/
 results/raw_streaming/
 *.xlsx
-src/pricing.json
 __pycache__/
 *.pyc
 .DS_Store

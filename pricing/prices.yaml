@@ -1,0 +1,257 @@
+# Published API list prices for every benchmarked model.
+#
+# Rules for this file:
+#   * Every rate is copied from the provider's own pricing page or docs,
+#     linked in source_url, on the date in `checked`. `quote` is the text
+#     on that page the rate was taken from.
+#   * Base pay-as-you-go rate only: no free credits, volume tiers,
+#     committed-use discounts or temporary promotions.
+#   * `billing: duration` -> price_per_hour, with billing rules applied per
+#     request: rounding (none | ceil_second) and min_billed_seconds.
+#   * `billing: token` -> per-1M-token prices. `input_basis` says whether
+#     audio tokens are counted on the audio duration or on the streaming
+#     session duration.
+#   * `cost_type` says how firm the result is:
+#       exact       rate x billed duration, all billing rules published
+#       estimate    the provider bills per token (approximate conversions),
+#                   or does not publish exactly how requests are rounded
+#       minimum     only part of the bill can be computed (see note);
+#                   the real cost is higher
+#
+# Currency conversion: INR -> USD at the European Central Bank reference
+# rate for 2026-09-24 (USD 1.1367 and INR 109.0775 per EUR, i.e.
+# INR 95.96 per USD), https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml
+
+fx_per_usd:
+  INR: 95.96
+
+models:
+
+  # ---------------------------------------------------------------- batch
+
+  sarvam_saarika:
+    provider: Sarvam AI
+    priced_as: "Speech to Text (Real-time API)"
+    billing: duration
+    currency: INR
+    price_per_hour: 30.0
+    rounding: ceil_second
+    min_billed_seconds: 0
+    cost_type: estimate
+    billing_rules: "per hour, billed per second; rounding each request up to the second is our assumption"
+    source_url: https://www.sarvam.ai/api-pricing
+    quote: "Speech to text ... Real-time ₹30.00 per hour; Streaming ₹30.00 per hour; Batch ₹30.00 per hour"
+    also_see: "https://docs.sarvam.ai/api/getting-started/pricing -- 'Speech Recognition Priced per hour, billed per second. ... Speech to Text ₹30'"
+    checked: 2026-09-24
+    note: "Sarvam's docs now list Saarika (the model tested, saarika:v2.5) as deprecated; the price is for the Speech to Text service, not a specific model."
+
+  soniox:
+    provider: Soniox
+    priced_as: "Speech-to-Text Async (file)"
+    billing: token
+    currency: USD
+    input_basis: audio
+    input_audio_tokens_per_second: 8.3333   # "1 hour of audio is ~30,000 input audio tokens"
+    price_per_1m_input_audio_tokens: 1.50
+    output_tokens_per_char: 0.3             # "1 character of output is ~0.3 tokens"
+    output_tokens_per_hour: 15000           # "1 hour of speech is ~15,000 output text tokens" (for list $/hour)
+    price_per_1m_output_tokens: 3.50
+    cost_type: estimate
+    billing_rules: "per token; audio ~30,000 tokens/hour, output ~0.3 tokens/character (Soniox's approximations)"
+    source_url: https://soniox.com/pricing
+    quote: "Equivalent to about $0.10/hour for async (file) ... Input audio tokens $1.50 per 1M tokens ... Output text tokens $3.50 per 1M tokens"
+    checked: 2026-09-24
+
+  deepgram_nova3:
+    provider: Deepgram
+    priced_as: "Nova-3 Monolingual, Pre-Recorded, Pay As You Go"
+    billing: duration
+    currency: USD
+    price_per_hour: 0.258                   # $0.0043/min
+    rounding: none
+    min_billed_seconds: 0
+    cost_type: exact
+    billing_rules: "true per-second billing, no rounding"
+    source_url: https://deepgram.com/pricing
+    quote: "Pre-Recorded pricing ... Nova-3 Monolingual $0.0043/min (Pay As You Go); FAQ: 'Deepgram uses true per-second billing. If your audio file is 14 seconds long, you pay for exactly 14 seconds.'"
+    checked: 2026-09-24
+    note: "Bengali (language=bn) is a single-language setting; Deepgram's Multilingual tier ($0.0052/min) is for language=multi code-switching. Monolingual tier applied."
+
+  gemini_25_flash:
+    provider: Google Gemini API
+    priced_as: "gemini-2.5-flash, Standard, paid tier"
+    billing: token
+    currency: USD
+    input_basis: audio
+    input_audio_tokens_per_second: 32
+    price_per_1m_input_audio_tokens: 1.00
+    cost_type: minimum
+    billing_rules: "per token; audio = 32 tokens/second. Output $2.50/1M tokens including thinking tokens -- not included here"
+    source_url: https://ai.google.dev/gemini-api/docs/pricing
+    quote: "Gemini 2.5 Flash, Standard: Input price $1.00 (audio); Output price (including thinking tokens) $2.50. Tokens doc: 'Audio: 32 tokens per second'"
+    checked: 2026-09-24
+    note: "Minimum: covers audio input only. The benchmark did not record output/thinking token usage, and gemini-2.5-flash thinks by default, so real cost is higher."
+
+  elevenlabs_scribe:
+    provider: ElevenLabs
+    priced_as: "Scribe v2 (Speech to Text API)"
+    billing: duration
+    currency: USD
+    price_per_hour: 0.22
+    rounding: none
+    min_billed_seconds: 0
+    cost_type: estimate
+    billing_rules: "per hour of audio; per-request rounding not published"
+    source_url: https://elevenlabs.io/pricing/api
+    quote: "Scribe v2 Speech to Text $0.22 Price per hour"
+    checked: 2026-09-24
+    note: "The model tested, scribe_v1, is no longer on the pricing page (ElevenLabs changelog 2026-06-08: 'scribe_v1 ... will be removed on July 9, 2026'). Scribe v2's price is shown."
+
+  google_chirp2:
+    provider: Google Cloud Speech-to-Text V2
+    priced_as: "V2 Standard recognition, 0-500,000 min/month"
+    billing: duration
+    currency: USD
+    price_per_hour: 0.96                    # $0.016/min
+    rounding: ceil_second
+    min_billed_seconds: 0
+    cost_type: exact
+    billing_rules: "each request rounded up to the nearest second; no V2 free tier"
+    source_url: https://cloud.google.com/speech-to-text/pricing
+    quote: "Speech-to-Text V2 API ... Recognition (sku:3099-B70F-0949) Standard 0 minute to 500,000 minute $0.016 / 1 minute ... Standard models include: ... chirp (Speech-to-Text V2 only) ... Each request is rounded up to the nearest increment of 1 seconds"
+    checked: 2026-09-24
+    note: "The page lists the 'chirp' family as Standard; chirp_2 is assumed to be billed at the same Standard rate. Google also offers Dynamic Batch Recognition at $0.003/min for non-urgent batch jobs; the benchmark used synchronous recognition."
+
+  openai_4o:
+    provider: OpenAI
+    priced_as: "gpt-4o-transcribe (published per-minute estimate)"
+    billing: duration
+    currency: USD
+    price_per_hour: 0.36                    # $0.006/min estimated cost
+    rounding: none
+    min_billed_seconds: 0
+    cost_type: estimate
+    billing_rules: "billed per token (audio input $2.50/1M, output $10.00/1M); OpenAI publishes $0.006/min as the estimated cost"
+    source_url: https://developers.openai.com/api/docs/pricing
+    quote: "Transcription models ... gpt-4o-transcribe Transcription $2.50 $10.00 $0.006 / minute"
+    checked: 2026-09-24
+
+  groq_whisper:
+    provider: Groq
+    priced_as: "whisper-large-v3"
+    billing: duration
+    currency: USD
+    price_per_hour: 0.111
+    rounding: none
+    min_billed_seconds: 10
+    cost_type: estimate
+    billing_rules: "$0.111/hour, minimum 10 seconds billed per request; rounding above 10 s not published (none assumed; affects 27 of 1001 clips)"
+    source_url: https://console.groq.com/docs/speech-to-text
+    quote: "whisper-large-v3 $0.111 (Cost Per Hour) ... Minimum Billed Length: 10 seconds. If you submit a request less than this, you will still be billed for 10 seconds."
+    checked: 2026-09-24
+
+  # ------------------------------------------------------------ streaming
+
+  soniox_rt_streaming:
+    provider: Soniox
+    priced_as: "Speech-to-Text Real-time (streaming)"
+    billing: token
+    currency: USD
+    input_basis: session
+    input_audio_tokens_per_second: 8.3333
+    price_per_1m_input_audio_tokens: 2.00
+    output_tokens_per_char: 0.3
+    output_tokens_per_hour: 15000
+    price_per_1m_output_tokens: 4.00
+    cost_type: estimate
+    billing_rules: "per token; input audio tokens count the streaming session duration"
+    source_url: https://soniox.com/pricing
+    quote: "about ... $0.12/hour for real-time (streaming) ... Input audio tokens Duration of audio or streaming session ... $2.00 per 1M tokens ... Output text tokens ... $4.00 per 1M tokens"
+    checked: 2026-09-24
+
+  sarvam_saaras_realtime_streaming:
+    provider: Sarvam AI
+    priced_as: "Speech to Text (Streaming)"
+    billing: duration
+    currency: INR
+    price_per_hour: 30.0
+    rounding: ceil_second
+    min_billed_seconds: 0
+    cost_type: estimate
+    billing_rules: "per hour, billed per second; rounding each session up to the second is our assumption"
+    source_url: https://www.sarvam.ai/api-pricing
+    quote: "Speech to text ... Streaming ₹30.00 per hour"
+    checked: 2026-09-24
+
+  deepgram_nova3_streaming:
+    provider: Deepgram
+    priced_as: "Nova-3 Monolingual, Streaming, Pay As You Go (regular price)"
+    billing: duration
+    currency: USD
+    price_per_hour: 0.462                   # $0.0077/min
+    rounding: none
+    min_billed_seconds: 0
+    cost_type: exact
+    billing_rules: "true per-second billing"
+    source_url: https://deepgram.com/pricing
+    quote: "Streaming pricing ... Nova-3 Monolingual Current price $0.0048/min Regular price $0.0077/min (Pay As You Go)"
+    checked: 2026-09-24
+    note: "Deepgram is showing a temporary discounted price of $0.0048/min ($0.288/hour) at the time of checking; the regular price is used."
+
+  google_chirp2_streaming:
+    provider: Google Cloud Speech-to-Text V2
+    priced_as: "V2 Standard recognition, 0-500,000 min/month"
+    billing: duration
+    currency: USD
+    price_per_hour: 0.96
+    rounding: ceil_second
+    min_billed_seconds: 0
+    cost_type: exact
+    billing_rules: "one Recognition SKU for V2 (no separate streaming price listed); rounded up to the second"
+    source_url: https://cloud.google.com/speech-to-text/pricing
+    quote: "Recognition (sku:3099-B70F-0949) Standard 0 minute to 500,000 minute $0.016 / 1 minute"
+    checked: 2026-09-24
+
+  openai_4o_streaming:
+    provider: OpenAI
+    priced_as: "gpt-4o-transcribe (published per-minute estimate)"
+    billing: duration
+    currency: USD
+    price_per_hour: 0.36
+    rounding: none
+    min_billed_seconds: 0
+    cost_type: estimate
+    billing_rules: "billed per token at the gpt-4o-transcribe rates; no separate realtime rate is published for this model"
+    source_url: https://developers.openai.com/api/docs/pricing
+    quote: "gpt-4o-transcribe Transcription $2.50 $10.00 $0.006 / minute"
+    checked: 2026-09-24
+    note: "OpenAI now recommends gpt-live-transcribe ($0.017/minute) for live transcription; it was not tested."
+
+  elevenlabs_scribe_streaming:
+    provider: ElevenLabs
+    priced_as: "Scribe v2 Realtime"
+    billing: duration
+    currency: USD
+    price_per_hour: 0.39
+    rounding: none
+    min_billed_seconds: 0
+    cost_type: estimate
+    billing_rules: "per hour; session rounding not published"
+    source_url: https://elevenlabs.io/pricing/api
+    quote: "Scribe v2 Realtime Speech to Text $0.39 Price per hour"
+    checked: 2026-09-24
+
+  gemini_25_flash_streaming:
+    provider: Google Gemini API
+    priced_as: "Gemini 2.5 Flash Native Audio (Live API), paid tier"
+    billing: token
+    currency: USD
+    input_basis: audio
+    input_audio_tokens_per_second: 32
+    price_per_1m_input_audio_tokens: 3.00
+    cost_type: minimum
+    billing_rules: "per token; input audio $3.00/1M; output audio $12.00/1M and text $2.00/1M -- output not included here"
+    source_url: https://ai.google.dev/gemini-api/docs/pricing
+    quote: "Gemini 2.5 Flash Native Audio (Live API) gemini-2.5-flash-native-audio-preview-12-2025 ... Input price $0.50 (text) $3.00 (audio / video); Output price (including thinking tokens) $2.00 (text) $12.00 (audio)"
+    checked: 2026-09-24
+    note: "Minimum: covers audio input only. The Live API also generates and bills a spoken reply, which the benchmark did not measure, so real cost is higher."
