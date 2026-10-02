@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this benchmark, please cite it as below, and also cite the BanSpeech dataset."
 title: "Bangla Speech-to-Text Benchmark: Hosted Bengali ASR APIs on BanSpeech"
 version: 1.0.0
-date-released: 2026-09-30
+date-released: 2026-09-24
 license: MIT
 repository-code: "https://github.com/riverbornai/bangla-speech-to-text-benchmark"
 keywords:
