@@ -1,0 +1,33 @@
+# Build, test and push the runner image.
+#   cd tts-bench
+#   gcloud builds submit --config cloudbuild.yaml --region asia-south1 --substitutions=_TAG=v3
+# Then set runner_image to the new tag in terraform/envs/dev/terraform.tfvars and plan/apply.
+steps:
+  - id: test
+    name: python:3.12-slim
+    entrypoint: sh
+    args:
+      - -c
+      - pip install -q -r requirements-dev.txt && python -m pytest -q -p no:cacheprovider
+
+  - id: build
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -f
+      - runner/Dockerfile
+      - -t
+      - ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_IMAGE}:${_TAG}
+      - .
+
+images:
+  - ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_IMAGE}:${_TAG}
+
+substitutions:
+  _REGION: asia-south1
+  _REPO: cloud-run-source-deploy
+  _IMAGE: tts-runner
+  _TAG: latest
+
+options:
+  logging: CLOUD_LOGGING_ONLY

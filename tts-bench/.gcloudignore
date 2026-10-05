@@ -1,0 +1,15 @@
+# Files uploaded by `gcloud builds submit`. Without this file gcloud falls back to .gitignore,
+# which would drop .env and break the image build. .env is uploaded on purpose: it is baked
+# into the image, and its copy also lands in the Cloud Build source bucket.
+*
+!runner/
+!runner/**
+!config/
+!config/**
+!tests/
+!tests/**
+!pyproject.toml
+!requirements-dev.txt
+!cloudbuild.yaml
+!.env
+**/__pycache__/

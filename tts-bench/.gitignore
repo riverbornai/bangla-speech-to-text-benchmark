@@ -1,0 +1,14 @@
+.env
+.env.*
+*.tfstate
+*.tfstate.*
+.terraform/
+tfplan
+*-key.json
+*service-account*.json
+local/
+CLAUDE.local.md
+__pycache__/
+.venv/
+.pytest_cache/
+.ruff_cache/
