@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(terraform fmt:*)",
+      "Bash(terraform validate:*)",
+      "Bash(terraform plan:*)",
+      "Bash(terraform init:*)",
+      "Bash(pytest:*)",
+      "Bash(ruff:*)",
+      "Bash(gcloud storage ls:*)",
+      "Bash(gcloud run jobs describe:*)"
+    ],
+    "ask": [
+      "Bash(gcloud run jobs execute:*)",
+      "Bash(gcloud secrets versions add:*)",
+      "Bash(docker push:*)"
+    ],
+    "deny": [
+      "Bash(terraform apply:*)",
+      "Bash(terraform destroy:*)",
+      "Bash(gcloud storage rm:*)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(**/*service-account*.json)",
+      "Read(**/*-key.json)"
+    ]
+  }
+}

@@ -1,0 +1,89 @@
+# Single source of truth for model IDs, voices, limits and prices.
+# Every value marked VERIFY must be confirmed against the provider's docs/API before a run.
+# price_checked: record the date you read the pricing page.
+
+defaults:
+  language: bn-BD
+  output_sample_rate: 24000
+
+providers:
+  gemini:
+    docs: https://cloud.google.com/text-to-speech/docs/gemini-tts
+    auth: adc                     # service account, no secret
+    language_code: bn-BD
+    models: [gemini-2.5-flash-tts, gemini-2.5-pro-tts]   # add preview models explicitly
+    voices: [Kore, Charon]        # F, M — VERIFY
+    output: {encoding: LINEAR16, sample_rate: 24000}
+    max_concurrency: 8            # VERIFY quota
+    max_chars: 4000               # VERIFY
+    price: {unit: VERIFY, usd_per_unit: VERIFY, price_checked: null}
+
+  azure:
+    docs: https://learn.microsoft.com/azure/ai-services/speech-service/language-support
+    secrets: [AZURE_SPEECH_KEY, AZURE_SPEECH_REGION]
+    language_code: bn-BD
+    voices: [bn-BD-NabanitaNeural, bn-BD-PradeepNeural]   # VERIFY via voices/list
+    output: {format: Riff24Khz16BitMonoPcm}
+    max_concurrency: 10           # depends on S0 tier — VERIFY
+    max_chars: 5000               # VERIFY
+    price: {unit: per_1m_chars, usd_per_unit: VERIFY, price_checked: null}
+
+  elevenlabs:
+    docs: https://elevenlabs.io/docs/overview/models
+    api_docs: https://elevenlabs.io/docs/api-reference/text-to-speech/convert
+    # API key: ELEVENLABS_API_KEY in .env. Called via the elevenlabs SDK text_to_speech.convert().
+    language_code: bn
+    # Model ID, Bengali support and max_chars from the models docs page (read 2026-10-02).
+    model: eleven_v4
+    voice: {id: JBFqnCBsd6RMkjVDRZzb, name: george}   # library voice; accent is a confound
+    output_format: mp3_44100_128
+    voice_settings: {stability: 0.1, similarity_boost: 0.75}   # non-default, by choice
+    max_chars: 10000
+    price: {unit: per_1m_chars, usd_per_unit: VERIFY, price_checked: null}
+
+  sarvam:
+    docs: https://docs.sarvam.ai/api-reference-docs/text-to-speech/convert
+    limits_docs: https://docs.sarvam.ai/api-reference-docs/getting-started/pricing
+    # API key: SARVAM_API_KEY in .env. Facts below read from the docs on 2026-10-02.
+    bangla_support: bn-IN only     # Indian Bengali; bn-BD is not listed — flag accent in the report
+    language_code: bn-IN
+    model: bulbul:v3               # max 2500 chars (bulbul:v2: 1500)
+    voice: {id: shubh, name: shubh}   # v3 default speaker; voices are not language-specific
+    output_format: wav_24000       # output_audio_codec=wav, speech_sample_rate=24000 (API defaults)
+    max_chars: 2500
+    # Starter plan: 30 req/min for bulbul:v3; 429s are retried with backoff.
+    price: {unit: per_1m_chars, usd_per_unit: VERIFY, price_checked: null}   # not on the public docs page
+
+  cartesia:
+    docs: https://docs.cartesia.ai
+    secrets: [CARTESIA_API_KEY]
+    api_version: VERIFY            # Cartesia-Version header
+    language_code: bn
+    models: [VERIFY_sonic_3_id]
+    voices: [VERIFY_voice_id]
+    output: {container: wav, encoding: pcm_s16le, sample_rate: 24000}
+    max_concurrency: 5
+    price: {unit: per_1m_chars, usd_per_unit: VERIFY, price_checked: null}
+
+  openai:
+    docs: https://platform.openai.com/docs/guides/text-to-speech
+    secrets: [OPENAI_API_KEY]
+    bangla_support: unofficial
+    models: [gpt-4o-mini-tts]      # VERIFY
+    voices: [alloy, onyx]
+    output: {format: wav}
+    max_concurrency: 5
+    price: {unit: VERIFY, usd_per_unit: VERIFY, price_checked: null}
+
+  indicf5:
+    docs: https://huggingface.co/ai4bharat/IndicF5
+    secrets: [HF_TOKEN]
+    self_hosted: true
+    license_note: "Commercial use restricted — flag in report"
+    models: [ai4bharat/IndicF5]
+    voices:                        # reference prompts on the dataset bucket
+      - {name: bd_female_01, ref_audio: reference_audio/bd_female_01.wav, ref_text: reference_audio/bd_female_01.txt}
+      - {name: bd_male_01,   ref_audio: reference_audio/bd_male_01.wav,   ref_text: reference_audio/bd_male_01.txt}
+    gpu: nvidia-l4
+    max_concurrency: 1
+    price: {unit: gpu_hour, usd_per_unit: VERIFY, price_checked: null}
