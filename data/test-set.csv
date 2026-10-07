@@ -1,0 +1,212 @@
+﻿id,text,spoken_form,accepted_variants,category,subcategory,domain,difficulty,length_bucket,char_count,has_digits,has_latin,pronunciation / notes
+BN-PLN-001,হ্যাঁ।,হ্যাঁ।,,plain,short,general,1,xs (<20),6,N,N,Very short input: check for clipped start/end and odd padding
+BN-PLN-002,না।,না।,,plain,short,general,1,xs (<20),3,N,N,Very short input: check for clipped start/end and odd padding
+BN-PLN-003,ধন্যবাদ।,ধন্যবাদ।,,plain,short,general,1,xs (<20),8,N,N,Very short input: check for clipped start/end and odd padding
+BN-PLN-004,"আচ্ছা, ঠিক আছে।","আচ্ছা, ঠিক আছে।",,plain,short,general,1,xs (<20),15,N,N,Very short input: check for clipped start/end and odd padding
+BN-PLN-005,আপনি কেমন আছেন?,আপনি কেমন আছেন?,,plain,short,general,1,xs (<20),15,N,N,Very short input: check for clipped start/end and odd padding
+BN-PLN-006,আমি ভালো আছি।,আমি ভালো আছি।,,plain,short,general,1,xs (<20),13,N,N,Very short input: check for clipped start/end and odd padding
+BN-PLN-007,একটু অপেক্ষা করুন।,একটু অপেক্ষা করুন।,,plain,short,general,1,xs (<20),18,N,N,Very short input: check for clipped start/end and odd padding
+BN-PLN-008,দয়া করে আবার বলুন।,দয়া করে আবার বলুন।,,plain,short,general,1,xs (<20),18,N,N,Very short input: check for clipped start/end and odd padding
+BN-PLN-009,শুভ সকাল!,শুভ সকাল!,,plain,short,general,1,xs (<20),9,N,N,Very short input: check for clipped start/end and odd padding
+BN-PLN-010,আজ আকাশ মেঘলা।,আজ আকাশ মেঘলা।,,plain,short,general,1,xs (<20),14,N,N,Very short input: check for clipped start/end and odd padding
+BN-PLN-011,বাড়ি ফিরতে দেরি হবে।,বাড়ি ফিরতে দেরি হবে।,,plain,short,general,1,short (<60),20,N,N,Very short input: check for clipped start/end and odd padding
+BN-PLN-012,খাবার তৈরি হয়ে গেছে।,খাবার তৈরি হয়ে গেছে।,,plain,short,general,1,short (<60),20,N,N,Very short input: check for clipped start/end and odd padding
+BN-PLN-013,সকালে ঘুম থেকে উঠে আমি প্রথমে এক কাপ চা খাই।,সকালে ঘুম থেকে উঠে আমি প্রথমে এক কাপ চা খাই।,,plain,medium,general,1,short (<60),44,N,N,
+BN-PLN-014,বর্ষাকালে গ্রামের রাস্তাগুলো কাদায় ভরে যায়।,বর্ষাকালে গ্রামের রাস্তাগুলো কাদায় ভরে যায়।,,plain,medium,general,1,short (<60),43,N,N,
+BN-PLN-015,ছোটবেলায় আমরা নদীর ধারে ঘুড়ি ওড়াতাম।,ছোটবেলায় আমরা নদীর ধারে ঘুড়ি ওড়াতাম।,,plain,medium,general,1,short (<60),36,N,N,
+BN-PLN-016,শহরের যানজট দিন দিন বেড়েই চলেছে।,শহরের যানজট দিন দিন বেড়েই চলেছে।,,plain,medium,general,1,short (<60),32,N,N,
+BN-PLN-017,বইমেলায় এবার অনেক নতুন লেখকের বই এসেছে।,বইমেলায় এবার অনেক নতুন লেখকের বই এসেছে।,,plain,medium,general,1,short (<60),39,N,N,
+BN-PLN-018,মা রান্নাঘরে বসে পিঠা বানাচ্ছেন।,মা রান্নাঘরে বসে পিঠা বানাচ্ছেন।,,plain,medium,general,1,short (<60),32,N,N,
+BN-PLN-019,পরীক্ষার আগের রাতে কেউই ঠিকমতো ঘুমাতে পারেনি।,পরীক্ষার আগের রাতে কেউই ঠিকমতো ঘুমাতে পারেনি।,,plain,medium,general,1,short (<60),45,N,N,
+BN-PLN-020,বৃষ্টি থামলে আমরা হাঁটতে বের হব।,বৃষ্টি থামলে আমরা হাঁটতে বের হব।,,plain,medium,general,1,short (<60),32,N,N,
+BN-PLN-021,নতুন অফিসটা আগেরটার চেয়ে অনেক বড় আর খোলামেলা।,নতুন অফিসটা আগেরটার চেয়ে অনেক বড় আর খোলামেলা।,,plain,medium,general,1,short (<60),45,N,N,
+BN-PLN-022,ট্রেনটি নির্ধারিত সময়ের চেয়ে আধা ঘণ্টা দেরিতে ছাড়বে।,ট্রেনটি নির্ধারিত সময়ের চেয়ে আধা ঘণ্টা দেরিতে ছাড়বে।,,plain,medium,general,1,short (<60),52,N,N,
+BN-PLN-023,"গাছে গাছে আমের মুকুল এসেছে, বাতাসে মিষ্টি গন্ধ।","গাছে গাছে আমের মুকুল এসেছে, বাতাসে মিষ্টি গন্ধ।",,plain,medium,general,1,short (<60),47,N,N,
+BN-PLN-024,তিনি বহু বছর ধরে এই স্কুলে শিক্ষকতা করছেন।,তিনি বহু বছর ধরে এই স্কুলে শিক্ষকতা করছেন।,,plain,medium,general,1,short (<60),42,N,N,
+BN-PLN-025,বাজারে আজ সবজির দাম একটু কম মনে হলো।,বাজারে আজ সবজির দাম একটু কম মনে হলো।,,plain,medium,general,1,short (<60),36,N,N,
+BN-PLN-026,শীতের সকালে কুয়াশায় চারপাশ ঢেকে থাকে।,শীতের সকালে কুয়াশায় চারপাশ ঢেকে থাকে।,,plain,medium,general,1,short (<60),37,N,N,
+BN-PLN-027,ছেলেটি প্রতিদিন সাইকেলে চড়ে কলেজে যায়।,ছেলেটি প্রতিদিন সাইকেলে চড়ে কলেজে যায়।,,plain,medium,general,1,short (<60),38,N,N,
+BN-LNG-001,"ভোরের আলো ফোটার আগেই গ্রামের মানুষের দিন শুরু হয়ে যায়। কৃষকেরা লাঙল কাঁধে মাঠের দিকে রওনা দেন, আর মহিলারা উঠোন ঝাঁট দিয়ে উনুনে আগুন ধরান। পুকুরঘাটে ছেলেমেয়েদের হইচই শোনা যায়। একটু বেলা বাড়লে হাটের দিকে লোকজনের আনাগোনা শুরু হয়। কেউ নিয়ে যান ধান, কেউ সবজি, কেউবা হাঁস-মুরগি। দুপুরের রোদে যখন চারদিক ঝিমিয়ে আসে, তখন বটগাছের ছায়ায় বসে বৃদ্ধরা পুরোনো দিনের গল্প করেন। সন্ধ্যা নামলে ঘরে ঘরে জ্বলে ওঠে আলো, আর দূর থেকে ভেসে আসে ঝিঁঝিঁ পোকার ডাক।","ভোরের আলো ফোটার আগেই গ্রামের মানুষের দিন শুরু হয়ে যায়। কৃষকেরা লাঙল কাঁধে মাঠের দিকে রওনা দেন, আর মহিলারা উঠোন ঝাঁট দিয়ে উনুনে আগুন ধরান। পুকুরঘাটে ছেলেমেয়েদের হইচই শোনা যায়। একটু বেলা বাড়লে হাটের দিকে লোকজনের আনাগোনা শুরু হয়। কেউ নিয়ে যান ধান, কেউ সবজি, কেউবা হাঁস-মুরগি। দুপুরের রোদে যখন চারদিক ঝিমিয়ে আসে, তখন বটগাছের ছায়ায় বসে বৃদ্ধরা পুরোনো দিনের গল্প করেন। সন্ধ্যা নামলে ঘরে ঘরে জ্বলে ওঠে আলো, আর দূর থেকে ভেসে আসে ঝিঁঝিঁ পোকার ডাক।",,long_form,narrative,general,2,xlong (400+),438,N,N,"Check voice/pace drift, skipped or repeated sentences across the paragraph"
+BN-LNG-002,"প্রিয় গ্রাহক, আমাদের রিটার্ন পলিসি অনুযায়ী পণ্য হাতে পাওয়ার ৭ দিনের মধ্যে আপনি তা ফেরত দিতে পারবেন। পণ্যটি অবশ্যই অব্যবহৃত অবস্থায় এবং মূল প্যাকেটসহ ফেরত দিতে হবে। ফেরত অনুমোদিত হলে ৫ থেকে ৭ কর্মদিবসের মধ্যে টাকা আপনার অ্যাকাউন্টে জমা হবে। তবে ক্যাশ অন ডেলিভারির ক্ষেত্রে ডেলিভারি চার্জ ফেরতযোগ্য নয়। যেকোনো প্রয়োজনে সকাল ৯টা থেকে রাত ১০টা পর্যন্ত ০৯৬৭৭-১২৩৪৫৬ নম্বরে যোগাযোগ করুন।","প্রিয় গ্রাহক, আমাদের রিটার্ন পলিসি অনুযায়ী পণ্য হাতে পাওয়ার সাত দিনের মধ্যে আপনি তা ফেরত দিতে পারবেন। পণ্যটি অবশ্যই অব্যবহৃত অবস্থায় এবং মূল প্যাকেটসহ ফেরত দিতে হবে। ফেরত অনুমোদিত হলে পাঁচ থেকে সাত কর্মদিবসের মধ্যে টাকা আপনার অ্যাকাউন্টে জমা হবে। তবে ক্যাশ অন ডেলিভারির ক্ষেত্রে ডেলিভারি চার্জ ফেরতযোগ্য নয়। যেকোনো প্রয়োজনে সকাল নয়টা থেকে রাত দশটা পর্যন্ত শূন্য নয় ছয় সাত সাত, এক দুই তিন চার পাঁচ ছয় নম্বরে যোগাযোগ করুন।",phone: জিরো নাইন সিক্স ... (English digits),long_form,customer_policy,ecommerce,3,long (<400),381,Y,N,Long-form + numbers + phone number (fictional) + code-mixed loanwords
+BN-LNG-003,"গরমের দিনে শরীরকে সুস্থ রাখতে পর্যাপ্ত পানি পান করা অত্যন্ত জরুরি। একজন প্রাপ্তবয়স্ক মানুষের দিনে অন্তত আট থেকে দশ গ্লাস পানি পান করা উচিত। দুপুরের কড়া রোদে বাইরে বের হলে ছাতা বা টুপি ব্যবহার করুন এবং হালকা রঙের ঢিলেঢালা সুতি কাপড় পরুন। অতিরিক্ত তেল-মসলাযুক্ত খাবার এড়িয়ে চলুন, আর বেশি করে মৌসুমি ফল খান। মাথা ঘোরা, অতিরিক্ত ঘাম বা দুর্বলতা অনুভব করলে দেরি না করে ছায়াযুক্ত স্থানে বিশ্রাম নিন এবং প্রয়োজনে চিকিৎসকের পরামর্শ নিন।","গরমের দিনে শরীরকে সুস্থ রাখতে পর্যাপ্ত পানি পান করা অত্যন্ত জরুরি। একজন প্রাপ্তবয়স্ক মানুষের দিনে অন্তত আট থেকে দশ গ্লাস পানি পান করা উচিত। দুপুরের কড়া রোদে বাইরে বের হলে ছাতা বা টুপি ব্যবহার করুন এবং হালকা রঙের ঢিলেঢালা সুতি কাপড় পরুন। অতিরিক্ত তেল-মসলাযুক্ত খাবার এড়িয়ে চলুন, আর বেশি করে মৌসুমি ফল খান। মাথা ঘোরা, অতিরিক্ত ঘাম বা দুর্বলতা অনুভব করলে দেরি না করে ছায়াযুক্ত স্থানে বিশ্রাম নিন এবং প্রয়োজনে চিকিৎসকের পরামর্শ নিন।",,long_form,health_advice,healthcare,2,xlong (400+),428,N,N,
+BN-LNG-004,"আজ রাজধানীর একটি মিলনায়তনে তিন দিনব্যাপী জাতীয় বিজ্ঞান মেলার উদ্বোধন করা হয়েছে। মেলায় দেশের ৬৪টি জেলা থেকে প্রায় ১,২০০ শিক্ষার্থী তাদের উদ্ভাবনী প্রকল্প নিয়ে অংশ নিচ্ছে। আয়োজকেরা জানান, এবারের মেলার মূল প্রতিপাদ্য নবায়নযোগ্য জ্বালানি ও পরিবেশ সুরক্ষা। প্রতিদিন সকাল ১০টা থেকে সন্ধ্যা ৬টা পর্যন্ত মেলা সবার জন্য উন্মুক্ত থাকবে। সেরা ১০টি প্রকল্পকে পুরস্কার হিসেবে মোট ৫ লাখ টাকা দেওয়া হবে।","আজ রাজধানীর একটি মিলনায়তনে তিন দিনব্যাপী জাতীয় বিজ্ঞান মেলার উদ্বোধন করা হয়েছে। মেলায় দেশের চৌষট্টিটি জেলা থেকে প্রায় এক হাজার দুইশো শিক্ষার্থী তাদের উদ্ভাবনী প্রকল্প নিয়ে অংশ নিচ্ছে। আয়োজকেরা জানান, এবারের মেলার মূল প্রতিপাদ্য নবায়নযোগ্য জ্বালানি ও পরিবেশ সুরক্ষা। প্রতিদিন সকাল দশটা থেকে সন্ধ্যা ছয়টা পর্যন্ত মেলা সবার জন্য উন্মুক্ত থাকবে। সেরা দশটি প্রকল্পকে পুরস্কার হিসেবে মোট পাঁচ লাখ টাকা দেওয়া হবে।","১,২০০ → বারোশো",long_form,news,news,3,long (<400),388,Y,N,Fictional news; numbers with -টি/-টা classifiers
+BN-LNG-005,"সূর্যের তাপে সমুদ্র, নদী ও পুকুরের পানি বাষ্পে পরিণত হয়ে বাতাসে মিশে যায়। এই প্রক্রিয়াকে বাষ্পীভবন বলে। জলীয় বাষ্প ওপরে উঠে ঠান্ডা হলে ক্ষুদ্র ক্ষুদ্র পানির কণায় পরিণত হয় এবং মেঘ তৈরি করে, যাকে ঘনীভবন বলা হয়। মেঘের কণাগুলো ভারী হয়ে গেলে বৃষ্টি, শিলা বা তুষার আকারে আবার পৃথিবীতে নেমে আসে। এই পানি নদী-নালা হয়ে আবার সমুদ্রে ফিরে যায়। এভাবেই প্রকৃতিতে পানিচক্র অবিরাম চলতে থাকে।","সূর্যের তাপে সমুদ্র, নদী ও পুকুরের পানি বাষ্পে পরিণত হয়ে বাতাসে মিশে যায়। এই প্রক্রিয়াকে বাষ্পীভবন বলে। জলীয় বাষ্প ওপরে উঠে ঠান্ডা হলে ক্ষুদ্র ক্ষুদ্র পানির কণায় পরিণত হয় এবং মেঘ তৈরি করে, যাকে ঘনীভবন বলা হয়। মেঘের কণাগুলো ভারী হয়ে গেলে বৃষ্টি, শিলা বা তুষার আকারে আবার পৃথিবীতে নেমে আসে। এই পানি নদী-নালা হয়ে আবার সমুদ্রে ফিরে যায়। এভাবেই প্রকৃতিতে পানিচক্র অবিরাম চলতে থাকে।",,long_form,education,education,2,long (<400),376,N,N,
+BN-LNG-006,"প্রিয় রাহাত, অনেকদিন তোমার কোনো খবর পাই না। আশা করি ভালো আছ। এখানে সবকিছু মোটামুটি চলছে, তবে অফিসের কাজের চাপ একটু বেশি। গত মাসে আমরা পুরো টিম মিলে সিলেটে একটা ট্যুরে গিয়েছিলাম। চা-বাগানের ভেতর দিয়ে হাঁটা, রাতারগুলে নৌকাভ্রমণ — সব মিলিয়ে দারুণ কেটেছে। তুমি কবে দেশে ফিরছ জানিও। ফিরলে একদিন সবাই মিলে আড্ডা দেব। ভালো থেকো। ইতি, তোমার বন্ধু সুমন।","প্রিয় রাহাত, অনেকদিন তোমার কোনো খবর পাই না। আশা করি ভালো আছ। এখানে সবকিছু মোটামুটি চলছে, তবে অফিসের কাজের চাপ একটু বেশি। গত মাসে আমরা পুরো টিম মিলে সিলেটে একটা ট্যুরে গিয়েছিলাম। চা-বাগানের ভেতর দিয়ে হাঁটা, রাতারগুলে নৌকাভ্রমণ — সব মিলিয়ে দারুণ কেটেছে। তুমি কবে দেশে ফিরছ জানিও। ফিরলে একদিন সবাই মিলে আড্ডা দেব। ভালো থেকো। ইতি, তোমার বন্ধু সুমন।",,long_form,letter,general,2,long (<400),344,N,N,"Conversational register, em-dash pause, sign-off prosody"
+BN-NUM-001,"১ থেকে ১০ পর্যন্ত গুনুন: ১, ২, ৩, ৪, ৫, ৬, ৭, ৮, ৯, ১০।","এক থেকে দশ পর্যন্ত গুনুন: এক, দুই, তিন, চার, পাঁচ, ছয়, সাত, আট, নয়, দশ।",,numbers,cardinal,general,1,short (<60),55,Y,N,
+BN-NUM-002,আমাদের ক্লাসে ৪৭ জন ছাত্রছাত্রী আছে।,আমাদের ক্লাসে সাতচল্লিশ জন ছাত্রছাত্রী আছে।,,numbers,cardinal,general,1,short (<60),36,Y,N,
+BN-NUM-003,বইটির দাম ছিল ৩৫০ টাকা।,বইটির দাম ছিল তিনশো পঞ্চাশ টাকা।,,numbers,cardinal,general,1,short (<60),23,Y,N,
+BN-NUM-004,প্রশ্নপত্রে মোট ৮৯টি প্রশ্ন ছিল।,প্রশ্নপত্রে মোট ঊননব্বইটি প্রশ্ন ছিল।,,numbers,cardinal,general,2,short (<60),32,Y,N,Irregular Bangla number word
+BN-NUM-005,"স্টেডিয়ামে প্রায় ২৫,০০০ দর্শক উপস্থিত ছিলেন।",স্টেডিয়ামে প্রায় পঁচিশ হাজার দর্শক উপস্থিত ছিলেন।,,numbers,thousands,general,1,short (<60),44,Y,N,
+BN-NUM-006,"প্রকল্পের মোট ব্যয় ১,২৫,০০০ টাকা।",প্রকল্পের মোট ব্যয় এক লাখ পঁচিশ হাজার টাকা।,,numbers,lakh_crore,general,2,short (<60),33,Y,N,Indian/BD digit grouping (lakh)
+BN-NUM-007,"শহরটির জনসংখ্যা প্রায় ২,১০,০০,০০০।",শহরটির জনসংখ্যা প্রায় দুই কোটি দশ লাখ।,,numbers,lakh_crore,general,3,short (<60),34,Y,N,Crore grouping — must not be read as 21 million in English style
+BN-NUM-008,সরকার এই খাতে ৫০ কোটি টাকা বরাদ্দ দিয়েছে।,সরকার এই খাতে পঞ্চাশ কোটি টাকা বরাদ্দ দিয়েছে।,,numbers,lakh_crore,general,1,short (<60),41,Y,N,
+BN-NUM-009,"Revenue বেড়ে 2,500,000 টাকা হয়েছে।",রেভিনিউ বেড়ে পঁচিশ লাখ টাকা হয়েছে।,টু মিলিয়ন ফাইভ হান্ড্রেড থাউজ্যান্ড টাকা,numbers,western_grouping,general,3,short (<60),34,Y,Y,Western grouping + Latin digits
+BN-NUM-010,জরুরি প্রয়োজনে ৯৯৯ নম্বরে ফোন করুন।,জরুরি প্রয়োজনে নয় নয় নয় নম্বরে ফোন করুন।,নাইন নাইন নাইন | ট্রিপল নাইন,numbers,phone,general,2,short (<60),35,Y,N,Must NOT be read as নয়শো নিরানব্বই
+BN-NUM-011,আমার মোবাইল নম্বর ০১৭১২-৩৪৫৬৭৮।,"আমার মোবাইল নম্বর শূন্য এক সাত এক দুই, তিন চার পাঁচ ছয় সাত আট।",জিরো ওয়ান সেভেন ... (English digits),numbers,phone,general,2,short (<60),31,Y,N,Digit-by-digit; fictional number
+BN-NUM-012,Call করুন 01812345678 নম্বরে।,কল করুন শূন্য এক আট এক দুই তিন চার পাঁচ ছয় সাত আট নম্বরে।,জিরো ওয়ান এইট ...,numbers,phone,general,3,short (<60),29,Y,Y,"Latin-digit phone, no separators"
+BN-NUM-013,রোগীর শরীরের তাপমাত্রা ৩৬.৫ ডিগ্রি সেলসিয়াস।,রোগীর শরীরের তাপমাত্রা ছত্রিশ দশমিক পাঁচ ডিগ্রি সেলসিয়াস।,ছত্রিশ পয়েন্ট পাঁচ,numbers,decimal,general,2,short (<60),44,Y,N,
+BN-NUM-014,ঋণের সুদের হার ৯.২৫%।,ঋণের সুদের হার নয় দশমিক দুই পাঁচ শতাংশ।,নয় দশমিক পঁচিশ শতাংশ | নয় পয়েন্ট দুই পাঁচ পার্সেন্ট,numbers,percent,general,3,short (<60),21,Y,N,
+BN-NUM-015,এবার পাসের হার ৮০%।,এবার পাসের হার আশি শতাংশ।,আশি পার্সেন্ট,numbers,percent,general,1,xs (<20),19,Y,N,
+BN-NUM-016,রেসিপিতে ½ কেজি চিনি লাগবে।,রেসিপিতে আধা কেজি চিনি লাগবে।,আধ কেজি,numbers,fraction,general,3,short (<60),27,N,N,Unicode fraction character
+BN-NUM-017,জমির ৩/৪ অংশ চাষযোগ্য।,জমির চার ভাগের তিন ভাগ অংশ চাষযোগ্য।,তিন-চতুর্থাংশ,numbers,fraction,general,3,short (<60),22,Y,N,Slash fraction — could be misread as date
+BN-NUM-018,সে পরীক্ষায় ১ম হয়েছে।,সে পরীক্ষায় প্রথম হয়েছে।,,numbers,ordinal,general,2,short (<60),21,Y,N,
+BN-NUM-019,বইয়ের ২য় অধ্যায়টি পড়ো।,বইয়ের দ্বিতীয় অধ্যায়টি পড়ো।,,numbers,ordinal,general,2,short (<60),22,Y,N,
+BN-NUM-020,আমাদের অফিস ৩য় তলায়।,আমাদের অফিস তৃতীয় তলায়।,তিন তলায়,numbers,ordinal,general,2,short (<60),20,Y,N,
+BN-NUM-021,৪র্থ শিল্পবিপ্লব আমাদের কাজের ধরন বদলে দিচ্ছে।,চতুর্থ শিল্পবিপ্লব আমাদের কাজের ধরন বদলে দিচ্ছে।,,numbers,ordinal,general,2,short (<60),46,Y,N,
+BN-NUM-022,প্রতিষ্ঠানটির ১০০তম বার্ষিকী পালিত হলো।,প্রতিষ্ঠানটির শততম বার্ষিকী পালিত হলো।,একশোতম,numbers,ordinal,general,3,short (<60),39,Y,N,
+BN-NUM-023,তাপমাত্রা -৫ ডিগ্রিতে নেমে গেছে।,তাপমাত্রা মাইনাস পাঁচ ডিগ্রিতে নেমে গেছে।,ঋণাত্মক পাঁচ | হিমাঙ্কের নিচে পাঁচ,numbers,negative,general,2,short (<60),32,Y,N,
+BN-NUM-024,কাজটা শেষ হতে ১০-১৫ মিনিট লাগবে।,কাজটা শেষ হতে দশ থেকে পনেরো মিনিট লাগবে।,দশ পনেরো মিনিট,numbers,range,general,2,short (<60),32,Y,N,Hyphen range
+BN-NUM-025,৫ × ৪ = ২০,পাঁচ গুণ চার সমান বিশ,পাঁচ গুণন চার সমান বিশ,numbers,math,general,2,xs (<20),10,Y,N,Math symbols
+BN-NUM-026,১৯৭১ সালে বাংলাদেশ স্বাধীন হয়।,উনিশশো একাত্তর সালে বাংলাদেশ স্বাধীন হয়।,,numbers,year,general,1,short (<60),30,Y,N,
+BN-NUM-027,২০২৬ সালের বাজেট ঘোষণা করা হয়েছে।,দুই হাজার ছাব্বিশ সালের বাজেট ঘোষণা করা হয়েছে।,দু হাজার ছাব্বিশ,numbers,year,general,1,short (<60),33,Y,N,
+BN-NUM-028,অ্যাপটি ভার্সন 2.5.1-এ আপডেট করুন।,অ্যাপটি ভার্সন টু পয়েন্ট ফাইভ পয়েন্ট ওয়ান-এ আপডেট করুন।,দুই দশমিক পাঁচ দশমিক এক,numbers,version,general,3,short (<60),34,Y,N,Version string — not a decimal number
+BN-DTM-001,২১শে ফেব্রুয়ারি আন্তর্জাতিক মাতৃভাষা দিবস।,একুশে ফেব্রুয়ারি আন্তর্জাতিক মাতৃভাষা দিবস।,,date_time,festival_date,general,1,short (<60),42,Y,N,
+BN-DTM-002,১৬ই ডিসেম্বর আমাদের মহান বিজয় দিবস।,ষোলোই ডিসেম্বর আমাদের মহান বিজয় দিবস।,,date_time,festival_date,general,1,short (<60),35,Y,N,
+BN-DTM-003,২৬শে মার্চ মহান স্বাধীনতা দিবস।,ছাব্বিশে মার্চ মহান স্বাধীনতা দিবস।,,date_time,festival_date,general,1,short (<60),31,Y,N,
+BN-DTM-004,১লা বৈশাখ বাংলা নববর্ষ উদযাপন করা হয়।,পহেলা বৈশাখ বাংলা নববর্ষ উদযাপন করা হয়।,,date_time,bangla_calendar,general,2,short (<60),37,Y,N,"১লা must be পহেলা, not এক লা"
+BN-DTM-005,২রা জানুয়ারি থেকে নতুন ক্লাস শুরু।,দোসরা জানুয়ারি থেকে নতুন ক্লাস শুরু।,দুই জানুয়ারি,date_time,date_suffix,general,3,short (<60),34,Y,N,
+BN-DTM-006,৪ঠা জুলাই তারিখে ফাইলটি জমা দিতে হবে।,চৌঠা জুলাই তারিখে ফাইলটি জমা দিতে হবে।,চার জুলাই,date_time,date_suffix,general,3,short (<60),37,Y,N,
+BN-DTM-007,সভাটি ১২/০৩/২০২৬ তারিখে অনুষ্ঠিত হবে।,সভাটি বারোই মার্চ দুই হাজার ছাব্বিশ তারিখে অনুষ্ঠিত হবে।,বারো তারিখ তিন মাস দুই হাজার ছাব্বিশ,date_time,numeric_date,general,3,short (<60),37,Y,N,DD/MM/YYYY (BD convention)
+BN-DTM-008,ডেডলাইন: 2026-10-15,ডেডলাইন: পনেরোই অক্টোবর দুই হাজার ছাব্বিশ,,date_time,iso_date,general,3,xs (<20),19,Y,N,ISO date with Latin digits
+BN-DTM-009,"সোমবার, ৫ অক্টোবর আমরা রওনা দেব।","সোমবার, পাঁচ অক্টোবর আমরা রওনা দেব।",পাঁচই অক্টোবর,date_time,weekday_date,general,2,short (<60),32,Y,N,
+BN-DTM-010,ট্রেন ছাড়বে সকাল ৭:৪৫-এ।,ট্রেন ছাড়বে সকাল সাতটা পঁয়তাল্লিশে।,পৌনে আটটায়,date_time,time,general,2,short (<60),24,Y,N,
+BN-DTM-011,অফিস খোলা সকাল ৯টা থেকে বিকেল ৫টা পর্যন্ত।,অফিস খোলা সকাল নয়টা থেকে বিকেল পাঁচটা পর্যন্ত।,,date_time,time,general,1,short (<60),42,Y,N,
+BN-DTM-012,মিটিং শুরু হবে 3:30 PM-এ।,মিটিং শুরু হবে বিকেল সাড়ে তিনটায়।,থ্রি থার্টি পিএম,date_time,time,general,3,short (<60),25,Y,Y,12-hour Latin time with AM/PM
+BN-DTM-013,রাত ১২:০০টায় দোকান বন্ধ হয়।,রাত বারোটায় দোকান বন্ধ হয়।,,date_time,time,general,2,short (<60),27,Y,N,
+BN-DTM-014,যাত্রায় সময় লাগবে ২ ঘণ্টা ১৫ মিনিট।,যাত্রায় সময় লাগবে দুই ঘণ্টা পনেরো মিনিট।,সোয়া দুই ঘণ্টা,date_time,duration,general,1,short (<60),35,Y,N,
+BN-DTM-015,১৯৫২ সালের ভাষা আন্দোলন আমাদের গর্ব।,উনিশশো বাহান্ন সালের ভাষা আন্দোলন আমাদের গর্ব।,উনিশশো বায়ান্ন,date_time,year,general,1,short (<60),36,Y,N,
+BN-CUR-001,প্রবেশ ফি ৳৫০০।,প্রবেশ ফি পাঁচশো টাকা।,,currency_units,currency,general,2,xs (<20),15,Y,N,৳ symbol before number
+BN-CUR-002,"মোট বিল Tk 1,500।",মোট বিল এক হাজার পাঁচশো টাকা।,পনেরোশো টাকা,currency_units,currency,general,3,xs (<20),17,Y,Y,Tk abbreviation + Latin digits
+BN-CUR-003,টিকিটের দাম $20।,টিকিটের দাম বিশ ডলার।,টোয়েন্টি ডলার,currency_units,currency,general,2,xs (<20),16,Y,N,
+BN-CUR-004,হোটেল ভাড়া প্রতি রাত €50।,হোটেল ভাড়া প্রতি রাত পঞ্চাশ ইউরো।,,currency_units,currency,general,2,short (<60),25,Y,N,
+BN-CUR-005,ভাড়া এসেছে ১০০ টাকা ৫০ পয়সা।,ভাড়া এসেছে একশো টাকা পঞ্চাশ পয়সা।,,currency_units,currency,general,1,short (<60),28,Y,N,
+BN-CUR-006,স্কুলটি এখান থেকে ৫ কি.মি. দূরে।,স্কুলটি এখান থেকে পাঁচ কিলোমিটার দূরে।,,currency_units,units,general,2,short (<60),32,Y,N,কি.মি. abbreviation
+BN-CUR-007,২ কেজি ৫০০ গ্রাম আলু দিন।,দুই কেজি পাঁচশো গ্রাম আলু দিন।,আড়াই কেজি আলু,currency_units,units,general,1,short (<60),25,Y,N,
+BN-CUR-008,১.৫ লিটার পানির বোতলটা নাও।,দেড় লিটার পানির বোতলটা নাও।,এক দশমিক পাঁচ লিটার,currency_units,units,general,2,short (<60),27,Y,N,Idiomatic দেড়
+BN-CUR-009,প্রতিদিন ২.৫ ঘণ্টা পড়াশোনা করো।,প্রতিদিন আড়াই ঘণ্টা পড়াশোনা করো।,দুই দশমিক পাঁচ ঘণ্টা,currency_units,units,general,2,short (<60),31,Y,N,Idiomatic আড়াই
+BN-CUR-010,প্যাকেজে আছে 10 GB ডেটা।,প্যাকেজে আছে দশ জিবি ডেটা।,টেন জিবি | দশ গিগাবাইট,currency_units,units,general,2,short (<60),24,Y,Y,
+BN-CUR-011,গাড়িটির গতি ছিল ১২০ কিমি/ঘণ্টা।,গাড়িটির গতি ছিল ঘণ্টায় একশো বিশ কিলোমিটার।,একশো বিশ কিলোমিটার প্রতি ঘণ্টা,currency_units,units,general,3,short (<60),31,Y,N,Rate with slash
+BN-CUR-012,প্রতিবার ৫ মি.লি. সিরাপ খাবেন।,প্রতিবার পাঁচ মিলিলিটার সিরাপ খাবেন।,,currency_units,units,general,2,short (<60),30,Y,N,মি.লি. abbreviation
+BN-CUR-013,আজকের তাপমাত্রা ৩২°C।,আজকের তাপমাত্রা বত্রিশ ডিগ্রি সেলসিয়াস।,,currency_units,units,general,2,short (<60),21,Y,Y,
+BN-ABR-001,ড. মো. রফিকুল ইসলাম আজ বক্তব্য দেবেন।,ডক্টর মোহাম্মদ রফিকুল ইসলাম আজ বক্তব্য দেবেন।,,abbreviations,bangla_abbr,general,2,short (<60),37,N,N,
+BN-ABR-002,ডা. নাসরিন আক্তার এখন রোগী দেখছেন।,ডাক্তার নাসরিন আক্তার এখন রোগী দেখছেন।,,abbreviations,bangla_abbr,general,2,short (<60),34,N,N,ডা. (doctor) vs ড. (PhD)
+BN-ABR-003,আবেদনকারী: মোসা. ফাতেমা বেগম,আবেদনকারী: মোসাম্মৎ ফাতেমা বেগম,মোছাম্মৎ,abbreviations,bangla_abbr,general,3,short (<60),28,N,N,
+BN-ABR-004,এ.কে.এম. শামসুল হক সভাপতিত্ব করবেন।,এ কে এম শামসুল হক সভাপতিত্ব করবেন।,,abbreviations,bangla_abbr,general,2,short (<60),35,N,N,
+BN-ABR-005,"বাড়ি নং ১২, রোড নং ৫","বাড়ি নম্বর বারো, রোড নম্বর পাঁচ",,abbreviations,bangla_abbr,general,2,short (<60),20,Y,N,
+BN-ABR-006,বিস্তারিত দেখুন পৃ. ৪৫-এ।,বিস্তারিত দেখুন পৃষ্ঠা পঁয়তাল্লিশে।,,abbreviations,bangla_abbr,general,3,short (<60),25,Y,N,
+BN-ABR-007,১৯৪৭ খ্রি. দেশভাগ হয়।,উনিশশো সাতচল্লিশ খ্রিস্টাব্দে দেশভাগ হয়।,উনিশশো সাতচল্লিশ খ্রিস্টাব্দ,abbreviations,bangla_abbr,general,3,short (<60),21,Y,N,
+BN-ABR-008,বি.দ্র. অফিস শুক্রবার বন্ধ থাকবে।,"বিশেষ দ্রষ্টব্য, অফিস শুক্রবার বন্ধ থাকবে।",,abbreviations,bangla_abbr,general,3,short (<60),33,N,N,
+BN-ABR-009,তিনি বিসিএস পরীক্ষায় উত্তীর্ণ হয়েছেন।,তিনি বিসিএস পরীক্ষায় উত্তীর্ণ হয়েছেন।,,abbreviations,bangla_acronym,general,1,short (<60),37,N,N,
+BN-ABR-010,নিকটস্থ ATM বুথ থেকে টাকা তুলুন।,নিকটস্থ এটিএম বুথ থেকে টাকা তুলুন।,,abbreviations,english_acronym,general,1,short (<60),32,N,Y,
+BN-ABR-011,আপনার OTP কাউকে জানাবেন না।,আপনার ওটিপি কাউকে জানাবেন না।,,abbreviations,english_acronym,general,1,short (<60),27,N,Y,
+BN-ABR-012,NID কার্ডের কপি সঙ্গে আনুন।,এনআইডি কার্ডের কপি সঙ্গে আনুন।,,abbreviations,english_acronym,general,1,short (<60),27,N,Y,
+BN-ABR-013,SSC ও HSC পরীক্ষার ফল প্রকাশিত হয়েছে।,এসএসসি ও এইচএসসি পরীক্ষার ফল প্রকাশিত হয়েছে।,,abbreviations,english_acronym,general,2,short (<60),37,N,Y,
+BN-ABR-014,UNICEF ও WHO যৌথভাবে টিকা কর্মসূচি চালাচ্ছে।,ইউনিসেফ ও ডব্লিউএইচও যৌথভাবে টিকা কর্মসূচি চালাচ্ছে।,,abbreviations,word_vs_letters,general,3,short (<60),44,N,Y,"UNICEF read as word, WHO as letters"
+BN-ABR-015,NASA নতুন একটি মহাকাশযান পাঠিয়েছে।,নাসা নতুন একটি মহাকাশযান পাঠিয়েছে।,,abbreviations,word_vs_letters,general,2,short (<60),34,N,Y,"Read as word, not N-A-S-A"
+BN-ABR-016,কোম্পানির নতুন CEO আজ যোগ দিয়েছেন।,কোম্পানির নতুন সিইও আজ যোগ দিয়েছেন।,,abbreviations,english_acronym,general,1,short (<60),34,N,Y,
+BN-G2P-001,বিজ্ঞান আমাদের জীবনকে সহজ করেছে।,বিজ্ঞান আমাদের জীবনকে সহজ করেছে।,,g2p_conjuncts,jna,general,2,short (<60),32,N,N,বিজ্ঞান → biggan
+BN-G2P-002,জ্ঞানই শক্তি।,জ্ঞানই শক্তি।,,g2p_conjuncts,jna,general,2,xs (<20),13,N,N,জ্ঞান → gyan / ggan
+BN-G2P-003,পুকুরে লাল পদ্ম ফুটেছে।,পুকুরে লাল পদ্ম ফুটেছে।,,g2p_conjuncts,ma_phala,general,2,short (<60),23,N,N,"পদ্ম → poddo (ম-ফলা silent, doubles consonant)"
+BN-G2P-004,শহিদদের আত্মার শান্তি কামনা করি।,শহিদদের আত্মার শান্তি কামনা করি।,,g2p_conjuncts,ma_phala,general,2,short (<60),32,N,N,আত্মা → atta
+BN-G2P-005,মেয়েটি খুব লক্ষ্মী।,মেয়েটি খুব লক্ষ্মী।,,g2p_conjuncts,ma_phala,general,2,xs (<20),19,N,N,লক্ষ্মী → lokkhi
+BN-G2P-006,আমরা তাঁকে শ্রদ্ধার সাথে স্মরণ করি।,আমরা তাঁকে শ্রদ্ধার সাথে স্মরণ করি।,,g2p_conjuncts,ma_phala,general,2,short (<60),35,N,N,স্মরণ → shoron (স্ম → sh)
+BN-G2P-007,আমাকে ক্ষমা করবেন।,আমাকে ক্ষমা করবেন।,,g2p_conjuncts,ksha,general,2,xs (<20),18,N,N,ক্ষমা → khoma
+BN-G2P-008,পরীক্ষার ফল কাল বের হবে।,পরীক্ষার ফল কাল বের হবে।,,g2p_conjuncts,ksha,general,2,short (<60),24,N,N,পরীক্ষা → porikkha
+BN-G2P-009,কলেজের অধ্যক্ষ সভায় উপস্থিত ছিলেন।,কলেজের অধ্যক্ষ সভায় উপস্থিত ছিলেন।,,g2p_conjuncts,ksha,general,2,short (<60),34,N,N,অধ্যক্ষ → oddhokkho
+BN-G2P-010,বিশ্বকাপ দেখতে সবাই একসাথে বসেছে।,বিশ্বকাপ দেখতে সবাই একসাথে বসেছে।,,g2p_conjuncts,ba_phala,general,2,short (<60),33,N,N,বিশ্ব → bishsho (ব-ফলা doubles)
+BN-G2P-011,স্বাস্থ্যই সকল সুখের মূল।,স্বাস্থ্যই সকল সুখের মূল।,,g2p_conjuncts,ba_phala,general,2,short (<60),25,N,N,স্বাস্থ্য → shastho
+BN-G2P-012,সবাইকে অনুষ্ঠানে আহ্বান জানানো হলো।,সবাইকে অনুষ্ঠানে আহ্বান জানানো হলো।,,g2p_conjuncts,ba_phala,general,2,short (<60),35,N,N,আহ্বান → awbhan / ahoban
+BN-G2P-013,সন্ধ্যায় আকাশ লাল হয়ে ওঠে।,সন্ধ্যায় আকাশ লাল হয়ে ওঠে।,,g2p_conjuncts,ya_phala,general,2,short (<60),26,N,N,সন্ধ্যা → shondha
+BN-G2P-014,এই বাক্যটি আবার পড়ো।,এই বাক্যটি আবার পড়ো।,,g2p_conjuncts,ya_phala,general,2,short (<60),20,N,N,বাক্য → bakko
+BN-G2P-015,তোমার উদ্দেশ্য কী?,তোমার উদ্দেশ্য কী?,,g2p_conjuncts,ya_phala,general,2,xs (<20),18,N,N,উদ্দেশ্য → uddessho
+BN-G2P-016,এত কষ্ট আর সহ্য হয় না।,এত কষ্ট আর সহ্য হয় না।,,g2p_conjuncts,ya_phala,general,2,short (<60),22,N,N,সহ্য → shojjho
+BN-G2P-017,ব্রহ্মপুত্র নদের তীরে মেলা বসেছে।,ব্রহ্মপুত্র নদের তীরে মেলা বসেছে।,,g2p_conjuncts,ha_cluster,general,2,short (<60),33,N,N,ব্রহ্মপুত্র → brommoputro
+BN-G2P-018,মধ্যাহ্নভোজের বিরতি এক ঘণ্টা।,মধ্যাহ্নভোজের বিরতি এক ঘণ্টা।,,g2p_conjuncts,ha_cluster,general,2,short (<60),29,N,N,মধ্যাহ্ন → moddhanno
+BN-G2P-019,কাগজে একটা চিহ্ন দিয়ে রাখো।,কাগজে একটা চিহ্ন দিয়ে রাখো।,,g2p_conjuncts,ha_cluster,general,2,short (<60),27,N,N,চিহ্ন → chinno
+BN-G2P-020,সে আমার কলমটা নিয়ে গেল।,সে আমার কলমটা নিয়ে গেল।,,g2p_conjuncts,schwa,general,2,short (<60),23,N,N,কলম → kolom; inherent-vowel handling
+BN-G2P-021,"অতএব, আমাদের আবার শুরু করতে হবে।","অতএব, আমাদের আবার শুরু করতে হবে।",,g2p_conjuncts,schwa,general,2,short (<60),32,N,N,অতএব → otoeb
+BN-G2P-022,এই মসজিদটি আমাদের ঐতিহ্যের অংশ।,এই মসজিদটি আমাদের ঐতিহ্যের অংশ।,,g2p_conjuncts,schwa,general,2,short (<60),31,N,N,ঐতিহ্য → oitijjho
+BN-G2P-023,শিশুরা স্বতঃস্ফূর্তভাবে অনুষ্ঠানে অংশ নিল।,শিশুরা স্বতঃস্ফূর্তভাবে অনুষ্ঠানে অংশ নিল।,,g2p_conjuncts,visarga,general,2,short (<60),42,N,N,স্বতঃস্ফূর্ত → shotoshphurto; visarga ঃ
+BN-G2P-024,গ্রীষ্মের ছুটিতে আমরা গ্রামে যাব।,গ্রীষ্মের ছুটিতে আমরা গ্রামে যাব।,,g2p_conjuncts,grishsho,general,2,short (<60),33,N,N,গ্রীষ্ম → grishsho
+BN-CMX-001,আমার meeting টা কালকে postpone করতে হবে।,আমার মিটিং টা কালকে পোস্টপোন করতে হবে।,,code_mixed,bn_en_latin,general,2,short (<60),40,N,Y,Spoken form transliterated to Bangla script; normalize ASR output the same way
+BN-CMX-002,প্লিজ আমাকে file টা email করে দিও।,প্লিজ আমাকে ফাইল টা ইমেইল করে দিও।,,code_mixed,bn_en_latin,general,2,short (<60),34,N,Y,Spoken form transliterated to Bangla script; normalize ASR output the same way
+BN-CMX-003,আজকে office এ অনেক কাজের pressure ছিল।,আজকে অফিসে অনেক কাজের প্রেশার ছিল।,,code_mixed,bn_en_latin,general,2,short (<60),38,N,Y,Spoken form transliterated to Bangla script; normalize ASR output the same way
+BN-CMX-004,"আমি online এ order দিয়েছি, delivery কবে হবে?","আমি অনলাইনে অর্ডার দিয়েছি, ডেলিভারি কবে হবে?",,code_mixed,bn_en_latin,general,2,short (<60),44,N,Y,Spoken form transliterated to Bangla script; normalize ASR output the same way
+BN-CMX-005,তোমার presentation টা really ভালো হয়েছে।,তোমার প্রেজেন্টেশন টা রিয়েলি ভালো হয়েছে।,,code_mixed,bn_en_latin,general,2,short (<60),40,N,Y,Spoken form transliterated to Bangla script; normalize ASR output the same way
+BN-CMX-006,Weekend এ আমরা Cox's Bazar যাচ্ছি।,উইকেন্ডে আমরা কক্সবাজার যাচ্ছি।,,code_mixed,bn_en_latin,general,2,short (<60),34,N,Y,Spoken form transliterated to Bangla script; normalize ASR output the same way
+BN-CMX-007,আমার laptop টা হঠাৎ hang হয়ে গেছে।,আমার ল্যাপটপ টা হঠাৎ হ্যাং হয়ে গেছে।,,code_mixed,bn_en_latin,general,2,short (<60),34,N,Y,Spoken form transliterated to Bangla script; normalize ASR output the same way
+BN-CMX-008,"Sir, আমার assignment এর deadline একটু extend করা যাবে?","স্যার, আমার অ্যাসাইনমেন্টের ডেডলাইন একটু এক্সটেন্ড করা যাবে?",,code_mixed,bn_en_latin,general,3,short (<60),54,N,Y,Spoken form transliterated to Bangla script; normalize ASR output the same way
+BN-CMX-009,এই product টার warranty কতদিন?,এই প্রোডাক্ট টার ওয়ারেন্টি কতদিন?,,code_mixed,bn_en_latin,general,2,short (<60),30,N,Y,Spoken form transliterated to Bangla script; normalize ASR output the same way
+BN-CMX-010,"Traffic jam এর জন্য late হয়ে গেল, sorry!","ট্রাফিক জ্যামের জন্য লেট হয়ে গেল, সরি!",,code_mixed,bn_en_latin,general,2,short (<60),40,N,Y,Spoken form transliterated to Bangla script; normalize ASR output the same way
+BN-CMX-011,আমাদের team এর target এই month এ achieve হয়েছে।,আমাদের টিমের টার্গেট এই মান্থে অ্যাচিভ হয়েছে।,,code_mixed,bn_en_latin,general,3,short (<60),47,N,Y,Spoken form transliterated to Bangla script; normalize ASR output the same way
+BN-CMX-012,"Password reset করতে ""Forgot Password"" এ click করুন।",পাসওয়ার্ড রিসেট করতে ফরগট পাসওয়ার্ডে ক্লিক করুন।,,code_mixed,bn_en_latin,general,3,short (<60),51,N,Y,Spoken form transliterated to Bangla script; normalize ASR output the same way
+BN-CMX-013,আমি Google Meet এর link টা WhatsApp এ share করেছি।,আমি গুগল মিটের লিংক টা হোয়াটসঅ্যাপে শেয়ার করেছি।,,code_mixed,bn_en_latin,general,3,short (<60),50,N,Y,Spoken form transliterated to Bangla script; normalize ASR output the same way
+BN-CMX-014,Doctor বলেছে কয়েকদিন rest নিতে।,ডক্টর বলেছে কয়েকদিন রেস্ট নিতে।,,code_mixed,bn_en_latin,general,2,short (<60),31,N,Y,Spoken form transliterated to Bangla script; normalize ASR output the same way
+BN-CMX-015,এই app টা download করলে cashback পাবেন।,এই অ্যাপ টা ডাউনলোড করলে ক্যাশব্যাক পাবেন।,,code_mixed,bn_en_latin,general,2,short (<60),39,N,Y,Spoken form transliterated to Bangla script; normalize ASR output the same way
+BN-CMX-016,"ভাই, ব্যাপারটা টোটালি আনএক্সপেক্টেড ছিল।","ভাই, ব্যাপারটা টোটালি আনএক্সপেক্টেড ছিল।",,code_mixed,en_in_bn_script,general,2,short (<60),40,N,N,English words written in Bangla script
+BN-CMX-017,Ami kal office e jabo na.,আমি কাল অফিসে যাবো না।,,code_mixed,romanized_bn,general,3,short (<60),25,N,Y,"Banglish input — many models will fail; record as capability, not just quality"
+BN-CMX-018,"Bhai, tumi ekhon kothay?","ভাই, তুমি এখন কোথায়?",,code_mixed,romanized_bn,general,3,short (<60),24,N,Y,"Banglish input — many models will fail; record as capability, not just quality"
+BN-CMX-019,Thank you for calling. Please hold the line.,Thank you for calling. Please hold the line.,,code_mixed,pure_english,general,1,short (<60),44,N,Y,Pure English with a Bangla voice — check accent; CER in English
+BN-CMX-020,"আপনার flight BG 147, gate 5 থেকে boarding শুরু হবে।","আপনার ফ্লাইট বিজি ওয়ান ফোর সেভেন, গেট ফাইভ থেকে বোর্ডিং শুরু হবে।","বিজি এক চার সাত, গেট পাঁচ",code_mixed,bn_en_alnum,general,3,short (<60),51,Y,Y,Alphanumeric flight code + English numbers
+BN-PRN-001,আমরা চট্টগ্রাম থেকে সিলেট হয়ে শ্রীমঙ্গল গিয়েছিলাম।,আমরা চট্টগ্রাম থেকে সিলেট হয়ে শ্রীমঙ্গল গিয়েছিলাম।,,proper_nouns,places,general,2,short (<60),50,N,N,Check name stress/pronunciation; ASR may misspell names — weight human review
+BN-PRN-002,"কুড়িগ্রাম, লালমনিরহাট ও নীলফামারীতে বন্যা দেখা দিয়েছে।","কুড়িগ্রাম, লালমনিরহাট ও নীলফামারীতে বন্যা দেখা দিয়েছে।",,proper_nouns,places,general,2,short (<60),54,N,N,Check name stress/pronunciation; ASR may misspell names — weight human review
+BN-PRN-003,"মোহাম্মদপুর, ধানমন্ডি, গুলশান ও উত্তরায় বিদ্যুৎ থাকবে না।","মোহাম্মদপুর, ধানমন্ডি, গুলশান ও উত্তরায় বিদ্যুৎ থাকবে না।",,proper_nouns,places,general,2,short (<60),57,N,N,Check name stress/pronunciation; ASR may misspell names — weight human review
+BN-PRN-004,ব্রাহ্মণবাড়িয়া ও কিশোরগঞ্জের হাওর এলাকা ঘুরে এলাম।,ব্রাহ্মণবাড়িয়া ও কিশোরগঞ্জের হাওর এলাকা ঘুরে এলাম।,,proper_nouns,places,general,2,short (<60),50,N,N,Check name stress/pronunciation; ASR may misspell names — weight human review
+BN-PRN-005,হযরত শাহজালাল আন্তর্জাতিক বিমানবন্দরে ফ্লাইট নামবে।,হযরত শাহজালাল আন্তর্জাতিক বিমানবন্দরে ফ্লাইট নামবে।,,proper_nouns,places,general,2,short (<60),51,N,N,Check name stress/pronunciation; ASR may misspell names — weight human review
+BN-PRN-006,সুন্দরবনের রয়েল বেঙ্গল টাইগার বিপন্ন প্রাণী।,সুন্দরবনের রয়েল বেঙ্গল টাইগার বিপন্ন প্রাণী।,,proper_nouns,places,general,2,short (<60),44,N,N,Check name stress/pronunciation; ASR may misspell names — weight human review
+BN-PRN-007,রবীন্দ্রনাথ ঠাকুর ও কাজী নজরুল ইসলামের গান সবার প্রিয়।,রবীন্দ্রনাথ ঠাকুর ও কাজী নজরুল ইসলামের গান সবার প্রিয়।,,proper_nouns,people,general,2,short (<60),54,N,N,Check name stress/pronunciation; ASR may misspell names — weight human review
+BN-PRN-008,"সাবরিনা চৌধুরী, তানভীর আহমেদ ও শাহরিয়ার হোসেন পুরস্কার পেয়েছেন।","সাবরিনা চৌধুরী, তানভীর আহমেদ ও শাহরিয়ার হোসেন পুরস্কার পেয়েছেন।",,proper_nouns,people,general,2,medium (<150),63,N,N,Check name stress/pronunciation; ASR may misspell names — weight human review
+BN-PRN-009,অনুষ্ঠানে উপস্থিত ছিলেন ঋতুপর্ণা দাশগুপ্ত ও জ্যোতির্ময় বড়ুয়া।,অনুষ্ঠানে উপস্থিত ছিলেন ঋতুপর্ণা দাশগুপ্ত ও জ্যোতির্ময় বড়ুয়া।,,proper_nouns,people,general,2,medium (<150),61,N,N,Check name stress/pronunciation; ASR may misspell names — weight human review
+BN-PRN-010,"বিকাশ, নগদ ও রকেট দিয়ে পেমেন্ট করা যাবে।","বিকাশ, নগদ ও রকেট দিয়ে পেমেন্ট করা যাবে।",,proper_nouns,brands,general,2,short (<60),40,N,N,Check name stress/pronunciation; ASR may misspell names — weight human review
+BN-PRN-011,"মাইক্রোসফট, গুগল ও অ্যামাজন ঢাকায় অফিস খুলতে পারে।","মাইক্রোসফট, গুগল ও অ্যামাজন ঢাকায় অফিস খুলতে পারে।",,proper_nouns,brands,general,2,short (<60),50,N,N,Check name stress/pronunciation; ASR may misspell names — weight human review
+BN-PRN-012,জন স্মিথ ও মারিয়া গার্সিয়া আজ সম্মেলনে বক্তৃতা দেবেন।,জন স্মিথ ও মারিয়া গার্সিয়া আজ সম্মেলনে বক্তৃতা দেবেন।,,proper_nouns,foreign_names,general,2,short (<60),53,N,N,Check name stress/pronunciation; ASR may misspell names — weight human review
+BN-PRS-001,তুমি কি কাল আসবে?,তুমি কি কাল আসবে?,,prosody,yes_no_q,general,2,xs (<20),17,N,N,Rising intonation
+BN-PRS-002,তুমি কখন আসবে?,তুমি কখন আসবে?,,prosody,wh_q,general,2,xs (<20),14,N,N,Wh-question contour
+BN-PRS-003,"তুমি চা খাবে, নাকি কফি?","তুমি চা খাবে, নাকি কফি?",,prosody,alt_q,general,2,short (<60),23,N,N,Alternative question
+BN-PRS-004,"তুমি তো জানতে, তাই না?","তুমি তো জানতে, তাই না?",,prosody,tag_q,general,2,short (<60),22,N,N,Tag question
+BN-PRS-005,কী সুন্দর দৃশ্য!,কী সুন্দর দৃশ্য!,,prosody,exclamation,general,2,xs (<20),16,N,N,Exclamatory
+BN-PRS-006,এখনই দরজাটা বন্ধ করো!,এখনই দরজাটা বন্ধ করো!,,prosody,command,general,2,short (<60),21,N,N,Imperative
+BN-PRS-007,"বাজার থেকে চাল, ডাল, তেল, পেঁয়াজ আর রসুন আনতে হবে।","বাজার থেকে চাল, ডাল, তেল, পেঁয়াজ আর রসুন আনতে হবে।",,prosody,list,general,2,short (<60),50,N,N,List pauses at commas
+BN-PRS-008,"মা বললেন, ""সাবধানে যেও।""","মা বললেন, ""সাবধানে যেও।""",,prosody,quote,general,2,short (<60),24,N,N,Quoted speech
+BN-PRS-009,"আমি ভেবেছিলাম... না, থাক।","আমি ভেবেছিলাম... না, থাক।",,prosody,ellipsis,general,2,short (<60),25,N,N,Hesitation pause
+BN-PRS-010,আমার বড় ভাই (যিনি কানাডায় থাকেন) আগামী মাসে আসবেন।,আমার বড় ভাই (যিনি কানাডায় থাকেন) আগামী মাসে আসবেন।,,prosody,parenthetical,general,2,short (<60),50,N,N,Parenthetical lowered pitch
+BN-PRS-011,"আমি চা খাই, কিন্তু কফি খাই না।","আমি চা খাই, কিন্তু কফি খাই না।",,prosody,contrast,general,2,short (<60),30,N,N,Contrastive stress
+BN-PRS-012,আমি দরজায় কড়া নাড়লাম। কেউ সাড়া দিল না। আবার নাড়লাম।,আমি দরজায় কড়া নাড়লাম। কেউ সাড়া দিল না। আবার নাড়লাম।,,prosody,multi_sentence,general,2,short (<60),51,N,N,Sentence-final pauses at dari
+BN-PRS-013,"— কেমন আছ? — ভালো, তুমি?","— কেমন আছ? — ভালো, তুমি?",,prosody,dialogue,general,2,short (<60),24,N,N,Dialogue dashes / turn change
+BN-PRS-014,খবরটা শুনে সবাই খুব কষ্ট পেল।,খবরটা শুনে সবাই খুব কষ্ট পেল।,,prosody,emotion_sad,general,2,short (<60),29,N,N,Appropriate subdued tone
+BN-PRS-015,আমি কিন্তু আগেই বলেছিলাম!,আমি কিন্তু আগেই বলেছিলাম!,,prosody,emphatic,general,2,short (<60),25,N,N,Emphasis on কিন্তু
+BN-PRS-016,"উফ্‌, কী গরম!","উফ্‌, কী গরম!",,prosody,interjection,general,2,xs (<20),13,N,N,Hasanta + ZWNJ in উফ্‌
+BN-DOM-001,"আপনার অ্যাকাউন্ট থেকে ৫,০০০ টাকা উত্তোলন করা হয়েছে। বর্তমান ব্যালেন্স ১২,৩৫০ টাকা।",আপনার অ্যাকাউন্ট থেকে পাঁচ হাজার টাকা উত্তোলন করা হয়েছে। বর্তমান ব্যালেন্স বারো হাজার তিনশো পঞ্চাশ টাকা।,,domain,banking,banking,2,medium (<150),82,Y,N,
+BN-DOM-002,আপনার কার্ডের শেষ চারটি সংখ্যা ৪৪১৭।,আপনার কার্ডের শেষ চারটি সংখ্যা চার চার এক সাত।,চুয়াল্লিশ সতেরো,domain,banking,banking,2,short (<60),36,Y,N,Digit-by-digit expected
+BN-DOM-003,ঋণের কিস্তি প্রতি মাসের ১০ তারিখের মধ্যে পরিশোধ করুন।,ঋণের কিস্তি প্রতি মাসের দশ তারিখের মধ্যে পরিশোধ করুন।,,domain,banking,banking,1,short (<60),53,Y,N,
+BN-DOM-004,নিরাপত্তার জন্য আপনার পিন নম্বর কারো সাথে শেয়ার করবেন না।,নিরাপত্তার জন্য আপনার পিন নম্বর কারো সাথে শেয়ার করবেন না।,,domain,banking,banking,1,short (<60),57,N,N,
+BN-DOM-005,আপনার নম্বরে ৩০ দিন মেয়াদি ২৫ জিবি ইন্টারনেট প্যাক চালু হয়েছে।,আপনার নম্বরে ত্রিশ দিন মেয়াদি পঁচিশ জিবি ইন্টারনেট প্যাক চালু হয়েছে।,,domain,telecom,telecom,1,medium (<150),62,Y,N,
+BN-DOM-006,ব্যালেন্স জানতে *১২৩# ডায়াল করুন।,ব্যালেন্স জানতে স্টার এক দুই তিন হ্যাশ ডায়াল করুন।,স্টার ওয়ান টু থ্রি হ্যাশ,domain,telecom,telecom,3,short (<60),33,Y,N,USSD code symbols
+BN-DOM-007,আপনার প্যাকেজের মেয়াদ আজ রাত ১১:৫৯-এ শেষ হবে।,আপনার প্যাকেজের মেয়াদ আজ রাত এগারোটা ঊনষাট মিনিটে শেষ হবে।,,domain,telecom,telecom,2,short (<60),45,Y,N,
+BN-DOM-008,"দিনে ৩ বার, খাবারের পর ১টি করে ট্যাবলেট খাবেন।","দিনে তিন বার, খাবারের পর একটি করে ট্যাবলেট খাবেন।",,domain,healthcare,healthcare,2,short (<60),46,Y,N,
+BN-DOM-009,রোগীর রক্তচাপ ১৩০/৮৫।,রোগীর রক্তচাপ একশো ত্রিশ বাই পঁচাশি।,,domain,healthcare,healthcare,3,short (<60),21,Y,N,"Slash = 'বাই', not a fraction/date"
+BN-DOM-010,"আপনার অ্যাপয়েন্টমেন্ট ডা. সেলিনা হকের সাথে, বৃহস্পতিবার বিকেল ৪টায়।","আপনার অ্যাপয়েন্টমেন্ট ডাক্তার সেলিনা হকের সাথে, বৃহস্পতিবার বিকেল চারটায়।",,domain,healthcare,healthcare,2,medium (<150),67,Y,N,
+BN-DOM-011,আপনার অর্ডার #BD20481 সফলভাবে প্লেস করা হয়েছে।,আপনার অর্ডার নম্বর বিডি দুই শূন্য চার আট এক সফলভাবে প্লেস করা হয়েছে।,বিডি টু জিরো ফোর এইট ওয়ান,domain,ecommerce,ecommerce,3,short (<60),46,Y,Y,Hash + alphanumeric ID
+BN-DOM-012,"৫০% ছাড়ে কিনুন, অফার চলবে ৩১শে অক্টোবর পর্যন্ত।","পঞ্চাশ শতাংশ ছাড়ে কিনুন, অফার চলবে একত্রিশে অক্টোবর পর্যন্ত।",পঞ্চাশ পার্সেন্ট,domain,ecommerce,ecommerce,2,short (<60),47,Y,N,
+BN-DOM-013,ক্যাশ অন ডেলিভারিতে ডেলিভারি চার্জ ৬০ টাকা।,ক্যাশ অন ডেলিভারিতে ডেলিভারি চার্জ ষাট টাকা।,,domain,ecommerce,ecommerce,1,short (<60),43,Y,N,
+BN-DOM-014,জাতীয় পরিচয়পত্র সংশোধনের জন্য নিকটস্থ উপজেলা নির্বাচন অফিসে যোগাযোগ করুন।,জাতীয় পরিচয়পত্র সংশোধনের জন্য নিকটস্থ উপজেলা নির্বাচন অফিসে যোগাযোগ করুন।,,domain,government,government,2,medium (<150),73,N,N,
+BN-DOM-015,জন্ম নিবন্ধনের আবেদন এখন অনলাইনে জমা দেওয়া যাবে।,জন্ম নিবন্ধনের আবেদন এখন অনলাইনে জমা দেওয়া যাবে।,,domain,government,government,1,short (<60),48,N,N,
+BN-DOM-016,আগামী ১৫ দিনের মধ্যে আয়কর রিটার্ন দাখিল করতে হবে।,আগামী পনেরো দিনের মধ্যে আয়কর রিটার্ন দাখিল করতে হবে।,,domain,government,government,1,short (<60),49,Y,N,
+BN-DOM-017,পরীক্ষার ফলাফল আগামীকাল দুপুর ২টায় প্রকাশিত হবে।,পরীক্ষার ফলাফল আগামীকাল দুপুর দুইটায় প্রকাশিত হবে।,দুটায়,domain,education,education,1,short (<60),48,Y,N,
+BN-DOM-018,শিক্ষার্থীদের অবশ্যই পরিচয়পত্র সঙ্গে আনতে হবে।,শিক্ষার্থীদের অবশ্যই পরিচয়পত্র সঙ্গে আনতে হবে।,,domain,education,education,1,short (<60),46,N,N,
+BN-DOM-019,আমাদের হেল্পলাইনে কল করার জন্য ধন্যবাদ। অনুগ্রহ করে লাইনে থাকুন।,আমাদের হেল্পলাইনে কল করার জন্য ধন্যবাদ। অনুগ্রহ করে লাইনে থাকুন।,,domain,customer_support,customer_support,1,medium (<150),64,N,N,
+BN-DOM-020,"আপনার অভিযোগটি নথিভুক্ত হয়েছে, টিকেট নম্বর ৭৮৯৪৫৬।","আপনার অভিযোগটি নথিভুক্ত হয়েছে, টিকেট নম্বর সাত আট নয় চার পাঁচ ছয়।",,domain,customer_support,customer_support,2,short (<60),50,Y,N,Digit-by-digit expected
+BN-DOM-021,"বাংলার জন্য ১ চাপুন, ইংরেজির জন্য ২ চাপুন।","বাংলার জন্য এক চাপুন, ইংরেজির জন্য দুই চাপুন।",,domain,customer_support,customer_support,1,short (<60),42,Y,N,
+BN-EDG-001,বিস্তারিত জানতে www.example.com.bd ভিজিট করুন।,বিস্তারিত জানতে ডব্লিউ ডব্লিউ ডব্লিউ ডট এক্সাম্পল ডট কম ডট বিডি ভিজিট করুন।,,edge_cases,url,general,3,short (<60),46,N,Y,
+BN-EDG-002,info@example.com ঠিকানায় মেইল করুন।,ইনফো অ্যাট এক্সাম্পল ডট কম ঠিকানায় মেইল করুন।,,edge_cases,email,general,3,short (<60),35,N,Y,
+BN-EDG-003,অভিনন্দন! 🎉 তুমি পাশ করেছ 😊,অভিনন্দন! তুমি পাশ করেছ,,edge_cases,emoji,general,2,short (<60),27,N,N,"Emoji should be silent (or skipped), not read as text/noise"
+BN-EDG-004,লাভ & ক্ষতির হিসাব মিলিয়ে দেখুন।,লাভ ও ক্ষতির হিসাব মিলিয়ে দেখুন।,লাভ অ্যান্ড ক্ষতির,edge_cases,symbol,general,2,short (<60),32,N,N,
+BN-EDG-005,#বাংলাদেশ ট্রেন্ডিংয়ে আছে।,হ্যাশট্যাগ বাংলাদেশ ট্রেন্ডিংয়ে আছে।,বাংলাদেশ ট্রেন্ডিংয়ে আছে,edge_cases,hashtag,general,3,short (<60),26,N,N,
+BN-EDG-006,"WARNING: উচ্চ ভোল্টেজ, দূরে থাকুন।","ওয়ার্নিং: উচ্চ ভোল্টেজ, দূরে থাকুন।",সতর্কতা,edge_cases,caps,general,2,short (<60),34,N,Y,All-caps English word
+BN-EDG-007,[বিজ্ঞপ্তি] আগামীকাল ক্লাস বন্ধ থাকবে।,"বিজ্ঞপ্তি, আগামীকাল ক্লাস বন্ধ থাকবে।",,edge_cases,brackets,general,2,short (<60),38,N,N,Brackets should not be voiced
+BN-EDG-008,"না না না, এভাবে না!","না না না, এভাবে না!",,edge_cases,repetition,general,2,xs (<20),19,N,N,All repeats must be voiced — check no collapsing
+BN-EDG-009,"সে ধীরে ধীরে হাঁটছিল, মাঝে মাঝে থামছিল।","সে ধীরে ধীরে হাঁটছিল, মাঝে মাঝে থামছিল।",,edge_cases,reduplication,general,1,short (<60),39,N,N,
+BN-EDG-010,আমি যখন স্টেশনে পৌঁছালাম তখন ট্রেন ছেড়ে দিয়েছে তাই বাধ্য হয়ে বাসস্ট্যান্ডে গেলাম কিন্তু সেখানেও টিকিট নেই শেষ পর্যন্ত একটা সিএনজি নিয়ে রওনা দিলাম আর পথে প্রচণ্ড যানজটে আটকে থাকলাম প্রায় দুই ঘণ্টা,আমি যখন স্টেশনে পৌঁছালাম তখন ট্রেন ছেড়ে দিয়েছে তাই বাধ্য হয়ে বাসস্ট্যান্ডে গেলাম কিন্তু সেখানেও টিকিট নেই শেষ পর্যন্ত একটা সিএনজি নিয়ে রওনা দিলাম আর পথে প্রচণ্ড যানজটে আটকে থাকলাম প্রায় দুই ঘণ্টা,,edge_cases,run_on,general,3,long (<400),195,N,N,"No punctuation — check for breath pauses, no truncation"
+BN-EDG-011,সমাবেশে বড় একটি র‍্যালি বের হয়েছে।,সমাবেশে বড় একটি র‍্যালি বের হয়েছে।,,edge_cases,unicode_zwj,general,3,short (<60),34,N,N,র‍্যা uses ZWJ (U+200D) — check rendering & pronunciation
+BN-EDG-012,উৎসব আর উত্‌সব একই শব্দের দুই বানান।,উৎসব আর উত্‌সব একই শব্দের দুই বানান।,,edge_cases,unicode_khandata,general,3,short (<60),36,N,N,ৎ vs ত্ + ZWNJ (old spelling) — both should sound identical
+BN-EDG-013,আমি নয়টায় আসব।,আমি নয়টায় আসব।,,edge_cases,unicode_nukta,general,3,xs (<20),16,N,N,য় written decomposed (য + U+09BC) — must sound identical to precomposed য়
