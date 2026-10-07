@@ -72,6 +72,7 @@ class SarvamProvider:
             "output_audio_codec": self.format,
             "speech_sample_rate": self.sample_rate,
             "request_options": REQUEST_OPTIONS,
+            "temperature": 0.02,
             **(self.config.voice_settings or {}),
         }
 

@@ -9,6 +9,7 @@ import subprocess
 import sys
 import tempfile
 import wave
+from dataclasses import replace
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -18,14 +19,18 @@ from dotenv import load_dotenv
 
 from runner.config import ConfigError, ProviderConfig, load_provider_config
 from runner.dataset import DatasetError, DatasetItem, load_dataset
+from runner.emotion import TagMap, load_tag_map, style_values, tag_map_path, translate_tags
 from runner.providers import create_provider
 from runner.providers.base import MODES, Mode, ProviderError, TTSProvider
 from runner.storage import Manifest, RunLayout, write_once
 
 log = logging.getLogger("runner")
 
+VARIANTS = ("baseline", "emotive")
+
 MANIFEST_KEYS = (
-    "run_id", "provider", "model", "voice", "item_id", "status", "audio_path", "format",
+    "run_id", "provider", "model", "voice", "item_id", "text", "spoken_form", "accepted_variants", "status",
+    "audio_path", "format",
     "sample_rate", "bytes", "audio_seconds", "mode", "ttfb_ms", "total_ms", "rtf",
     "input_chars", "billed_chars", "est_cost_usd", "http_status", "provider_request_id", "error",
     "attempts", "started_at", "sdk_version",
@@ -146,17 +151,94 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     p.add_argument("--limit", type=int, default=None, help="only the first N rows (sorted by id)")
     p.add_argument("--batch", action="store_true", help="non-streaming endpoint (default if no mode given)")
     p.add_argument("--stream", action="store_true", help="streaming endpoint; with --batch, runs both")
+    p.add_argument(
+        "--variant", choices=VARIANTS, default="baseline",
+        help="emotive: send text_emotive with its [keys] translated to the model's own tags",
+    )  # fmt: skip
+    p.add_argument(
+        "--tag-map", default=None, help="tag map for --variant emotive; default config/<provider>.json"
+    )
+    p.add_argument("--dry-run", action="store_true", help="print the text that would be sent; no API calls")
+    p.add_argument(
+        "--dry-run-out", default=None, help="also write the dry run to this .jsonl file (implies --dry-run)"
+    )
     p.add_argument("--max-error-rate", type=float, default=float(env("MAX_ERROR_RATE", "0.2")))
     return p.parse_args(argv)
+
+
+def emotive_items(items: list[DatasetItem], tag_map: TagMap) -> list[DatasetItem]:
+    """`--variant emotive`: the text sent is `text_emotive` with each [key] swapped for the model's text.
+
+    The result replaces `text`, so the manifest records exactly what was sent; `spoken_form` stays the CER
+    reference because tags must not be spoken.
+    """
+    out = []
+    for item in items:
+        if not item.text_emotive:
+            raise DatasetError(f"{item.item_id}: empty text_emotive (needed for --variant emotive)")
+        text = translate_tags(item.text_emotive, tag_map)
+        if not text:
+            raise DatasetError(f"{item.item_id}: nothing left of text_emotive after removing unmapped tags")
+        out.append(replace(item, text=text))
+    return out
+
+
+def dry_run(
+    source: list[DatasetItem],
+    sent: list[DatasetItem],
+    config: ProviderConfig,
+    modes: list[Mode],
+    variant: str,
+    out: Path | None,
+) -> None:
+    """Show what a real run would send; no provider is created and no API is called."""
+    records = []
+    for src, item in zip(source, sent, strict=True):
+        too_long = config.max_chars is not None and len(item.text) > config.max_chars
+        print(
+            f"{item.item_id}  {len(item.text)} chars"
+            + ("  EXCEEDS max_chars: would be skipped" if too_long else "")
+        )
+        # What the dataset holds for this variant. Not inferred from the sent text: a provider whose tag map
+        # is empty (sarvam, openai) sends text identical to `text`, but its dataset text still has the tags.
+        dataset_text = src.text_emotive if variant == "emotive" else src.text
+        if dataset_text != item.text:
+            print(f"  dataset: {dataset_text}")
+        print(f"  sent:    {item.text}")
+        record_extra: dict[str, Any] = {}
+        if config.emotive_styles:  # Gemini: the styles leave the text and go into the request parts
+            from runner.providers.gemini.styles import build_parts
+
+            record_extra["parts"] = build_parts(item.text, config.emotive_styles)
+            print(f"  parts:   {json.dumps(record_extra['parts'], ensure_ascii=False)}")
+        records.append(
+            {
+                "item_id": item.item_id, "provider": config.name, "model": config.model, "variant": variant,
+                "category": item.category, "dataset_text": dataset_text,
+                "text": item.text, "spoken_form": item.spoken_form, "input_chars": len(item.text),
+                "exceeds_max_chars": too_long, **record_extra,
+            }
+        )  # fmt: skip
+    if out is not None:
+        body = "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in records)
+        write_once(out, body.encode("utf-8"))
+    print(
+        f"\ndry run: {len(sent)} items, {config.name} / {config.model} / {'+'.join(modes)}; nothing was sent"
+        + (f"; wrote {out}" if out else "")
+    )
 
 
 def process(
     item: DatasetItem, provider: TTSProvider, config: ProviderConfig, layout: RunLayout, manifest: Manifest
 ) -> dict[str, Any]:
     path = layout.audio_path(item.item_id, provider.format)
+    # Exact input text and CER references, copied from the dataset so the manifest is self-contained.
+    references = {
+        "text": item.text, "spoken_form": item.spoken_form, "accepted_variants": list(item.accepted_variants),
+    }  # fmt: skip
     rec: dict[str, Any] = dict.fromkeys(MANIFEST_KEYS)
     rec.update(
-        run_id=layout.run_id, provider=config.name, model=config.model, voice=config.voice.name,
+        references, run_id=layout.run_id, provider=config.name, model=config.model, voice=config.voice.name,
         item_id=item.item_id, mode=config.mode, input_chars=len(item.text), started_at=_now(),
         sdk_version=f"httpx/{httpx.__version__}", audio_path=layout.relative(path), format=provider.format,
     )  # fmt: skip
@@ -165,7 +247,7 @@ def process(
     if os.path.exists(path):
         prev = manifest.previous(item.item_id)
         if prev and prev.get("status") == "ok":
-            return prev
+            return {**prev, **references}  # refresh references in records from older manifests
         rec.update(status="skipped_existing", bytes=os.path.getsize(path))
         return rec
 
@@ -183,7 +265,7 @@ def process(
         return rec
 
     timing = {
-        "ttfb_ms": round(result.ttfb_ms, 1),
+        "ttfb_ms": None if result.ttfb_ms is None else round(result.ttfb_ms, 1),
         "total_ms": round(result.total_ms, 1), "billed_chars": result.billed_chars,
         "est_cost_usd": config.estimate_cost(result.billed_chars), "http_status": 200,
         "provider_request_id": result.request_id, "attempts": result.attempts,
@@ -215,9 +297,16 @@ def run_mode(
 ) -> float:
     """Synthesize every selected row with one provider in one mode; returns the error rate."""
     layout = RunLayout(Path(args.out), run_id, config.name, config.model, config.voice.name, config.mode)
-    if not os.path.exists(layout.run_config_path):
+    if os.path.exists(layout.run_config_path):
+        # Resuming would skip rows already on disk, so never mix variants in one run directory.
+        existing = json.loads(Path(layout.run_config_path).read_text(encoding="utf-8")).get("variant")
+        if existing != args.variant:
+            raise ConfigError(
+                f"{layout.run_dir} holds a {existing!r} run; use a new --run-id for {args.variant!r}"
+            )
+    else:
         run_config = {
-            "run_id": run_id, "created_at": _now(), "git_sha": _git_sha(), "variant": "baseline",
+            "run_id": run_id, "created_at": _now(), "git_sha": _git_sha(), "variant": args.variant,
             "mode": config.mode, **dataset, "limit": args.limit,
             "provider_config": config.__dict__ | {"voice": config.voice.__dict__},
             "non_default_settings": {"voice_settings": config.voice_settings},
@@ -257,6 +346,17 @@ def run(args: argparse.Namespace) -> int:
     total_rows = len(items)
     if args.limit is not None:
         items = items[: args.limit]
+    sent = items
+    if args.variant == "emotive":
+        tag_map = load_tag_map(args.tag_map or tag_map_path(args.config, args.provider))
+        sent = emotive_items(items, tag_map)
+        # Gemini sends its `style` tags as speech_metadata; other providers have none.
+        configs = [replace(c, emotive_styles=style_values(tag_map)) for c in configs]
+    if args.dry_run or args.dry_run_out:
+        out = Path(args.dry_run_out) if args.dry_run_out else None
+        dry_run(items, sent, configs[0], [c.mode for c in configs], args.variant, out)
+        return 0
+    items = sent
     dataset = {
         "dataset": str(dataset_path), "dataset_rows": total_rows,
         "dataset_mtime": datetime.fromtimestamp(dataset_path.stat().st_mtime, UTC).isoformat(),

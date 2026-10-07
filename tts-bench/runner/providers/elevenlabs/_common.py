@@ -89,7 +89,7 @@ class ElevenLabsProvider:
             audio=audio,
             format=self.format,
             sample_rate=self.sample_rate,
-            ttfb_ms=ttfb_ms,
+            ttfb_ms=ttfb_ms if self.mode == "stream" else None,  # batch: first byte ~ last byte
             total_ms=total_ms,
             billed_chars=len(text),
             request_id=None,

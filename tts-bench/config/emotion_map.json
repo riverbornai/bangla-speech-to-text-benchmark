@@ -1,0 +1,251 @@
+{
+  "happy": {
+    "elevenlabs_v3": "happy",
+    "gemini_3.8_flash_tts": "happy",
+    "cartesia_sonic-3": "happy",
+    "soniox_tts_v2": "happy"
+  },
+  "sad": {
+    "elevenlabs_v3": "sad",
+    "gemini_3.8_flash_tts": "sad",
+    "cartesia_sonic-3": "sad",
+    "soniox_tts_v2": "sad"
+  },
+  "angry": {
+    "elevenlabs_v3": "angry",
+    "gemini_3.8_flash_tts": "angry",
+    "cartesia_sonic-3": "angry",
+    "soniox_tts_v2": "angry"
+  },
+  "excited": {
+    "elevenlabs_v3": "excited",
+    "gemini_3.8_flash_tts": "excited",
+    "cartesia_sonic-3": "excited",
+    "soniox_tts_v2": "excited"
+  },
+  "calm": {
+    "elevenlabs_v3": "calm",
+    "gemini_3.8_flash_tts": "calm",
+    "cartesia_sonic-3": "calm",
+    "soniox_tts_v2": "calm"
+  },
+  "scared_fearful": {
+    "elevenlabs_v3": "scared",
+    "gemini_3.8_flash_tts": "scared",
+    "cartesia_sonic-3": "scared",
+    "soniox_tts_v2": "fearful"
+  },
+  "surprised": {
+    "elevenlabs_v3": "surprised",
+    "gemini_3.8_flash_tts": "surprised",
+    "cartesia_sonic-3": "surprised",
+    "soniox_tts_v2": "surprised"
+  },
+  "curious": {
+    "elevenlabs_v3": "curious",
+    "gemini_3.8_flash_tts": "curious",
+    "cartesia_sonic-3": "curious",
+    "soniox_tts_v2": "curious"
+  },
+  "sarcastic": {
+    "elevenlabs_v3": "sarcastically",
+    "gemini_3.8_flash_tts": "sarcastic",
+    "cartesia_sonic-3": "sarcastic",
+    "soniox_tts_v2": "sarcastic"
+  },
+  "mocking": {
+    "elevenlabs_v3": "mocking",
+    "gemini_3.8_flash_tts": "mocking",
+    "cartesia_sonic-3": "sarcastic",
+    "soniox_tts_v2": "mockingly"
+  },
+  "smug_proud": {
+    "elevenlabs_v3": "smug",
+    "gemini_3.8_flash_tts": "smug and proud",
+    "cartesia_sonic-3": "proud",
+    "soniox_tts_v2": "sarcastic"
+  },
+  "teasing_playful": {
+    "elevenlabs_v3": "teasing",
+    "gemini_3.8_flash_tts": "playful, teasing",
+    "cartesia_sonic-3": "joking/comedic",
+    "soniox_tts_v2": "playful"
+  },
+  "flirty": {
+    "elevenlabs_v3": "flirtatious",
+    "gemini_3.8_flash_tts": "flirtatious",
+    "cartesia_sonic-3": "flirtatious",
+    "soniox_tts_v2": "flirty"
+  },
+  "warm": {
+    "elevenlabs_v3": "warmly",
+    "gemini_3.8_flash_tts": "warm",
+    "cartesia_sonic-3": "affectionate",
+    "soniox_tts_v2": "warm"
+  },
+  "serious": {
+    "elevenlabs_v3": "serious",
+    "gemini_3.8_flash_tts": "serious",
+    "cartesia_sonic-3": "determined",
+    "soniox_tts_v2": "serious"
+  },
+  "nervous_anxious": {
+    "elevenlabs_v3": "nervous",
+    "gemini_3.8_flash_tts": "nervous",
+    "cartesia_sonic-3": "anxious",
+    "soniox_tts_v2": "nervous"
+  },
+  "disappointed": {
+    "elevenlabs_v3": "disappointed",
+    "gemini_3.8_flash_tts": "disappointed",
+    "cartesia_sonic-3": "disappointed",
+    "soniox_tts_v2": "disappointed"
+  },
+  "relieved": {
+    "elevenlabs_v3": "relieved",
+    "gemini_3.8_flash_tts": "relieved",
+    "cartesia_sonic-3": "grateful",
+    "soniox_tts_v2": "relieved"
+  },
+  "annoyed": {
+    "elevenlabs_v3": "annoyed",
+    "gemini_3.8_flash_tts": "annoyed",
+    "cartesia_sonic-3": "frustrated",
+    "soniox_tts_v2": "annoyed"
+  },
+  "sincere_empathetic": {
+    "elevenlabs_v3": "sincerely",
+    "gemini_3.8_flash_tts": "sincere, empathetic",
+    "cartesia_sonic-3": "sympathetic",
+    "soniox_tts_v2": "sincerely"
+  },
+  "laugh": {
+    "elevenlabs_v3": "laughs",
+    "gemini_3.8_flash_tts": "laugh",
+    "cartesia_sonic-3": "laughter",
+    "soniox_tts_v2": "laughs"
+  },
+  "chuckle": {
+    "elevenlabs_v3": "chuckles",
+    "gemini_3.8_flash_tts": "chuckle",
+    "cartesia_sonic-3": "laughter",
+    "soniox_tts_v2": "chuckles"
+  },
+  "giggle": {
+    "elevenlabs_v3": "giggles",
+    "gemini_3.8_flash_tts": "giggle",
+    "cartesia_sonic-3": "laughter",
+    "soniox_tts_v2": "giggles"
+  },
+  "sigh": {
+    "elevenlabs_v3": "sighs",
+    "gemini_3.8_flash_tts": "sigh",
+    "soniox_tts_v2": "sighs"
+  },
+  "gasp": {
+    "elevenlabs_v3": "gasps",
+    "gemini_3.8_flash_tts": "gasp",
+    "soniox_tts_v2": "gasps"
+  },
+  "cry_sob": {
+    "elevenlabs_v3": "crying",
+    "gemini_3.8_flash_tts": "sob",
+    "soniox_tts_v2": "sobs"
+  },
+  "breath_exhale": {
+    "elevenlabs_v3": "exhales",
+    "gemini_3.8_flash_tts": "breath",
+    "soniox_tts_v2": "exhales"
+  },
+  "clear_throat": {
+    "elevenlabs_v3": "clears throat",
+    "gemini_3.8_flash_tts": "throat-clearing",
+    "soniox_tts_v2": "clears throat"
+  },
+  "cough": {
+    "elevenlabs_v3": "coughing",
+    "gemini_3.8_flash_tts": "cough",
+    "soniox_tts_v2": "coughs"
+  },
+  "yawn": {
+    "elevenlabs_v3": "yawns",
+    "gemini_3.8_flash_tts": "yawn",
+    "soniox_tts_v2": "yawns"
+  },
+  "whisper": {
+    "elevenlabs_v3": "whispers",
+    "gemini_3.8_flash_tts": "whispered",
+    "cartesia_sonic-3": "0.5",
+    "soniox_tts_v2": "whispering"
+  },
+  "shout": {
+    "elevenlabs_v3": "shouts",
+    "gemini_3.8_flash_tts": "shout",
+    "cartesia_sonic-3": "2.0",
+    "soniox_tts_v2": "shouting"
+  },
+  "softly": {
+    "elevenlabs_v3": "softly",
+    "gemini_3.8_flash_tts": "soft and gentle",
+    "cartesia_sonic-3": "0.7",
+    "soniox_tts_v2": "softly"
+  },
+  "loudly": {
+    "elevenlabs_v3": "loudly",
+    "gemini_3.8_flash_tts": "loud",
+    "cartesia_sonic-3": "1.5",
+    "soniox_tts_v2": "loudly"
+  },
+  "slowly": {
+    "elevenlabs_v3": "slowly",
+    "gemini_3.8_flash_tts": "slow, unhurried",
+    "cartesia_sonic-3": "0.8",
+    "soniox_tts_v2": "slowly"
+  },
+  "quickly": {
+    "elevenlabs_v3": "rushed",
+    "gemini_3.8_flash_tts": "fast-paced",
+    "cartesia_sonic-3": "1.3",
+    "soniox_tts_v2": "quickly"
+  },
+  "higher_pitch": {
+    "elevenlabs_v3": "high-pitched",
+    "gemini_3.8_flash_tts": "higher pitch",
+    "soniox_tts_v2": "high-pitched"
+  },
+  "lower_pitch": {
+    "elevenlabs_v3": "low voice",
+    "gemini_3.8_flash_tts": "deep, low voice",
+    "soniox_tts_v2": "low voice"
+  },
+  "hesitant": {
+    "elevenlabs_v3": "hesitantly",
+    "gemini_3.8_flash_tts": "hesitant",
+    "cartesia_sonic-3": "hesitant",
+    "soniox_tts_v2": "hesitantly"
+  },
+  "trembling": {
+    "elevenlabs_v3": "trembling",
+    "gemini_3.8_flash_tts": "trembling voice",
+    "cartesia_sonic-3": "scared",
+    "soniox_tts_v2": "trembling voice"
+  },
+  "short_pause": {
+    "elevenlabs_v3": "short pause",
+    "gemini_3.8_flash_tts": "short pause",
+    "cartesia_sonic-3": "300ms",
+    "soniox_tts_v2": "pause"
+  },
+  "pause": {
+    "elevenlabs_v3": "pause",
+    "gemini_3.8_flash_tts": "short pause",
+    "cartesia_sonic-3": "700ms",
+    "soniox_tts_v2": "pause"
+  },
+  "long_pause": {
+    "elevenlabs_v3": "long pause",
+    "gemini_3.8_flash_tts": "long pause",
+    "cartesia_sonic-3": "1.5s",
+    "soniox_tts_v2": "long pause"
+  }
+}

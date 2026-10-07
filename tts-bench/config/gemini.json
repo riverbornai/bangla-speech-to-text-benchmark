@@ -1,0 +1,174 @@
+{
+  "happy": {
+    "tag_type": "style",
+    "value": "happy"
+  },
+  "sad": {
+    "tag_type": "style",
+    "value": "sad"
+  },
+  "angry": {
+    "tag_type": "style",
+    "value": "angry"
+  },
+  "excited": {
+    "tag_type": "style",
+    "value": "excited"
+  },
+  "calm": {
+    "tag_type": "style",
+    "value": "calm"
+  },
+  "scared_fearful": {
+    "tag_type": "style",
+    "value": "scared"
+  },
+  "surprised": {
+    "tag_type": "style",
+    "value": "surprised"
+  },
+  "curious": {
+    "tag_type": "style",
+    "value": "curious"
+  },
+  "sarcastic": {
+    "tag_type": "style",
+    "value": "sarcastic"
+  },
+  "mocking": {
+    "tag_type": "style",
+    "value": "mocking"
+  },
+  "smug_proud": {
+    "tag_type": "style",
+    "value": "smug and proud"
+  },
+  "teasing_playful": {
+    "tag_type": "style",
+    "value": "playful, teasing"
+  },
+  "flirty": {
+    "tag_type": "style",
+    "value": "flirtatious"
+  },
+  "warm": {
+    "tag_type": "style",
+    "value": "warm"
+  },
+  "serious": {
+    "tag_type": "style",
+    "value": "serious"
+  },
+  "nervous_anxious": {
+    "tag_type": "style",
+    "value": "nervous"
+  },
+  "disappointed": {
+    "tag_type": "style",
+    "value": "disappointed"
+  },
+  "relieved": {
+    "tag_type": "style",
+    "value": "relieved"
+  },
+  "annoyed": {
+    "tag_type": "style",
+    "value": "annoyed"
+  },
+  "sincere_empathetic": {
+    "tag_type": "style",
+    "value": "sincere, empathetic"
+  },
+  "laugh": {
+    "tag_type": "tag",
+    "value": "<laugh>"
+  },
+  "chuckle": {
+    "tag_type": "tag",
+    "value": "<chuckle>"
+  },
+  "giggle": {
+    "tag_type": "tag",
+    "value": "<giggle>"
+  },
+  "sigh": {
+    "tag_type": "tag",
+    "value": "<sigh>"
+  },
+  "gasp": {
+    "tag_type": "tag",
+    "value": "<gasp>"
+  },
+  "cry_sob": {
+    "tag_type": "tag",
+    "value": "<sob>"
+  },
+  "breath_exhale": {
+    "tag_type": "tag",
+    "value": "<breath>"
+  },
+  "clear_throat": {
+    "tag_type": "tag",
+    "value": "<throat-clearing>"
+  },
+  "cough": {
+    "tag_type": "tag",
+    "value": "<cough>"
+  },
+  "yawn": {
+    "tag_type": "tag",
+    "value": "<yawn>"
+  },
+  "whisper": {
+    "tag_type": "style",
+    "value": "whispered"
+  },
+  "shout": {
+    "tag_type": "tag",
+    "value": "<shout>"
+  },
+  "softly": {
+    "tag_type": "style",
+    "value": "soft and gentle"
+  },
+  "loudly": {
+    "tag_type": "style",
+    "value": "loud"
+  },
+  "slowly": {
+    "tag_type": "style",
+    "value": "slow, unhurried"
+  },
+  "quickly": {
+    "tag_type": "style",
+    "value": "fast-paced"
+  },
+  "higher_pitch": {
+    "tag_type": "style",
+    "value": "higher pitch"
+  },
+  "lower_pitch": {
+    "tag_type": "style",
+    "value": "deep, low voice"
+  },
+  "hesitant": {
+    "tag_type": "style",
+    "value": "hesitant"
+  },
+  "trembling": {
+    "tag_type": "style",
+    "value": "trembling voice"
+  },
+  "short_pause": {
+    "tag_type": "tag",
+    "value": "<short pause>"
+  },
+  "pause": {
+    "tag_type": "tag",
+    "value": "<short pause>"
+  },
+  "long_pause": {
+    "tag_type": "tag",
+    "value": "<long pause>"
+  }
+}

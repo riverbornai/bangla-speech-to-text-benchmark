@@ -31,7 +31,10 @@ class ProviderConfig:
     max_chars: int | None
     usd_per_1m_chars: float | None
     voice_settings: dict[str, Any] | None = None
+    location: str | None = None  # cloud region/endpoint for providers that need one (Gemini: "global")
     mode: str = "batch"  # "batch" | "stream"
+    # Gemini only, `--variant emotive`: the tag values sent as speech_metadata.style (see runner/emotion.py).
+    emotive_styles: tuple[str, ...] = ()
 
     def estimate_cost(self, billed_chars: int) -> float | None:
         if self.usd_per_1m_chars is None:
@@ -72,5 +75,6 @@ def load_provider_config(path: str | Path, provider: str, mode: str = "batch") -
         if price.get("unit") == "per_1m_chars" and isinstance(usd, int | float)
         else None,
         voice_settings=raw.get("voice_settings"),
+        location=raw.get("location"),
         mode=mode,
     )
