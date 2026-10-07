@@ -56,7 +56,7 @@ def test_convert_sends_text_model_language_and_voice_settings(provider: ElevenLa
     assert result.audio == MP3
     assert result.format == "mp3" and result.sample_rate == 44100
     assert result.billed_chars == len(TEXT)
-    assert 0 <= result.ttfb_ms <= result.total_ms
+    assert result.ttfb_ms is None and result.total_ms > 0  # batch: no TTFB
     assert result.attempts == 1
 
 
@@ -109,16 +109,18 @@ def test_parse_output_format() -> None:
     assert parse_output_format("pcm_24000") == ("pcm", 24000)
 
 
-def test_ttfb_is_first_chunk_not_whole_body(
-    provider: ElevenLabsProvider, monkeypatch: pytest.MonkeyPatch
+def test_stream_ttfb_is_first_chunk_not_whole_body(
+    providers_yaml: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
+    provider = ElevenLabsStream(load_provider_config(providers_yaml, "elevenlabs", "stream"), api_key="k")
+
     def slow_stream():
         yield b"ab"
         time.sleep(0.05)
         yield b""
         yield b"cd"
 
-    monkeypatch.setattr(provider._client.text_to_speech, "convert", lambda **_: slow_stream())
+    monkeypatch.setattr(provider._client.text_to_speech, "stream", lambda **_: slow_stream())
     result = provider.synthesize(TEXT)
     assert result.audio == b"abcd"
     assert result.total_ms - result.ttfb_ms >= 50

@@ -19,7 +19,7 @@ ffprobe mp3 duration. Do not revert.
   one M) for all items, chosen once and stored in providers.yaml. Note that voice choice
   heavily affects Bangla accent quality — this is a known confound.
 - Output: `output_format=pcm_24000` (or `pcm_44100` if the plan allows). MP3 only as fallback.
-- TTFB: first chunk from `convert()` (batch) or `stream()` (stream); see the contract's "Latency metrics".
+- TTFB: first chunk from `stream()` in stream mode; `null` in batch mode (see the contract's "Latency metrics").
 - Leave `voice_settings` at defaults. Text normalization parameter (`apply_text_normalization`)
   at its default for baseline; test `on` as a separate variant.
 - Concurrency is capped per subscription tier → set `max_concurrency` from the plan; on 429

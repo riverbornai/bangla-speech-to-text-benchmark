@@ -21,6 +21,7 @@ class DatasetItem:
     subcategory: str | None
     domain: str | None
     difficulty: int | None
+    text_emotive: str | None = None  # `text` with [emotion_key] tags; sent only by --variant emotive
 
 
 def load_dataset(path: str | Path) -> list[DatasetItem]:
@@ -55,6 +56,7 @@ def load_dataset(path: str | Path) -> list[DatasetItem]:
         seen.add(item_id)
         variants = cell(row, "accepted_variants")
         difficulty = cell(row, "difficulty")
+        emotive = cell(row, "text_emotive")
         items.append(
             DatasetItem(
                 item_id=item_id,
@@ -65,6 +67,7 @@ def load_dataset(path: str | Path) -> list[DatasetItem]:
                 subcategory=cell(row, "subcategory"),
                 domain=cell(row, "domain"),
                 difficulty=int(difficulty) if isinstance(difficulty, int | float) else None,
+                text_emotive=emotive if isinstance(emotive, str) and emotive.strip() else None,
             )
         )
     wb.close()

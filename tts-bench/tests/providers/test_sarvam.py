@@ -83,7 +83,7 @@ def test_synthesize_sends_exact_text_and_decodes_wav(provider: SarvamProvider) -
     assert result.audio == wav
     assert result.format == "wav" and result.sample_rate == 24000
     assert result.request_id == "req-9"
-    assert result.ttfb_ms == result.total_ms  # batch: the whole clip arrives at once
+    assert result.ttfb_ms is None and result.total_ms > 0  # batch: no TTFB
     assert result.billed_chars == len(TEXT)
     assert audio_seconds(result.audio, result.format, result.sample_rate) == 0.5
 

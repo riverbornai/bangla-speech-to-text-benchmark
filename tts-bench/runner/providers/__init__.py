@@ -7,8 +7,12 @@ from runner.providers.base import TTSProvider
 
 # Imported lazily so one broken SDK doesn't break every provider.
 _REGISTRY = {
+    "cartesia": "runner.providers.cartesia",
     "elevenlabs": "runner.providers.elevenlabs",
+    "gemini": "runner.providers.gemini",
+    "openai": "runner.providers.openai_tts",  # package name avoids clashing with the `openai` SDK
     "sarvam": "runner.providers.sarvam",
+    "soniox": "runner.providers.soniox",
 }
 
 

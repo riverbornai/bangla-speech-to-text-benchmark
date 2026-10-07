@@ -1,24 +1,31 @@
 ---
 paths:
-  - "runner/providers/gemini.py"
+  - "runner/providers/gemini/**"
   - "tests/providers/test_gemini.py"
 ---
-# Gemini-TTS (Google Cloud Text-to-Speech)
+# Gemini-TTS (google-genai, Vertex / enterprise)
 
-- Docs: https://cloud.google.com/text-to-speech/docs/gemini-tts — re-check the model list and
-  language table before each benchmark round; models move from Preview to GA.
-- SDK: `google-cloud-texttospeech` (docs require ≥ 2.29.0 for Gemini-TTS). Auth via ADC
-  (job service account). **No API key, no Secret Manager entry.**
-- Language: `language_code="bn-BD"` (listed GA). Do not use `bn-IN` unless running the
-  accent comparison variant.
-- Model goes in `voice.model_name` (e.g. `gemini-2.5-flash-tts`, `gemini-2.5-pro-tts`,
-  preview models such as `gemini-3.1-flash-tts-preview`). Voice = prebuilt speaker name
-  (e.g. `Kore`, `Charon`). Benchmark at least one female and one male voice.
-- `prompt` field (style instruction): leave **empty** for the baseline run. A styled variant is
-  a separate config entry.
-- Output: `LINEAR16` at 24 kHz for unary; for TTFB use the streaming method (PCM chunks).
-- Regions: Preview models may be `global`-only — use the endpoint the docs list for the model.
-- Also benchmark Chirp 3 HD voices **only if** `list_voices(language_code="bn-BD")` returns
-  any; otherwise mark them `unsupported` in the report rather than silently using `bn-IN`.
-- Billing is per input token/character depending on model — confirm unit on the pricing
-  page and set `price_unit` accordingly in providers.yaml.
+- Docs: https://docs.cloud.google.com/text-to-speech/docs/gemini-tts and
+  https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash-tts — re-check the model list
+  before each round; models move from Preview to GA. (Read 2026-10-07: the Cloud TTS page did not
+  yet list `gemini-3.8-flash-tts`; the model page does.)
+- SDK: `google-genai` (pinned in `runner/requirements.txt`), `Client(enterprise=True, project, location)`.
+  Auth via ADC (job service account). **No API key, no `.env` entry.** Project comes from
+  `GOOGLE_CLOUD_PROJECT` or the ADC project; location from `location:` in providers.yaml (`global`).
+  (The old rule said `google-cloud-texttospeech`; that SDK is not used.)
+- Calls: batch = `models.generate_content`, stream = `models.generate_content_stream`, both with
+  `response_modalities=["AUDIO"]` and `speech_config.voice_config.voice = <voice id>`.
+- Language: the model detects it from the text; we still send `speech_config.language_code=bn-BD`
+  (listed GA for Gemini-TTS). VERIFY the 3.8 model accepts it; if it rejects it, drop it.
+- Style: dataset text may contain `[style]` tags at the start of a sentence (e.g. `[laugh] ...`).
+  `styles.build_parts` splits the text into `Part`s: each tag becomes `speech_metadata.style` on the
+  text up to the next tag; untagged sentences stay in plain parts. A tag is always a single English word (Latin letters only), so anything else, such as a
+  Bangla `[বিজ্ঞপ্তি]` stays text. Tag names are passed verbatim (no mapping), and `billed_chars` is the
+  original text length. With no tags the request is a single plain part (the baseline).
+- Output: the model returns WAV (RIFF) at 24 kHz; `_common.to_wav` re-wraps whatever arrives
+  (RIFF or headerless L16) into a WAV with a correct header, since streamed chunks are concatenated.
+- Limits: 8192 input tokens. The Cloud TTS API limits text to 4000 *bytes* (≈1300 Bangla chars);
+  `max_chars` is 4000 chars and unverified for the genai route.
+- Safety/empty responses surface as `empty_audio` (a failed item), never as silent audio.
+- Billing: token-based; price still `VERIFY` in providers.yaml (`billed_chars` is input chars only).
+- Benchmark at least one female (Kore) and one male (Charon) voice as separate configs.

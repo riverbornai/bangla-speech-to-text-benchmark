@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import io
 import random
 import time
+import wave
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from typing import Literal, Protocol
@@ -20,7 +22,7 @@ class SynthesisResult:
     audio: bytes
     format: str  # "wav" | "mp3" | "pcm" | "ogg"
     sample_rate: int
-    ttfb_ms: float  # request sent -> first audio byte received
+    ttfb_ms: float | None  # request sent -> first audio byte; None in batch mode (it would equal total_ms)
     total_ms: float  # request sent -> last audio byte received
     billed_chars: int
     request_id: str | None
@@ -85,3 +87,14 @@ def collect_chunks(start_ns: int, chunks: Iterable[bytes]) -> tuple[bytes, float
     if first_ns is None:
         raise ProviderError(200, "empty_audio")
     return b"".join(parts), (first_ns - start_ns) / 1e6, (end_ns - start_ns) / 1e6
+
+
+def pcm_to_wav(pcm: bytes, sample_rate: int) -> bytes:
+    """Wrap raw 16-bit mono little-endian PCM in a WAV header (for streams that only emit raw PCM)."""
+    buf = io.BytesIO()
+    with wave.open(buf, "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(sample_rate)
+        w.writeframes(pcm)
+    return buf.getvalue()

@@ -9,7 +9,7 @@ paths:
   speakers and limits before each round.
 - Auth: header `api-subscription-key`, value from `SARVAM_API_KEY` in `.env`.
 - SDK: `sarvamai` (`SarvamAI(api_subscription_key=...)`, `client.text_to_speech.convert(...)`),
-  SDK retries disabled via `request_options={"max_retries": 0}`. Batch = `convert()` (base64 JSON, `ttfb_ms == total_ms`);
+  SDK retries disabled via `request_options={"max_retries": 0}`. Batch = `convert()` (base64 JSON, `ttfb_ms: null`);
   stream = `convert_stream()` (raw bytes, POST /text-to-speech/stream, no request id).
 - Language: `language_code="bn-IN"`. **bn-BD is not supported** — Indian Bengali accent is a
   known confound; the report must flag it (`bangla_support: bn-IN only`).

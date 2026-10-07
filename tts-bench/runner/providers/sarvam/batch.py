@@ -32,7 +32,7 @@ class SarvamBatch(SarvamProvider):
             audio=audio,
             format=self.format,
             sample_rate=self.sample_rate,
-            ttfb_ms=total_ms,  # the whole clip arrives in one JSON body
+            ttfb_ms=None,  # batch: the whole clip arrives in one JSON body
             total_ms=total_ms,
             billed_chars=len(text),
             request_id=resp.request_id,

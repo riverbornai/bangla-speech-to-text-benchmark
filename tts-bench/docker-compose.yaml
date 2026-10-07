@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: labelstudio
+      POSTGRES_USER: labelstudio
+      POSTGRES_PASSWORD: change-me
+    volumes:
+      - pgdata:/var/lib/postgresql/data      # named volume, not ./pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U labelstudio -d labelstudio"]
+      interval: 5s
+      retries: 10
+
+  label-studio:
+    image: heartexlabs/label-studio:latest
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy           # wait until Postgres is actually ready
+    ports:
+      - "8080:8080"
+    environment:
+      DJANGO_DB: default
+      POSTGRE_NAME: labelstudio
+      POSTGRE_USER: labelstudio
+      POSTGRE_PASSWORD: change-me
+      POSTGRE_HOST: db
+      POSTGRE_PORT: 5432
+      LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK: "true"
+      LABEL_STUDIO_USERNAME: admin@example.com
+      LABEL_STUDIO_PASSWORD: 123456
+      GOOGLE_APPLICATION_CREDENTIALS: /secrets/adc.json
+      # GOOGLE_CLOUD_PROJECT: YOUR_PROJECT
+    volumes:
+      - ./data:/label-studio/data
+      - ./secrets:/secrets:ro
+
+volumes:
+  pgdata:

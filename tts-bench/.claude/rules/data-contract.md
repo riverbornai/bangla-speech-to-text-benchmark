@@ -26,7 +26,8 @@ Rows are sorted by `id` and processed sequentially in a single task. `--limit N`
 ## Output: one manifest line per item
 ```json
 {"run_id": "...", "provider": "azure", "model": "...", "voice": "bn-BD-NabanitaNeural",
- "item_id": "BN-NUM-010", "status": "ok|error|skipped_existing|unsupported",
+ "item_id": "BN-NUM-010", "text": "...", "spoken_form": "...", "accepted_variants": ["...", "..."],
+ "status": "ok|error|skipped_existing|unsupported",
  "audio_path": "runs/.../BN-NUM-010.wav", "format": "wav", "sample_rate": 24000,
  "bytes": 123456, "audio_seconds": 3.42,
  "mode": "stream", "ttfb_ms": 180, "total_ms": 950, "rtf": 0.2778,
@@ -34,7 +35,9 @@ Rows are sorted by `id` and processed sequentially in a single task. `--limit N`
  "est_cost_usd": 0.00059, "http_status": 200, "provider_request_id": "...",
  "error": null, "started_at": "ISO8601", "sdk_version": "..."}
 ```
-- `mode`, `ttfb_ms`, `total_ms`, `audio_seconds` and `rtf` are required on every `ok` row;
-  see "Latency metrics" in `providers/_contract.md`. In batch mode, `ttfb_ms` is about `total_ms`.
+- `mode`, `total_ms`, `audio_seconds` and `rtf` are required on every `ok` row. `ttfb_ms` is a number
+  in stream mode and `null` in batch mode; see "Latency metrics" in `providers/_contract.md`.
+- `text` (exactly as sent to the provider), `spoken_form` and `accepted_variants` (a list; `[]` if
+  empty) are copied from the dataset onto every row, so eval can score CER from the manifest alone.
 - `est_cost_usd` = billed_chars × price from `config/providers.yaml`; note the price date there.
 - An item the provider rejects for language/script reasons is `status: "unsupported"`, not error.
