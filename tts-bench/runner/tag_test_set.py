@@ -1,20 +1,21 @@
 """Tag each sentence of the STT test set with an emotion and write per-provider TTS text to Excel.
 
 For every row of data/test-set.csv the sentence gets one common tag (happy, sad, laugh, ...),
-detected from Bangla keywords and punctuation (see RULES), and each provider's own tag
-syntax from the tag sheet is put in front of the text:
+detected from Bangla keywords and punctuation (see RULES). Each provider column holds the
+sentence with that provider's clean value in front, the same value as in emotion_map.json:
 
-    common tag | Eleven Labs  | Gemini 3.8 Flash   | Cartesia Sonic 3            | Soniox
-    sad        | [sad] কষ্ট... | style: "sad" কষ্ট... | <emotion value="sad"/> কষ্ট... | [sad] কষ্ট...
-    neutral    | হ্যাঁ।        | হ্যাঁ।              | হ্যাঁ।                       | হ্যাঁ।
+    common tag | Eleven Labs   | Gemini 3.8 Flash | Cartesia Sonic 3 | Soniox
+    sad        | [sad] কষ্ট... | [sad] কষ্ট...     | [sad] কষ্ট...     | [sad] কষ্ট...
+    warm       | [warmly] ...  | [warm] ...       | [affectionate] ...| [warm] ...
+    neutral    | হ্যাঁ।         | হ্যাঁ।            | হ্যাঁ।            | হ্যাঁ।
 
 Rules:
 - If the CSV has an "emotion" column, a non-empty value there wins over detection
   (it must be a "Common Tag" from the sheet). Use it to fix wrong guesses by hand.
 - A sentence with no keyword match is "neutral" and keeps its plain text in every column.
-- If a provider has no real tag for the emotion ("—" or a "≈" workaround), that cell gets plain text.
-- Gemini's emotion normally goes in the API's style field, not the text; the cell shows the
-  sheet's syntax (style: "...") so you can see what to send.
+- If a provider has no value for the emotion ("—" in the sheet), that cell gets plain text.
+- Values are cleaned exactly like emotion_map.json (see runner/style_map.py): no XML, no
+  style: "...", no "≈"; '<volume ratio="0.5"/>' becomes [0.5].
 
 Usage (from tts-bench/):
     python -m runner.tag_test_set
@@ -34,7 +35,7 @@ from collections import Counter
 from pathlib import Path
 from xml.sax.saxutils import escape
 
-from runner.style_map import PROVIDERS, StyleMapError, load_style_map, provider_key
+from runner.style_map import PROVIDERS, StyleMapError, load_style_map, tag_key
 
 # First column found is the sentence. "text" = TTS dataset, the other = STT test set.
 TEXT_COLUMNS = ("text", "ground_truth_transcription_bn")
@@ -98,18 +99,19 @@ def detect_emotion(text: str) -> str:
 
 
 def load_provider_tags(tags_path: Path) -> dict[str, dict[str, str]]:
-    """{common tag: {provider key: raw tag as written in the sheet}} for enabled output providers."""
-    raw = load_style_map(tags_path, key_column="Common Tag", ignore_columns=["Category"], raw=True)
+    """{common tag key: {provider key: clean value}}, the same values as emotion_map.json.
+
+    e.g. {"whisper": {"cartesia_sonic-3": "0.5", ...}, "scared_fearful": {...}}
+    """
     wanted = [k for k in OUTPUT_COLUMNS if k in PROVIDERS]
-    out: dict[str, dict[str, str]] = {}
-    for tag, cells in raw.items():
-        by_key = {provider_key(h): v for h, v in cells.items()}
-        out[tag] = {k: by_key[k] for k in wanted if k in by_key and not by_key[k].startswith("≈")}
-    return out
+    return load_style_map(
+        tags_path, key_column="Common Tag", ignore_columns=["Category"], only_providers=wanted
+    )
 
 
-def apply_tag(raw_tag: str | None, text: str) -> str:
-    return f"{raw_tag} {text}" if raw_tag else text
+def apply_tag(value: str | None, text: str) -> str:
+    """'[value] text', or the plain text when the provider has no value for this emotion."""
+    return f"[{value}] {text}" if value else text
 
 
 def build_rows(csv_path: Path, tags: dict[str, dict[str, str]]) -> tuple[list[str], list[list[str]]]:
@@ -125,7 +127,7 @@ def build_rows(csv_path: Path, tags: dict[str, dict[str, str]]) -> tuple[list[st
             text = rec.get(text_col) or ""  # kept exactly as written: never strip or normalize TTS input
             if not text.strip():
                 continue
-            tag = (rec.get("emotion") or "").strip() or detect_emotion(text)
+            tag = tag_key((rec.get("emotion") or "").strip() or detect_emotion(text))
             if tag != NEUTRAL and tag not in tags:
                 raise StyleMapError(
                     f"{csv_path}: row {line_no}: emotion {tag!r} is not a Common Tag in the sheet"

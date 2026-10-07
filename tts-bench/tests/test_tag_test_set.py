@@ -54,14 +54,15 @@ def test_detect_emotion(text: str, expected: str) -> None:
     assert detect_emotion(text) == expected
 
 
-def test_provider_tags_skip_approx_dash_and_disabled_providers(tags_xlsx: Path) -> None:
+def test_provider_tags_are_clean_values_without_disabled_providers(tags_xlsx: Path) -> None:
     tags = load_provider_tags(tags_xlsx)
     assert tags["sad"] == {
-        "elevenlabs_v3": "[sad]",
-        "gemini_3.8_flash_tts": 'style: "sad"',
-        "cartesia_sonic-3": '<emotion value="sad"/>',
-        "soniox_tts_v2": "[sad]",
+        "elevenlabs_v3": "sad",
+        "gemini_3.8_flash_tts": "sad",
+        "cartesia_sonic-3": "sad",
+        "soniox_tts_v2": "sad",
     }
+    assert tags["warm"]["cartesia_sonic-3"] == "affectionate"
     assert "cartesia_sonic-3" not in tags["curious"]  # "—" in the sheet
 
 
@@ -81,8 +82,8 @@ def test_build_rows_tags_text_and_keeps_it_exact(tmp_path: Path, tags_xlsx: Path
     assert rows[0] == [
         "sad",
         f"[sad] {raw}",
-        f'style: "sad" {raw}',
-        f'<emotion value="sad"/> {raw}',
+        f"[sad] {raw}",
+        f"[sad] {raw}",
         f"[sad] {raw}",
     ]
     assert rows[1] == [NEUTRAL, "হ্যাঁ।", "হ্যাঁ।", "হ্যাঁ।", "হ্যাঁ।"]
@@ -109,3 +110,15 @@ def test_cli_writes_excel_that_opens(tmp_path: Path, tags_xlsx: Path) -> None:
     assert values[0] == ["common tag", "Eleven Labs", "Gemini 3.8 Flash", "Cartesia Sonic 3", "Soniox"]
     assert values[1][:2] == ["warm", "[warmly] ধন্যবাদ। <&>"]
     assert values[2] == [NEUTRAL, "হ্যাঁ।", "হ্যাঁ।", "হ্যাঁ।", "হ্যাঁ।"]
+
+
+def test_xml_settings_become_plain_values(tmp_path: Path) -> None:
+    wb = Workbook()
+    for r in [SHEET[0], ["Delivery", "whisper", "—", "[whispers]", 'style: "whispered"',
+                         '≈ <volume ratio="0.5"/>', "—", "[whispering]"]]:  # fmt: skip
+        wb.active.append(r)
+    tags_path = tmp_path / "t.xlsx"
+    wb.save(tags_path)
+    data = _csv(tmp_path / "d.csv", [{"text": "চুপ।", "emotion": "whisper"}])
+    _, rows = build_rows(data, load_provider_tags(tags_path))
+    assert rows[0] == ["whisper", "[whispers] চুপ।", "[whispered] চুপ।", "[0.5] চুপ।", "[whispering] চুপ।"]
