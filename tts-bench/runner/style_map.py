@@ -17,9 +17,13 @@ Cleaning rules (turn off with --raw):
   "Sarvam (Bulbul)" -> "sarvam_bulbul".
 - The bare tag is pulled out of its wrapper: "[happy]", 'style: "happy"',
   '<emotion value="happy"/>' and "<laugh>" all become the plain word.
-  Values with any other shape (e.g. '<break time="300ms"/>', "pace: 0.8") are kept as written.
-- Approximate entries starting with "≈" (workarounds, not real tags) are kept as written,
-  e.g. "chirp_3_hd": "≈ punctuation (!)". Pass --no-approx to drop them.
+  Values with any other shape (e.g. "pace: 0.8") are kept as written.
+- Tag names become snake_case keys too: "breath / exhale" -> "breath_exhale",
+  "short pause" -> "short_pause".
+- XML tags with a setting give just the value: '<volume ratio="0.5"/>' -> "0.5",
+  '<break time="300ms"/>' -> "300ms".
+- Approximate entries starting with "≈" (workarounds) lose the "≈" and are cleaned the same way:
+  '≈ <volume ratio="0.5"/>' -> "0.5", "≈ [laughter]" -> "laughter". Pass --no-approx to drop them.
 
 Always: empty cells and dash placeholders ("—", "–", "-") are left out, so a provider
 with no tag for a row does not appear under it.
@@ -43,6 +47,18 @@ class StyleMapError(ValueError):
     pass
 
 
+# Providers written to the output when run from the command line (keys after cleaning).
+# To leave a provider out, comment its line; uncomment it to bring it back.
+# A sheet column not listed here is skipped with a warning, so new columns are never lost silently.
+PROVIDERS = [
+    # "chirp_3_hd",  # no emotion tags; only "≈" workarounds and SSML prosody
+    "elevenlabs_v3",
+    "gemini_3.8_flash_tts",
+    "cartesia_sonic-3",
+    # "sarvam_bulbul",  # no emotion tags; only "≈" workarounds and API params
+    "soniox_tts_v2",
+]
+
 # Cells that mean "no value" in a hand-filled sheet.
 _MISSING = {"", "—", "–", "-"}
 _APPROX = "≈"
@@ -53,6 +69,7 @@ _TAG_PATTERNS = (
     re.compile(r'^style:\s*"([^"]+)"$'),  # style: "happy"
     re.compile(r'^<\s*emotion\s+value\s*=\s*"([^"]+)"\s*/?>$'),  # <emotion value="happy"/>
     re.compile(r'^<([^<>="/]+)>$'),  # <laugh>, <short pause>
+    re.compile(r'^<\s*[\w:-]+\s+[\w:-]+\s*=\s*"([^"]*)"[^<>]*>$'),  # <volume ratio="0.5"/> -> 0.5
 )
 
 
@@ -67,13 +84,21 @@ def provider_key(header: str) -> str:
     return key.strip("_")
 
 
-def bare_tag(value: str, keep_approx: bool = True) -> str | None:
-    """Pull the plain tag out of a provider-specific wrapper.
+def tag_key(name: str) -> str:
+    """Common Tag -> JSON key: 'breath / exhale' -> 'breath_exhale', 'short pause' -> 'short_pause'."""
+    return provider_key(name)
 
-    Approximate entries ("≈ ...") are returned as written, or None when keep_approx is False.
+
+def bare_tag(value: str, keep_approx: bool = True) -> str | None:
+    """Pull the plain tag or value out of a provider-specific wrapper.
+
+    '<volume ratio="0.5"/>' -> '0.5'. Approximate entries lose their "≈" and are cleaned the
+    same way ('≈ <volume ratio="0.5"/>' -> '0.5'), or give None when keep_approx is False.
     """
     if value.startswith(_APPROX):
-        return value if keep_approx else None
+        if not keep_approx:
+            return None
+        value = value[len(_APPROX) :].strip()
     for pattern in _TAG_PATTERNS:
         m = pattern.match(value)
         if m:
@@ -161,7 +186,9 @@ def load_style_map(
     ignore_columns: tuple[str, ...] | list[str] = (),
     raw: bool = False,
     keep_approx: bool = True,
+    only_providers: list[str] | None = None,
 ) -> dict[str, dict[str, str]]:
+    """only_providers: keep just these provider keys (None = every column)."""
     sheets = _read_xlsx(path)
     if sheet is not None and sheet not in sheets:
         raise StyleMapError(f"{path}: sheet {sheet!r} not found (have {list(sheets)})")
@@ -189,6 +216,11 @@ def load_style_map(
         for i, name in enumerate(header)
         if i != key_idx and name and name not in ignore_columns
     ]
+    if only_providers is not None:
+        skipped = [name for _, name in providers if name not in only_providers]
+        if skipped:
+            print(f"note: skipping provider columns not in PROVIDERS: {skipped}", file=sys.stderr)
+        providers = [(i, name) for i, name in providers if name in only_providers]
     if not providers:
         raise StyleMapError(f"{path}: no provider columns next to the key column")
     names = [name for _, name in providers]
@@ -201,6 +233,8 @@ def load_style_map(
         key = _cell(row[key_idx]) if key_idx < len(row) else ""
         if not key:
             continue  # blank spacer row
+        if not raw:
+            key = tag_key(key)
         if key in result:
             raise StyleMapError(f"{path}: duplicate key {key!r} on row {line_no}")
         entry: dict[str, str] = {}
@@ -227,12 +261,21 @@ def main(argv: list[str] | None = None) -> int:
     )
     p.add_argument("--raw", action="store_true", help="keep provider headers and cell values as written")
     p.add_argument("--no-approx", action="store_true", help='drop approximate "≈ ..." entries')
+    p.add_argument(
+        "--all-providers", action="store_true", help="ignore the PROVIDERS list and output every column"
+    )
     p.add_argument("--out", type=Path, help="write JSON here instead of stdout")
     args = p.parse_args(argv)
 
     try:
         mapping = load_style_map(
-            args.xlsx, args.sheet, args.key_column, args.ignore_column, args.raw, not args.no_approx
+            args.xlsx,
+            args.sheet,
+            args.key_column,
+            args.ignore_column,
+            args.raw,
+            not args.no_approx,
+            None if args.all_providers or args.raw else PROVIDERS,
         )
     except StyleMapError as e:
         print(f"error: {e}", file=sys.stderr)
