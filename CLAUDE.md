@@ -18,8 +18,8 @@ runner/                    # synthesis container (Python 3.12)
   storage.py               # path layout + manifest writing on the FUSE mount
   providers/
     base.py                # TTSProvider protocol + SynthesisResult dataclass
-    <name>/                # one package per provider: _common.py, batch.py, stream.py, __init__.py
-                           # (elevenlabs/, sarvam/; later gemini/, azure/, cartesia/, openai_tts/, indicf5/)
+    <name>.py              # one module per provider: shared setup, <Name>Batch, <Name>Stream, create()
+                           # (elevenlabs, sarvam, gemini, cartesia, openai_tts, soniox, azure; later indicf5)
   Dockerfile
 eval/                      # ASR round-trip CER, UTMOS, report builder
 config/providers.yaml      # model IDs, voices, pricing — the ONLY place these live

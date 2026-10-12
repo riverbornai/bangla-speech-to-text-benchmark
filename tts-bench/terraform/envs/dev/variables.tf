@@ -42,7 +42,7 @@ variable "eval_image" {
 variable "dataset_object" {
   type        = string
   description = "Dataset workbook path under <bucket>/<bucket_prefix>/."
-  default     = "dataset/bangla_tts_benchmark_dataset_v0.1.xlsx"
+  default     = "dataset/bangla_tts_benchmark_dataset_v0.4.xlsx"
 }
 
 variable "provider_config_path" {

@@ -11,7 +11,6 @@ from types import SimpleNamespace
 import pytest
 
 from runner.config import ConfigError, load_provider_config
-from runner.providers import base
 from runner.providers.base import ProviderError
 from runner.providers.openai_tts import (
     OpenAIBatch,
@@ -68,8 +67,7 @@ providers:
 
 
 @pytest.fixture(autouse=True)
-def no_sleep(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(base, "sleep", lambda _: None)
+def api_key_env(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("OPENAI_API_KEY", "test-key")
 
 
@@ -110,7 +108,7 @@ def test_batch_sends_exact_text_and_defaults_only(config_path: Path) -> None:
     }
     assert result.audio == _wav() and result.format == "wav" and result.sample_rate == 24000
     assert result.ttfb_ms is None and result.total_ms > 0  # batch: no TTFB
-    assert result.request_id == "req_ok" and result.billed_chars == len(TEXT) and result.attempts == 1
+    assert result.request_id == "req_ok" and result.billed_chars == len(TEXT)
 
 
 def test_stream_ttfb_is_first_chunk_and_pcm_becomes_wav(config_path: Path) -> None:
@@ -132,15 +130,13 @@ def test_stream_ttfb_is_first_chunk_and_pcm_becomes_wav(config_path: Path) -> No
         assert (w.getframerate(), w.getnchannels(), w.getsampwidth(), w.getnframes()) == (24000, 1, 2, 12000)
 
 
-def test_retries_429_and_5xx_then_succeeds(config_path: Path) -> None:
-    outcomes = [
-        httpx2.Response(429, json={"error": {"code": "rate_limit_exceeded"}}, headers={"retry-after": "1"}),
-        httpx2.Response(503),
-        httpx2.Response(200, content=_wav(), headers=HEADERS),
-    ]
+@pytest.mark.parametrize("status", [429, 503])
+def test_transient_errors_are_not_retried(config_path: Path, status: int) -> None:
+    outcomes = [httpx2.Response(status), httpx2.Response(200, content=_wav(), headers=HEADERS)]
     p, seen = _provider(OpenAIBatch, config_path, lambda r: outcomes.pop(0))
-    assert p.synthesize(TEXT).attempts == 3
-    assert len(seen) == 3  # the SDK's own retries are disabled
+    with pytest.raises(ProviderError) as exc:
+        p.synthesize(TEXT)
+    assert exc.value.status == status and len(seen) == 1  # one request, no retry, SDK retries are off
 
 
 def test_does_not_retry_4xx_and_hides_message(config_path: Path) -> None:
@@ -170,22 +166,15 @@ def test_error_without_a_code_falls_back_to_the_http_status(config_path: Path) -
     assert exc.value.status == 400 and str(exc.value) == "http_400"
 
 
-def test_gives_up_after_max_attempts(config_path: Path) -> None:
-    p, seen = _provider(OpenAIBatch, config_path, lambda r: httpx2.Response(500))
-    with pytest.raises(ProviderError) as exc:
-        p.synthesize(TEXT)
-    assert len(seen) == base.MAX_ATTEMPTS and exc.value.attempts == base.MAX_ATTEMPTS
-
-
-def test_transport_failure_is_a_retryable_error_without_status(config_path: Path) -> None:
+def test_transport_failure_is_an_error_without_status(config_path: Path) -> None:
     def down(request):
         raise httpx2.ConnectError("connection refused")
 
     p, seen = _provider(OpenAIBatch, config_path, down)
     with pytest.raises(ProviderError) as exc:
         p.synthesize(TEXT)
-    assert exc.value.status is None and exc.value.retryable and str(exc.value) == "APIConnectionError"
-    assert len(seen) == base.MAX_ATTEMPTS
+    assert exc.value.status is None and str(exc.value) == "APIConnectionError"
+    assert len(seen) == 1
 
 
 def test_empty_audio_fails(config_path: Path) -> None:

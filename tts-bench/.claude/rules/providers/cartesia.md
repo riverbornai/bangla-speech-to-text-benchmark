@@ -1,6 +1,6 @@
 ---
 paths:
-  - "runner/providers/cartesia/**"
+  - "runner/providers/cartesia.py"
   - "tests/providers/test_cartesia.py"
 ---
 # Cartesia Sonic
@@ -22,7 +22,7 @@ Facts read from the docs and SDK on 2026-10-07; re-check before each round.
   `error_code`. TTFB is the first non-empty chunk. SSE with `container: "wav"` is unverified.
 - Errors: `APIStatusError` (status, `.body`, `.response.headers`) and `APIConnectionError` (incl. timeouts).
   The body has `error_code`, `title`, `message`, `request_id`; keep only `error_code` + `request_id`.
-  The SDK retries by default, so it is created with `max_retries=0` (retries are `with_retries`).
+  The SDK retries by default, so it is created with `max_retries=0` (the runner does not retry either).
 - Success responses expose no documented request id, so `request_id` is null; the chunk `context_id` is not one.
 - Limits: no max input length documented, so `max_chars` is unset. TTS concurrency by plan: Free 2, Pro 3,
   Startup 5, Scale 15 (we use 1); over the limit is a 429.

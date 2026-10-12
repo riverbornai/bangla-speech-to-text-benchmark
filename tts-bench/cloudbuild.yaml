@@ -24,7 +24,7 @@ images:
   - ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_IMAGE}:${_TAG}
 
 substitutions:
-  _REGION: asia-south1
+  _REGION: asia-southeast1
   _REPO: cloud-run-source-deploy
   _IMAGE: tts-runner
   _TAG: latest

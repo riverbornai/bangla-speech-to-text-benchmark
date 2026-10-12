@@ -1,6 +1,6 @@
 ---
 paths:
-  - "runner/providers/gemini/**"
+  - "runner/providers/gemini.py"
   - "tests/providers/test_gemini.py"
 ---
 # Gemini-TTS (google-genai, Vertex / enterprise)

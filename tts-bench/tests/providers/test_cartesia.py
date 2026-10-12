@@ -13,7 +13,6 @@ import respx
 
 from runner.config import ConfigError, load_provider_config
 from runner.dataset import DatasetItem
-from runner.providers import base
 from runner.providers.base import ProviderError
 from runner.providers.cartesia import (
     CartesiaBatch,
@@ -87,11 +86,6 @@ def stream_provider(config_path: Path) -> CartesiaProvider:
     return CartesiaStream(load_provider_config(config_path, "cartesia", "stream"), api_key="test-key")
 
 
-@pytest.fixture(autouse=True)
-def no_sleep(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(base, "sleep", lambda _: None)
-
-
 def _item(text: str) -> DatasetItem:
     return DatasetItem("BN-X-001", text, None, (), "plain", None, None, 1)
 
@@ -113,7 +107,7 @@ def test_batch_sends_exact_text_voice_language_and_wav_format(provider: Cartesia
     }
     assert result.format == "wav" and result.sample_rate == 24000
     assert result.ttfb_ms is None and result.total_ms > 0  # batch: no TTFB
-    assert result.billed_chars == len(TEXT) and result.attempts == 1 and result.request_id is None
+    assert result.billed_chars == len(TEXT) and result.request_id is None
     with wave.open(io.BytesIO(result.audio)) as w:
         assert w.getnframes() == 12000
 
@@ -187,26 +181,25 @@ def test_stream_empty_audio_fails(stream_provider: CartesiaProvider) -> None:
         stream_provider.synthesize(TEXT)
 
 
+@pytest.mark.parametrize("status", [429, 503])
 @respx.mock
-def test_retries_429_and_5xx_then_succeeds(provider: CartesiaProvider) -> None:
+def test_transient_errors_are_not_retried(provider: CartesiaProvider, status: int) -> None:
     route = respx.post(BYTES_URL).mock(
-        side_effect=[
-            httpx.Response(429, json={"error_code": "rate_limit"}, headers={"retry-after": "1"}),
-            httpx.Response(503),
-            httpx.Response(200, content=_wav()),
-        ]
+        side_effect=[httpx.Response(status, json={"error_code": "x"}), httpx.Response(200, content=_wav())]
     )
-    assert provider.synthesize(TEXT).attempts == 3
-    assert route.call_count == 3  # the SDK's own retries are disabled
+    with pytest.raises(ProviderError) as exc:
+        provider.synthesize(TEXT)
+    assert exc.value.status == status and route.call_count == 1  # one request, no retry, SDK retries are off
 
 
 @respx.mock
-def test_retries_transport_errors(provider: CartesiaProvider) -> None:
+def test_transport_error_is_not_retried(provider: CartesiaProvider) -> None:
     route = respx.post(BYTES_URL).mock(
         side_effect=[httpx.ConnectTimeout("t"), httpx.Response(200, content=_wav())]
     )
-    assert provider.synthesize(TEXT).attempts == 2
-    assert route.call_count == 2
+    with pytest.raises(ProviderError) as exc:
+        provider.synthesize(TEXT)
+    assert exc.value.status is None and route.call_count == 1
 
 
 @respx.mock
@@ -229,14 +222,6 @@ def test_error_without_a_code_falls_back_to_the_status(provider: CartesiaProvide
     with pytest.raises(ProviderError) as exc:
         provider.synthesize(TEXT)
     assert exc.value.status == 400 and str(exc.value) == "http_400" and exc.value.request_id is None
-
-
-@respx.mock
-def test_gives_up_after_max_attempts(provider: CartesiaProvider) -> None:
-    route = respx.post(BYTES_URL).mock(return_value=httpx.Response(500))
-    with pytest.raises(ProviderError) as exc:
-        provider.synthesize(TEXT)
-    assert route.call_count == base.MAX_ATTEMPTS and exc.value.attempts == base.MAX_ATTEMPTS
 
 
 def test_supports_respects_max_chars_when_set(provider: CartesiaProvider, config_path: Path) -> None:

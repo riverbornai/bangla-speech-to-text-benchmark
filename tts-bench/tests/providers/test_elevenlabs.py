@@ -10,7 +10,6 @@ import respx
 
 from runner.config import ConfigError, load_provider_config
 from runner.dataset import DatasetItem
-from runner.providers import base
 from runner.providers.base import ProviderError
 from runner.providers.elevenlabs import (
     ElevenLabsBatch,
@@ -28,11 +27,6 @@ MP3 = b"ID3" + b"\x00" * 997
 @pytest.fixture
 def provider(providers_yaml: Path) -> ElevenLabsProvider:
     return ElevenLabsBatch(load_provider_config(providers_yaml, "elevenlabs"), api_key="test-key")
-
-
-@pytest.fixture(autouse=True)
-def no_sleep(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(base, "sleep", lambda _: None)
 
 
 def _item(text: str) -> DatasetItem:
@@ -57,20 +51,15 @@ def test_convert_sends_text_model_language_and_voice_settings(provider: ElevenLa
     assert result.format == "mp3" and result.sample_rate == 44100
     assert result.billed_chars == len(TEXT)
     assert result.ttfb_ms is None and result.total_ms > 0  # batch: no TTFB
-    assert result.attempts == 1
 
 
+@pytest.mark.parametrize("status", [429, 503])
 @respx.mock
-def test_retries_429_and_5xx_then_succeeds(provider: ElevenLabsProvider) -> None:
-    route = respx.post(URL).mock(
-        side_effect=[
-            httpx.Response(429, json={"detail": {"status": "too_many_concurrent_requests"}}),
-            httpx.Response(503),
-            httpx.Response(200, content=MP3),
-        ]
-    )
-    assert provider.synthesize(TEXT).attempts == 3
-    assert route.call_count == 3  # SDK's own retries are disabled
+def test_transient_errors_are_not_retried(provider: ElevenLabsProvider, status: int) -> None:
+    route = respx.post(URL).mock(side_effect=[httpx.Response(status), httpx.Response(200, content=MP3)])
+    with pytest.raises(ProviderError) as exc:
+        provider.synthesize(TEXT)
+    assert exc.value.status == status and route.call_count == 1  # one request, no retry, SDK retries are off
 
 
 @respx.mock
@@ -83,15 +72,6 @@ def test_does_not_retry_4xx_and_hides_body(provider: ElevenLabsProvider) -> None
     assert route.call_count == 1
     assert exc.value.status == 401
     assert str(exc.value) == "invalid_api_key"
-
-
-@respx.mock
-def test_gives_up_after_max_attempts(provider: ElevenLabsProvider) -> None:
-    route = respx.post(URL).mock(return_value=httpx.Response(500))
-    with pytest.raises(ProviderError) as exc:
-        provider.synthesize(TEXT)
-    assert route.call_count == base.MAX_ATTEMPTS
-    assert exc.value.attempts == base.MAX_ATTEMPTS
 
 
 def test_supports_respects_max_chars(provider: ElevenLabsProvider) -> None:

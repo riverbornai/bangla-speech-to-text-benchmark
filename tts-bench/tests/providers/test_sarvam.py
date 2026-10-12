@@ -13,7 +13,6 @@ import respx
 from runner.config import load_provider_config
 from runner.dataset import DatasetItem
 from runner.main import audio_seconds
-from runner.providers import base
 from runner.providers.base import ProviderError
 from runner.providers.sarvam import SarvamBatch, SarvamProvider, SarvamStream
 
@@ -54,11 +53,6 @@ def provider(config_path: Path) -> SarvamProvider:
     return SarvamBatch(load_provider_config(config_path, "sarvam"), api_key="test-key")
 
 
-@pytest.fixture(autouse=True)
-def no_sleep(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(base, "sleep", lambda _: None)
-
-
 def _ok(audio: bytes) -> httpx.Response:
     return httpx.Response(200, json={"request_id": "req-9", "audios": [base64.b64encode(audio).decode()]})
 
@@ -88,11 +82,13 @@ def test_synthesize_sends_exact_text_and_decodes_wav(provider: SarvamProvider) -
     assert audio_seconds(result.audio, result.format, result.sample_rate) == 0.5
 
 
+@pytest.mark.parametrize("status", [429, 502])
 @respx.mock
-def test_retries_429_then_succeeds(provider: SarvamProvider) -> None:
-    route = respx.post(URL).mock(side_effect=[httpx.Response(429), httpx.Response(502), _ok(_wav())])
-    assert provider.synthesize(TEXT).attempts == 3
-    assert route.call_count == 3  # SDK's own retries are disabled
+def test_transient_errors_are_not_retried(provider: SarvamProvider, status: int) -> None:
+    route = respx.post(URL).mock(side_effect=[httpx.Response(status), _ok(_wav())])
+    with pytest.raises(ProviderError) as exc:
+        provider.synthesize(TEXT)
+    assert exc.value.status == status and route.call_count == 1  # one request, no retry, SDK retries are off
 
 
 @respx.mock
@@ -137,10 +133,11 @@ def test_stream_mode_returns_raw_audio_bytes(config_path: Path) -> None:
 
 
 @respx.mock
-def test_stream_mode_retries_5xx(config_path: Path) -> None:
+def test_stream_mode_does_not_retry_5xx(config_path: Path) -> None:
     provider = SarvamStream(load_provider_config(config_path, "sarvam", "stream"), api_key="test-key")
     route = respx.post(f"{URL}/stream").mock(
         side_effect=[httpx.Response(503), httpx.Response(200, content=_wav())]
     )
-    assert provider.synthesize(TEXT).attempts == 2
-    assert route.call_count == 2
+    with pytest.raises(ProviderError) as exc:
+        provider.synthesize(TEXT)
+    assert exc.value.status == 503 and route.call_count == 1

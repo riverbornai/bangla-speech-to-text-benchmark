@@ -15,7 +15,6 @@ class SynthesisResult:
     total_ms: float        # request sent -> last audio byte received
     billed_chars: int
     request_id: str | None
-    attempts: int
 
 class TTSProvider(Protocol):
     name: str
@@ -43,11 +42,11 @@ Every provider module must:
    the SDK lacks a needed feature; say why in a comment.
 
 ## Batch and stream modes (every provider implements both)
-- Each provider is a package: `runner/providers/<name>/`
-  - `_common.py`: shared client setup, `supports()`, request params, SDK error mapping, retries
-  - `batch.py`: the non-streaming SDK method
-  - `stream.py`: the streaming SDK method
-  - `__init__.py`: `create(config)` picks the class from `config.mode`
+- Each provider is one module: `runner/providers/<name>.py`, in this order
+  - shared client setup, `supports()`, request params and SDK error mapping (`<Name>Provider`)
+  - `<Name>Batch`: the non-streaming SDK method
+  - `<Name>Stream`: the streaming SDK method
+  - `create(config)` at the bottom picks the class from `config.mode`
 - Choose the mode at run time with `--batch`, `--stream`, or both (both run batch first, then
   stream). With no flag, the mode is batch.
 - Each mode writes its own `runs/<run_id>/<provider>/<model>/<voice>/<mode>/`. Never mix
@@ -61,8 +60,8 @@ Every provider module must:
 
 ## Latency metrics (RTF for every mode, TTFB for stream mode only)
 - **Clock:** use `time.perf_counter_ns()`. Start the clock just before the SDK call, after the
-  client is built and the text is prepared. Time only the attempt that succeeded: reset the clock
-  on every retry, and never include backoff sleeps.
+  client is built and the text is prepared. There are no retries: each item is one
+  request, timed once.
 - **TTFB** (`ttfb_ms`) is stream mode only: the time until the first non-empty audio chunk
   arrives, measured with `base.collect_chunks()`. The server sends audio while it renders, so this
   is how soon playback could start.

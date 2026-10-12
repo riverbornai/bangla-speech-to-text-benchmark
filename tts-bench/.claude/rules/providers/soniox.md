@@ -1,6 +1,6 @@
 ---
 paths:
-  - "runner/providers/soniox/**"
+  - "runner/providers/soniox.py"
   - "tests/providers/test_soniox.py"
 ---
 # Soniox TTS
@@ -26,13 +26,13 @@ Docs: https://soniox.com/docs/tts/get-started, API reference https://soniox.com/
   44100, 48000 (PCM/WAV default 24000). Baseline sends no `speed` or `reduce_silence`.
 - Limits: 5000 characters per REST request (`max_chars`), audio capped at 2 minutes (truncated on REST, an error on
   WebSocket). 100 requests/min and 3 concurrent; the runner is sequential.
-- Retries: the SDK does not retry, so `with_retries` owns it (429/5xx/transport only, 5 attempts).
+- No retries: the SDK does not retry and neither does the runner; a failed request is an `error` item.
 - Errors: REST failures raise `SonioxAPIError` subclasses: 400 invalid request, 401/403 authentication, 404, 409,
   429 rate limit, 5xx server; **402, 408 and any other status raise the plain `SonioxAPIError`**. Log only
   `api_error.error_type` (e.g. `limit_exceeded`, `organization_balance_exhausted`), never the message. A non-JSON error
-  body leaves `api_error` empty (message becomes `http_<status>`). `Retry-After` is not read by the SDK; we read it
-  from `error.response.headers`. Realtime failures raise `SonioxRealtimeError` with only a message: server errors end
-  in `(code N)` and become that status; timeouts and disconnects have no code and are retried as transport errors.
+  body leaves `api_error` empty (message becomes `http_<status>`). `Retry-After` is ignored (nothing is retried).
+  Realtime failures raise `SonioxRealtimeError` with only a message: server errors end
+  in `(code N)` and become that status; timeouts and disconnects have no code and become a status-less transport error.
 - Request id: error bodies carry `request_id` (`SonioxAPIError.request_id`). Success returns plain bytes or audio
   events, so `request_id` is `None` on success (we do not invent one).
 - Tags (emotive variant, `config/soniox.json`): bracketed English tags before the text they affect, e.g. `[laughs]`,

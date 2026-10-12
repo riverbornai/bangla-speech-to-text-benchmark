@@ -22,6 +22,6 @@ paths:
 - Text is sent unchanged, but per the SDK docs **bulbul:v3 always enables preprocessing**
   (server-side normalization) — note this next to Sarvam's scores.
   Leave pace/pitch/loudness/temperature at defaults; record any change in `voice_settings`.
-- Rate limit: Starter 30 req/min for bulbul:v3 (Pro 200, Business 1000). 429 → backoff.
+- Rate limit: Starter 30 req/min for bulbul:v3 (Pro 200, Business 1000). a 429 is recorded as an error (no retries).
 - Billing: per character in credits; price not published on the docs page — fill from the
   dashboard and set `price_checked`.

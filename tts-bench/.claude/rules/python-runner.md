@@ -10,8 +10,8 @@ paths:
 - Dependencies pinned in `requirements.txt` (exact versions). Provider SDKs imported lazily
   inside each provider module so one broken SDK doesn't break all providers.
 - Config via env vars + `config/providers.yaml`; parse once into a frozen dataclass.
-- Retries: exponential backoff with jitter on 429/5xx only (max 5 attempts). Never retry 4xx
-  other than 429. Record the attempt count in the manifest.
+- No retries: one request per item. A failed request is recorded as `error` with its status and the run
+  moves on; provider SDK retries are switched off (`max_retries=0`) so every request is timed exactly once.
 - No concurrency: a plain synchronous loop over the rows (one request at a time).
 - Timing: `time.perf_counter_ns()`; TTFB (stream mode only) = first audio chunk received, total = last byte, RTF =
   total / audio duration (see "Latency metrics" in `providers/_contract.md`).

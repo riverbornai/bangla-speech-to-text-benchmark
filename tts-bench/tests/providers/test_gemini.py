@@ -12,11 +12,15 @@ from google.genai import errors, types
 
 from runner.config import ConfigError, load_provider_config
 from runner.dataset import DatasetItem
-from runner.providers import base
 from runner.providers.base import ProviderError
-from runner.providers.gemini import GeminiBatch, GeminiProvider, GeminiStream, parse_output_format
-from runner.providers.gemini._common import to_wav
-from runner.providers.gemini.styles import build_parts
+from runner.providers.gemini import (
+    GeminiBatch,
+    GeminiProvider,
+    GeminiStream,
+    build_parts,
+    parse_output_format,
+    to_wav,
+)
 
 TEXT = "স্কুলটি এখান থেকে ৫ কি.মি. দূরে।"
 PCM = b"\x01\x00" * 12000  # 0.5 s at 24 kHz
@@ -76,11 +80,6 @@ def _provider(cls, config_path: Path, behaviour, monkeypatch: pytest.MonkeyPatch
     return cls(load_provider_config(config_path, "gemini", mode))
 
 
-@pytest.fixture(autouse=True)
-def no_sleep(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(base, "sleep", lambda _: None)
-
-
 def _item(text: str) -> DatasetItem:
     return SimpleNamespace(text=text)  # type: ignore[return-value]
 
@@ -99,7 +98,7 @@ def test_batch_sends_exact_text_and_returns_wav(config_path: Path, monkeypatch: 
     }
     assert result.format == "wav" and result.sample_rate == 24000
     assert result.ttfb_ms is None and result.total_ms > 0
-    assert result.request_id == "resp-1" and result.billed_chars == len(TEXT) and result.attempts == 1
+    assert result.request_id == "resp-1" and result.billed_chars == len(TEXT)
     with wave.open(io.BytesIO(result.audio)) as w:
         assert w.getnframes() == 12000
 
@@ -124,17 +123,14 @@ def test_stream_ttfb_is_first_chunk(config_path: Path, monkeypatch: pytest.Monke
         assert w.getnframes() == 12000
 
 
-def test_retries_on_429_then_succeeds(config_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    outcomes = [errors.ClientError(429, {"error": {"status": "RESOURCE_EXHAUSTED"}}), _resp(_wav())]
-
+def test_rate_limit_is_not_retried(config_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     def behaviour(_kw):
-        o = outcomes.pop(0)
-        if isinstance(o, Exception):
-            raise o
-        return o
+        raise errors.ClientError(429, {"error": {"status": "RESOURCE_EXHAUSTED"}})
 
     p = _provider(GeminiBatch, config_path, behaviour, monkeypatch)
-    assert p.synthesize(TEXT).attempts == 2
+    with pytest.raises(ProviderError) as exc:
+        p.synthesize(TEXT)
+    assert exc.value.status == 429 and len(p._client.models.calls) == 1
 
 
 def test_client_error_is_not_retried(config_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -165,160 +161,71 @@ def test_parse_output_format() -> None:
         parse_output_format("mp3_24000")
 
 
-def test_style_tags_become_speech_metadata() -> None:
-    text = "[laugh] হাসির কথা। সাধারণ বাক্য। [whisper] ফিসফিস। আবার সাধারণ।"
-    assert build_parts(text) == [
-        {"text": "হাসির কথা। সাধারণ বাক্য।", "speech_metadata": {"style": "laugh"}},
-        {"text": "ফিসফিস। আবার সাধারণ।", "speech_metadata": {"style": "whisper"}},
+# --- styles: build_parts ------------------------------------------------------------------------------------
+
+STYLES = ("calm", "smug and proud", "soft and gentle")
+
+
+def test_baseline_sends_the_text_unchanged_even_with_brackets() -> None:
+    assert build_parts(TEXT) == [{"text": TEXT}]
+    assert build_parts("[laugh] [বিজ্ঞপ্তি] আগামীকাল ক্লাস বন্ধ।") == [
+        {"text": "[laugh] [বিজ্ঞপ্তি] আগামীকাল ক্লাস বন্ধ।"}  # no styles configured: nothing is cut out
+    ]
+
+
+def test_marker_becomes_speech_metadata_for_the_text_after_it() -> None:
+    assert build_parts("[calm] এক। দুই।", STYLES) == [
+        {"text": "এক। দুই।", "speech_metadata": {"style": "calm"}},
+    ]
+
+
+def test_a_style_lasts_until_the_next_marker() -> None:
+    text = "[calm] এক। দুই। [smug and proud] তিন। চার।"
+    assert build_parts(text, STYLES) == [
+        {"text": "এক। দুই।", "speech_metadata": {"style": "calm"}},
+        {"text": "তিন। চার।", "speech_metadata": {"style": "smug and proud"}},
     ]
     # the SDK accepts the shape
-    assert types.Part(**build_parts(text)[0]).speech_metadata.style == "laugh"
+    assert types.Part(**build_parts(text, STYLES)[0]).speech_metadata.style == "calm"
 
 
-def test_untagged_prefix_and_bangla_brackets_stay_plain() -> None:
-    assert build_parts("প্রথম বাক্য। [cheerful] দ্বিতীয়।") == [
-        {"text": "প্রথম বাক্য।"},
-        {"text": "দ্বিতীয়।", "speech_metadata": {"style": "cheerful"}},
-    ]
-    assert build_parts("[বিজ্ঞপ্তি] আগামীকাল ক্লাস বন্ধ থাকবে।") == [{"text": "[বিজ্ঞপ্তি] আগামীকাল ক্লাস বন্ধ থাকবে।"}]
-    assert build_parts("মাঝে [laugh] আছে") == [{"text": "মাঝে [laugh] আছে"}]  # not at a sentence start
-    assert build_parts("[laugh]") == [{"text": "[laugh]"}]
-
-
-def test_only_single_english_word_tags_are_styles() -> None:
-    assert build_parts("[excited, fast-paced] দ্রুত।") == [{"text": "[excited, fast-paced] দ্রুত।"}]
-    assert build_parts("[two words] দ্রুত।") == [{"text": "[two words] দ্রুত।"}]
-
-
-def test_tag_needs_whitespace_after_sentence_end_or_start_of_text() -> None:
-    assert build_parts("প্রথম।\n[whisper] ফিসফিস।") == [
-        {"text": "প্রথম।"},
-        {"text": "ফিসফিস।", "speech_metadata": {"style": "whisper"}},
-    ]
-    assert build_parts("প্রথম।[whisper] ফিসফিস।") == [
-        {"text": "প্রথম।[whisper] ফিসফিস।"}
-    ]  # no space: not a tag
-
-
-STYLED = "[laugh] হাসির কথা। [whisper] ফিসফিস।"
-
-
-@pytest.mark.parametrize("cls", [GeminiBatch, GeminiStream])
-def test_styled_text_is_sent_as_styled_parts(cls, config_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    p = _provider(
-        cls,
-        config_path,
-        lambda _kw: _resp(_wav()) if cls is GeminiBatch else iter([_resp(_wav())]),
-        monkeypatch,
-    )
-    result = p.synthesize(STYLED)
-
-    kw = p._client.models.calls[0]
-    assert kw["contents"] == [
-        {
-            "role": "user",
-            "parts": [
-                {"text": "হাসির কথা।", "speech_metadata": {"style": "laugh"}},
-                {"text": "ফিসফিস।", "speech_metadata": {"style": "whisper"}},
-            ],
-        }
-    ]
-    # style does not change the voice
-    assert kw["config"]["speech_config"]["voice_config"] == {"voice": "Kore"}
-    assert result.billed_chars == len(STYLED)  # billed on the original text, tags included
-
-
-def test_styled_request_is_accepted_by_the_sdk_types() -> None:
-    contents = types.Content(role="user", parts=[types.Part(**p) for p in build_parts(STYLED)])
-    assert [p.speech_metadata.style for p in contents.parts] == ["laugh", "whisper"]
-
-
-def test_style_covers_every_sentence_until_the_next_tag() -> None:
-    text = "এক। [laugh] দুই। তিন। [whisper] চার। পাঁচ।"
-    assert build_parts(text) == [
+def test_text_before_the_first_marker_has_no_style() -> None:
+    assert build_parts("এক। [calm] দুই।", STYLES) == [
         {"text": "এক।"},
-        {"text": "দুই। তিন।", "speech_metadata": {"style": "laugh"}},
-        {"text": "চার। পাঁচ।", "speech_metadata": {"style": "whisper"}},
+        {"text": "দুই।", "speech_metadata": {"style": "calm"}},
     ]
 
 
-def test_tags_after_any_sentence_terminator() -> None:
-    assert build_parts("এক? [shout] দুই! [sad] তিন… [calm] চার.") == [
-        {"text": "এক?"},
-        {"text": "দুই!", "speech_metadata": {"style": "shout"}},
-        {"text": "তিন…", "speech_metadata": {"style": "sad"}},
-        {"text": "চার.", "speech_metadata": {"style": "calm"}},
-    ]
-
-
-def test_repeated_style_is_not_merged() -> None:
-    assert build_parts("[laugh] এক। [laugh] দুই।") == [
-        {"text": "এক।", "speech_metadata": {"style": "laugh"}},
-        {"text": "দুই।", "speech_metadata": {"style": "laugh"}},
-    ]
-
-
-def test_multiple_untagged_sentences_stay_in_one_part() -> None:
-    assert build_parts("এক। দুই। তিন।") == [{"text": "এক। দুই। তিন।"}]
-    assert build_parts("এক। দুই। [whisper] তিন।") == [
-        {"text": "এক। দুই।"},
-        {"text": "তিন।", "speech_metadata": {"style": "whisper"}},
-    ]
-
-
-def test_inline_tag_in_a_later_sentence_is_not_a_style() -> None:
-    text = "[laugh] এক। দুই [whisper] তিন। চার।"
-    assert build_parts(text) == [{"text": "এক। দুই [whisper] তিন। চার।", "speech_metadata": {"style": "laugh"}}]
-
-
-STYLES = ("smug and proud", "soft and gentle")
-
-
-def test_emotive_markers_become_speech_metadata_wherever_they_sit() -> None:
-    text = '[smug and proud] আমি পেরেছি। <laugh> মা বললেন, [soft and gentle] "সাবধানে যেও।"'
-    assert build_parts(text, STYLES) == [
-        {"text": "আমি পেরেছি। <laugh> মা বললেন,", "speech_metadata": {"style": "smug and proud"}},
+def test_a_marker_counts_anywhere_not_only_at_a_sentence_start() -> None:
+    assert build_parts('মা বললেন, [soft and gentle] "সাবধানে যেও।"', STYLES) == [
+        {"text": "মা বললেন,"},
         {"text": '"সাবধানে যেও।"', "speech_metadata": {"style": "soft and gentle"}},
     ]
-    assert build_parts("মা বললেন, [soft and gentle] ধীরে।", STYLES) == [  # untagged text before a marker
-        {"text": "মা বললেন,"},
-        {"text": "ধীরে।", "speech_metadata": {"style": "soft and gentle"}},
+
+
+def test_the_same_style_twice_is_two_parts() -> None:
+    assert build_parts("[calm] এক। [calm] দুই।", STYLES) == [
+        {"text": "এক।", "speech_metadata": {"style": "calm"}},
+        {"text": "দুই।", "speech_metadata": {"style": "calm"}},
     ]
 
 
-def test_emotive_only_exact_style_values_are_markers() -> None:
+def test_only_exact_style_values_are_markers() -> None:
     text = "[বিজ্ঞপ্তি] [excited] [soft] ক্লাস বন্ধ।"
-    assert build_parts(text, STYLES) == [{"text": text}]  # no part is styled, text is sent as-is
-    assert build_parts("[smug and proud]", STYLES) == [{"text": "[smug and proud]"}]  # nothing to style
+    assert build_parts(text, STYLES) == [{"text": text}]  # nothing matches, so nothing is cut out
 
 
-def test_emotive_markers_ignore_the_sentence_start_rule_of_the_baseline() -> None:
-    # Baseline needs a sentence start; the emotive markers come from our own map, so any position counts.
-    assert build_parts("মাঝে [smug and proud] আছে", STYLES) == [
-        {"text": "মাঝে"},
-        {"text": "আছে", "speech_metadata": {"style": "smug and proud"}},
+def test_a_lone_marker_has_nothing_to_style() -> None:
+    assert build_parts("[calm]", STYLES) == [{"text": "[calm]"}]
+
+
+def test_inline_tags_stay_in_the_text() -> None:
+    assert build_parts("[calm] আমি পেরেছি। <laugh>", STYLES) == [
+        {"text": "আমি পেরেছি। <laugh>", "speech_metadata": {"style": "calm"}},
     ]
-    assert build_parts("মাঝে [smug and proud] আছে") == [{"text": "মাঝে [smug and proud] আছে"}]  # baseline
 
 
-@pytest.mark.parametrize("cls", [GeminiBatch, GeminiStream])
-def test_emotive_styles_from_config_reach_the_request(
-    cls, config_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    monkeypatch.setattr(
-        "google.genai.Client", lambda **_: SimpleNamespace(models=FakeModels(lambda _kw: None))
-    )
-    config = replace(load_provider_config(config_path, "gemini", "batch"), emotive_styles=STYLES)
-    p = cls(config)
-    p._client.models.behaviour = lambda _kw: _resp(_wav()) if cls is GeminiBatch else iter([_resp(_wav())])
-
-    p.synthesize("[smug and proud] আমি পেরেছি। <laugh>")
-
-    parts = p._client.models.calls[0]["contents"][0]["parts"]
-    assert parts == [{"text": "আমি পেরেছি। <laugh>", "speech_metadata": {"style": "smug and proud"}}]
-
-
-def test_dataset_tag_missing_from_gemini_map_leaves_no_style_or_text() -> None:
+def test_missing_map_entry_leaves_no_style_or_text() -> None:
     from runner.emotion import style_values, translate_tags
 
     tag_map = {"calm": {"tag_type": "style", "value": "calm"}}  # "sigh" and "whisper" have no entry
@@ -326,8 +233,34 @@ def test_dataset_tag_missing_from_gemini_map_leaves_no_style_or_text() -> None:
 
     assert sent == "[calm] এক। দুই। তিন।"
     assert build_parts(sent, style_values(tag_map)) == [
-        {
-            "text": "এক। দুই। তিন।",
-            "speech_metadata": {"style": "calm"},
-        }  # the gaps neither split nor add a style
+        {"text": "এক। দুই। তিন।", "speech_metadata": {"style": "calm"}}  # the gaps neither split nor style
     ]
+
+
+# --- styles: the request ------------------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("cls", [GeminiBatch, GeminiStream])
+def test_styles_from_config_reach_the_request(
+    cls, config_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(
+        "google.genai.Client", lambda **_: SimpleNamespace(models=FakeModels(lambda _kw: None))
+    )
+    mode = "stream" if cls is GeminiStream else "batch"
+    config = replace(load_provider_config(config_path, "gemini", mode), emotive_styles=STYLES)
+    p = cls(config)
+    p._client.models.behaviour = lambda _kw: _resp(_wav()) if cls is GeminiBatch else iter([_resp(_wav())])
+
+    text = "[smug and proud] আমি পেরেছি। [calm] ঠিক আছে।"
+    result = p.synthesize(text)
+
+    kw = p._client.models.calls[0]
+    assert kw["contents"][0]["parts"] == [
+        {"text": "আমি পেরেছি।", "speech_metadata": {"style": "smug and proud"}},
+        {"text": "ঠিক আছে।", "speech_metadata": {"style": "calm"}},
+    ]
+    assert kw["config"]["speech_config"]["voice_config"] == {
+        "voice": "Kore"
+    }  # a style does not change the voice
+    assert result.billed_chars == len(text)  # billed on the text as given, markers included

@@ -1,6 +1,6 @@
 ---
 paths:
-  - "runner/providers/openai_tts/**"
+  - "runner/providers/openai_tts.py"
   - "tests/providers/test_openai_tts.py"
 ---
 # OpenAI TTS
@@ -8,7 +8,7 @@ paths:
 Facts read 2026-10-07 from developers.openai.com (text-to-speech guide + `audio/speech/create` reference).
 
 - Auth: `OPENAI_API_KEY` in `.env`. SDK: `openai` (pinned in `runner/requirements.txt`), `OpenAI(max_retries=0)`;
-  `with_retries` owns backoff. The SDK talks through **`httpx2`**, so tests inject an `httpx2.MockTransport`
+  no retries anywhere. The SDK talks through **`httpx2`**, so tests inject an `httpx2.MockTransport`
   into `provider._client` (`respx` cannot mock it).
 - Calls: batch = `audio.speech.with_raw_response.create()` (`.parse().content` is the audio, `.headers["x-request-id"]`
   the request id); stream = `audio.speech.with_streaming_response.create()` + `iter_bytes()` through `collect_chunks`.

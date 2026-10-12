@@ -15,7 +15,6 @@ from soniox.errors import SonioxRealtimeError
 
 from runner.config import ConfigError, load_provider_config
 from runner.dataset import DatasetItem
-from runner.providers import base
 from runner.providers.base import ProviderError
 from runner.providers.soniox import (
     SonioxBatch,
@@ -69,11 +68,6 @@ def provider(config_path: Path) -> SonioxProvider:
     return SonioxBatch(load_provider_config(config_path, "soniox"), api_key="test-key")
 
 
-@pytest.fixture(autouse=True)
-def no_sleep(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(base, "sleep", lambda _: None)
-
-
 def _item(text: str) -> DatasetItem:
     return DatasetItem("BN-X-001", text, None, (), "plain", None, None, 1)
 
@@ -100,7 +94,7 @@ def test_batch_sends_exact_text_and_returns_wav(provider: SonioxProvider) -> Non
     }
     assert result.format == "wav" and result.sample_rate == 24000 and provider.mode == "batch"
     assert result.ttfb_ms is None and result.total_ms > 0  # batch: no TTFB
-    assert result.request_id is None and result.billed_chars == len(TEXT) and result.attempts == 1
+    assert result.request_id is None and result.billed_chars == len(TEXT)
     with wave.open(io.BytesIO(result.audio)) as w:
         assert (w.getframerate(), w.getnframes()) == (24000, 12000)
 
@@ -124,18 +118,20 @@ def test_empty_audio_fails(provider: SonioxProvider) -> None:
         provider.synthesize(TEXT)
 
 
+@pytest.mark.parametrize(
+    ("outcome", "status"),
+    [
+        (_error(429, "limit_exceeded"), 429),
+        (httpx.Response(503, text="<html>bad gateway</html>"), 503),  # no JSON body at all
+        (httpx.ConnectError("boom"), None),
+    ],
+)
 @respx.mock
-def test_retries_429_5xx_and_transport_errors_then_succeeds(provider: SonioxProvider) -> None:
-    route = respx.post(URL).mock(
-        side_effect=[
-            _error(429, "limit_exceeded"),
-            httpx.Response(503, text="<html>bad gateway</html>"),  # no JSON body at all
-            httpx.ConnectError("boom"),
-            httpx.Response(200, content=_wav()),
-        ]
-    )
-    assert provider.synthesize(TEXT).attempts == 4
-    assert route.call_count == 4  # the SDK does not retry on its own
+def test_transient_errors_are_not_retried(provider: SonioxProvider, outcome, status) -> None:
+    route = respx.post(URL).mock(side_effect=[outcome, httpx.Response(200, content=_wav())])
+    with pytest.raises(ProviderError) as exc:
+        provider.synthesize(TEXT)
+    assert exc.value.status == status and route.call_count == 1  # one request; the SDK does not retry either
 
 
 @respx.mock
@@ -159,17 +155,6 @@ def test_402_and_non_json_errors_map_to_short_codes(provider: SonioxProvider) ->
     with pytest.raises(ProviderError) as exc:
         provider.synthesize(TEXT)
     assert exc.value.status == 400 and str(exc.value) == "http_400"
-
-
-@respx.mock
-def test_gives_up_after_max_attempts_and_reads_retry_after(provider: SonioxProvider) -> None:
-    limited = _error(429, "limit_exceeded")
-    limited.headers["retry-after"] = "3"
-    route = respx.post(URL).mock(return_value=limited)
-    with pytest.raises(ProviderError) as exc:
-        provider.synthesize(TEXT)
-    assert route.call_count == base.MAX_ATTEMPTS
-    assert exc.value.attempts == base.MAX_ATTEMPTS and exc.value.retry_after == 3.0
 
 
 def test_supports_respects_max_chars(provider: SonioxProvider) -> None:
@@ -280,19 +265,19 @@ def test_stream_server_error_with_code_is_not_retried_when_4xx(config_path: Path
     assert str(exc.value) == "realtime_error"  # the server's message text is not kept
 
 
-def test_stream_retries_rate_limits_and_timeouts(config_path: Path) -> None:
-    outcomes = [
-        SonioxRealtimeError("Too many requests (code 429)"),
-        SonioxRealtimeError("Timed out waiting for realtime Text-to-Speech event"),  # no code: transport-like
-        None,
-    ]
-
+@pytest.mark.parametrize(
+    ("message", "status"),
+    [
+        ("Too many requests (code 429)", 429),
+        ("Timed out waiting for realtime Text-to-Speech event", None),  # no code: transport-like
+    ],
+)
+def test_stream_errors_are_not_retried(config_path: Path, message: str, status: int | None) -> None:
     def chunks():
-        outcome = outcomes.pop(0)
-        if outcome:
-            raise outcome
-        yield PCM
+        raise SonioxRealtimeError(message)
+        yield b""  # pragma: no cover
 
     provider, fake = _stream(config_path, chunks)
-    assert provider.synthesize(TEXT).attempts == 3
-    assert fake.connects == 3
+    with pytest.raises(ProviderError) as exc:
+        provider.synthesize(TEXT)
+    assert exc.value.status == status and fake.connects == 1
