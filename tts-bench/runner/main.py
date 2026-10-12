@@ -33,7 +33,7 @@ MANIFEST_KEYS = (
     "audio_path", "format",
     "sample_rate", "bytes", "audio_seconds", "mode", "ttfb_ms", "total_ms", "rtf",
     "input_chars", "billed_chars", "est_cost_usd", "http_status", "provider_request_id", "error",
-    "attempts", "started_at", "sdk_version",
+    "started_at", "sdk_version",
 )  # fmt: skip
 LOG_KEYS = (
     "run_id", "provider", "mode", "item_id", "status", "ttfb_ms", "total_ms", "rtf", "http_status", "error",
@@ -207,7 +207,7 @@ def dry_run(
         print(f"  sent:    {item.text}")
         record_extra: dict[str, Any] = {}
         if config.emotive_styles:  # Gemini: the styles leave the text and go into the request parts
-            from runner.providers.gemini.styles import build_parts
+            from runner.providers.gemini import build_parts
 
             record_extra["parts"] = build_parts(item.text, config.emotive_styles)
             print(f"  parts:   {json.dumps(record_extra['parts'], ensure_ascii=False)}")
@@ -260,7 +260,7 @@ def process(
     except ProviderError as e:
         rec.update(
             status="error", audio_path=None, http_status=e.status, provider_request_id=e.request_id,
-            error=str(e), attempts=e.attempts,
+            error=str(e),
         )  # fmt: skip
         return rec
 
@@ -268,7 +268,7 @@ def process(
         "ttfb_ms": None if result.ttfb_ms is None else round(result.ttfb_ms, 1),
         "total_ms": round(result.total_ms, 1), "billed_chars": result.billed_chars,
         "est_cost_usd": config.estimate_cost(result.billed_chars), "http_status": 200,
-        "provider_request_id": result.request_id, "attempts": result.attempts,
+        "provider_request_id": result.request_id,
     }  # fmt: skip
     seconds = audio_seconds(result.audio, result.format, result.sample_rate)
     if seconds is None:

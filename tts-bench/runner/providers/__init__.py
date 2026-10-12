@@ -7,6 +7,7 @@ from runner.providers.base import TTSProvider
 
 # Imported lazily so one broken SDK doesn't break every provider.
 _REGISTRY = {
+    "azure": "runner.providers.azure",
     "cartesia": "runner.providers.cartesia",
     "elevenlabs": "runner.providers.elevenlabs",
     "gemini": "runner.providers.gemini",

@@ -1,5 +1,8 @@
+"""ElevenLabs: batch = `text_to_speech.convert()`, stream = `text_to_speech.stream()`."""
+
 from __future__ import annotations
 
+import os
 import time
 from collections.abc import Iterator
 from contextlib import contextmanager
@@ -9,9 +12,12 @@ import httpx
 
 from runner.config import ConfigError, ProviderConfig
 from runner.dataset import DatasetItem
-from runner.providers.base import Mode, ProviderError, SynthesisResult, collect_chunks, with_retries
+from runner.providers.base import Mode, ProviderError, SynthesisResult, collect_chunks
 
-REQUEST_OPTIONS = {"timeout_in_seconds": 120, "max_retries": 0}  # retries handled by with_retries
+REQUEST_OPTIONS = {
+    "timeout_in_seconds": 120,
+    "max_retries": 0,
+}  # no retries: a failed request is recorded as an error
 
 
 def parse_output_format(output_format: str) -> tuple[str, int]:
@@ -38,12 +44,10 @@ def sdk_errors() -> Iterator[None]:
         yield
     except ApiError as e:
         headers = e.headers or {}
-        retry_after = headers.get("retry-after")
         raise ProviderError(
             e.status_code,
             _error_code(e.body, e.status_code),
             headers.get("request-id"),
-            float(retry_after) if retry_after and retry_after.isdigit() else None,
         ) from e
     except httpx.TransportError as e:
         raise ProviderError(None, type(e).__name__) from e
@@ -70,7 +74,7 @@ class ElevenLabsProvider:
     def _request(self, **kwargs: Any) -> Iterator[bytes]:
         raise NotImplementedError
 
-    def _attempt(self, text: str) -> SynthesisResult:
+    def synthesize(self, text: str) -> SynthesisResult:
         start = time.perf_counter_ns()
         with sdk_errors():
             audio, ttfb_ms, total_ms = collect_chunks(
@@ -93,12 +97,36 @@ class ElevenLabsProvider:
             total_ms=total_ms,
             billed_chars=len(text),
             request_id=None,
-            attempts=1,
         )
-
-    def synthesize(self, text: str) -> SynthesisResult:
-        result, attempts = with_retries(lambda: self._attempt(text))
-        return SynthesisResult(**{**result.__dict__, "attempts": attempts})
 
     def close(self) -> None:
         pass
+
+
+class ElevenLabsBatch(ElevenLabsProvider):
+    """`text_to_speech.convert()` -> POST /v1/text-to-speech/{voice_id}: the clip is rendered, then sent."""
+
+    mode = "batch"
+
+    def _request(self, **kwargs: Any) -> Iterator[bytes]:
+        return self._client.text_to_speech.convert(**kwargs)
+
+
+class ElevenLabsStream(ElevenLabsProvider):
+    """`text_to_speech.stream()` -> POST /v1/text-to-speech/{voice_id}/stream: audio arrives as it renders."""
+
+    mode = "stream"
+
+    def _request(self, **kwargs: Any) -> Iterator[bytes]:
+        return self._client.text_to_speech.stream(**kwargs)
+
+
+__all__ = ["ElevenLabsBatch", "ElevenLabsProvider", "ElevenLabsStream", "create", "parse_output_format"]
+
+
+def create(config: ProviderConfig) -> ElevenLabsProvider:
+    api_key = os.environ.get("ELEVENLABS_API_KEY")
+    if not api_key:
+        raise ConfigError("ELEVENLABS_API_KEY is not set (expected in .env)")
+    cls = ElevenLabsStream if config.mode == "stream" else ElevenLabsBatch
+    return cls(config, api_key)

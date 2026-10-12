@@ -1,17 +1,13 @@
 from __future__ import annotations
 
 import io
-import random
 import time
 import wave
-from collections.abc import Callable, Iterable
+from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import Literal, Protocol
 
 from runner.dataset import DatasetItem
-
-MAX_ATTEMPTS = 5
-sleep = time.sleep
 
 Mode = Literal["batch", "stream"]
 MODES: tuple[Mode, ...] = ("batch", "stream")
@@ -26,7 +22,6 @@ class SynthesisResult:
     total_ms: float  # request sent -> last audio byte received
     billed_chars: int
     request_id: str | None
-    attempts: int
 
 
 class TTSProvider(Protocol):
@@ -42,37 +37,12 @@ class TTSProvider(Protocol):
 
 
 class ProviderError(Exception):
-    """status=None means a transport failure (timeout, connection reset)."""
+    """A failed request. status=None means a transport failure (timeout, connection reset)."""
 
-    def __init__(
-        self,
-        status: int | None,
-        message: str,
-        request_id: str | None = None,
-        retry_after: float | None = None,
-    ) -> None:
+    def __init__(self, status: int | None, message: str, request_id: str | None = None) -> None:
         super().__init__(message)
         self.status = status
         self.request_id = request_id
-        self.retry_after = retry_after
-        self.attempts = 1
-
-    @property
-    def retryable(self) -> bool:
-        return self.status is None or self.status == 429 or self.status >= 500
-
-
-def with_retries[T](fn: Callable[[], T]) -> tuple[T, int]:
-    """Exponential backoff with jitter on 429/5xx/transport errors only."""
-    for attempt in range(1, MAX_ATTEMPTS + 1):
-        try:
-            return fn(), attempt
-        except ProviderError as e:
-            e.attempts = attempt
-            if not e.retryable or attempt == MAX_ATTEMPTS:
-                raise
-            sleep(max(e.retry_after or 0.0, random.uniform(0, min(30.0, 2 ** (attempt - 1)))))
-    raise AssertionError("unreachable")
 
 
 def collect_chunks(start_ns: int, chunks: Iterable[bytes]) -> tuple[bytes, float, float]:
@@ -98,3 +68,16 @@ def pcm_to_wav(pcm: bytes, sample_rate: int) -> bytes:
         w.setframerate(sample_rate)
         w.writeframes(pcm)
     return buf.getvalue()
+
+
+def to_wav(audio: bytes, sample_rate: int) -> bytes:
+    """Re-wrap a provider's audio (a WAV/RIFF file or headerless 16-bit PCM) with a correct WAV header.
+
+    Streamed chunks are concatenated, so a streamed header can carry a placeholder length.
+    """
+    if audio[:4] == b"RIFF":
+        at = audio.find(b"data")
+        if at < 0:
+            raise ProviderError(200, "bad_wav")
+        audio = audio[at + 8 :]  # skip the "data" tag and its 4-byte length
+    return pcm_to_wav(audio, sample_rate)
