@@ -1,3 +1,5 @@
 {
-    
+  "short_pause": "<break time=\"300ms\"/>",
+  "pause": "<break time=\"700ms\"/>",
+  "long_pause": "<break time=\"1.5s\"/>"
 }

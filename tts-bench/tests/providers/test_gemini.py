@@ -108,6 +108,18 @@ def test_headerless_pcm_is_wrapped_as_wav() -> None:
         assert (w.getframerate(), w.getnchannels(), w.getnframes()) == (24000, 1, 12000)
 
 
+C2PA = (
+    b"C2PA" + (9).to_bytes(4, "little") + b"jumb-C2PA" + b"\x00"
+)  # content-credentials chunk: id, size 9, data, pad
+
+
+@pytest.mark.parametrize("declared", [len(PCM), 0, 0xFFFFFFFF])  # exact length, or a streamed placeholder
+def test_trailing_c2pa_chunk_is_not_audio(declared: int) -> None:
+    header = _wav(b"")[:36] + b"data" + declared.to_bytes(4, "little")
+    with wave.open(io.BytesIO(to_wav(header + PCM + C2PA, 24000))) as w:
+        assert w.getnframes() == 12000  # the metadata would otherwise play as a burst of static
+
+
 def test_stream_ttfb_is_first_chunk(config_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     def chunks(_kw):
         yield _resp(_wav(PCM[:8000]))

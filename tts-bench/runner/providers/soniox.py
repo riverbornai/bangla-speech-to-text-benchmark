@@ -101,7 +101,7 @@ class SonioxProvider:
 
 
 class SonioxBatch(SonioxProvider):
-    """`tts.generate()` -> POST https://tts-rt.soniox.com/tts: the clip is rendered, then sent whole."""
+    """`tts.generate()` -> POST https://tts-rt.eu.soniox.com/tts: the clip is rendered, then sent whole."""
 
     mode = "batch"
 

@@ -99,8 +99,10 @@ def test_batch_sends_exact_text_and_defaults_only(config_path: Path) -> None:
 
     (req,) = seen
     assert req.url.path == "/v1/audio/speech" and req.headers["authorization"] == "Bearer test-key"
-    # Exactly these fields: no `instructions`, no `speed`, no language, no stream_format.
-    assert json.loads(req.content) == {
+    # Exactly these fields: the fixed Bangla `instructions`, but no `speed`, language or stream_format.
+    body = json.loads(req.content)
+    assert "Bangladesh" in body.pop("instructions")
+    assert body == {
         "model": "gpt-4o-mini-tts",
         "voice": "alloy",
         "input": TEXT,

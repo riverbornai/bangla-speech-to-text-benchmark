@@ -14,7 +14,7 @@ Docs: https://soniox.com/docs/tts/get-started, API reference https://soniox.com/
 - Voice: by name (`Adrian` is from the official examples). Every voice works in every language, so there are no
   Bengali-specific voices; per-voice Bengali quality is undocumented. List them with `GET /v1/tts-models`.
 - Batch: `client.tts.generate(text, voice, model, language, config=CreateTtsConfig(audio_format="wav", sample_rate=24000))`
-  -> `POST https://tts-rt.soniox.com/tts`, JSON body `model, language, voice, audio_format, sample_rate, text`,
+  -> `POST https://tts-rt.eu.soniox.com/tts`, JSON body `model, language, voice, audio_format, sample_rate, text`,
   returns the audio bytes. `audio_format`/`sample_rate` as direct kwargs are deprecated: use `CreateTtsConfig`.
 - Stream: `client.realtime.tts.connect(config=RealtimeTTSConfig(...))` (WebSocket, one connection per item). The
   whole text goes out in one `send_text_chunk(text, text_end=True)`, then `receive_audio_chunks()` yields decoded

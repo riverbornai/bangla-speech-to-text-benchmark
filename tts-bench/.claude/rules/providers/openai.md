@@ -13,8 +13,9 @@ Facts read 2026-10-07 from developers.openai.com (text-to-speech guide + `audio/
 - Calls: batch = `audio.speech.with_raw_response.create()` (`.parse().content` is the audio, `.headers["x-request-id"]`
   the request id); stream = `audio.speech.with_streaming_response.create()` + `iter_bytes()` through `collect_chunks`.
 - Params: `model`, `voice`, `input` (text unchanged), `response_format`. No language parameter (the model infers it),
-  no `instructions`, no `speed` in the baseline. `instructions` works on `gpt-4o-mini-tts` only: a variant may add
-  "Speak in standard Bangladeshi Bangla"; label it as one.
+  no `speed`. A fixed Bangla `instructions` prompt (`INSTRUCTIONS` in `openai_tts.py`: standard Bangladeshi Bangla,
+  steady pace, read the text exactly) is sent on every request by the user's choice; it works on `gpt-4o-mini-tts`
+  only and is a deliberate exception to contract rule 2, so report it with the results.
 - **Bengali is not in the docs' TTS language list** (Hindi, Marathi, Tamil, Urdu... are), so config has
   `bangla_support: unofficial`. Treat results as a capability test; expect high CER on digits and code-mix.
 - Output: batch asks for `wav`, stream for raw `pcm` (docs: 24 kHz, 16-bit signed little-endian), wrapped with

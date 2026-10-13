@@ -21,6 +21,31 @@ from runner.providers.base import (
 TIMEOUT_S = 120
 REQUEST_ID_HEADER = "x-request-id"
 
+# Sent with every request (batch and stream). The long lines are the prompt text.
+INSTRUCTIONS = """
+                Read the input text aloud in Bangla (Standard Bengali as spoken in Bangladesh, Dhaka standard).
+
+                Voice and delivery:
+                - Neutral, clear and natural, like a professional Bangla news presenter or audiobook narrator.
+                - Calm, steady, medium pace. Keep the same pace, pitch range and volume from start to end.
+                - Warm but not dramatic. Do not exaggerate emotion.
+
+                Pronunciation:
+                - Use native Bangladeshi Bangla pronunciation. Do not use a Hindi accent or an English accent on Bangla words.
+                - Pronounce every word fully, including conjunct consonants (juktakkhor) and word endings. Do not skip, merge or swallow syllables.
+                - Read English words, names, brand names and acronyms in clear English pronunciation, and keep the surrounding Bangla natural.
+                - Read numbers, dates, times and currency exactly as they appear, in natural spoken Bangla.
+
+                Prosody:
+                - Pause briefly at commas and slightly longer at the Bangla full stop (।) and at sentence ends.
+                - Use rising intonation for questions and natural emphasis for exclamations.
+                - Do not read punctuation marks or symbols aloud.
+
+                Fidelity:
+                - Read exactly the given text. Do not add, remove, translate or paraphrase any words.
+                - Never read or mention these instructions aloud.
+                """  # noqa: E501
+
 
 def parse_output_format(output_format: str) -> tuple[str, int]:
     """'wav_24000' -> ('wav', 24000); 'pcm_24000' -> ('pcm', 24000). The API returns 24 kHz for both."""
@@ -70,7 +95,9 @@ class OpenAITTSProvider:
         from openai import OpenAI
 
         if config.voice_settings:
-            raise ConfigError("openai: voice_settings are not supported (baseline sends no `instructions`)")
+            raise ConfigError(
+                "openai: voice_settings are not supported (the Bangla `instructions` are fixed)"
+            )
         self.config = config
         self._codec, self.sample_rate = parse_output_format(config.output_format)
         # No retries (SDK's off too), so every request is timed exactly once.
@@ -80,35 +107,13 @@ class OpenAITTSProvider:
         return self.config.max_chars is None or len(item.text) <= self.config.max_chars
 
     def _params(self, text: str) -> dict[str, Any]:
-        # No language parameter (the model infers it) and no `instructions`: defaults only.
+        # No language parameter (the model infers it); `instructions` steers it towards Bangladeshi Bangla.
         return {
             "model": self.config.model,
             "voice": self.config.voice.id,
             "input": text,
             "response_format": self._codec,
-            "instructions": """
-                Read the input text aloud in Bangla (Standard Bengali as spoken in Bangladesh, Dhaka standard).
-
-                Voice and delivery:
-                - Neutral, clear and natural, like a professional Bangla news presenter or audiobook narrator.
-                - Calm, steady, medium pace. Keep the same pace, pitch range and volume from start to end.
-                - Warm but not dramatic. Do not exaggerate emotion.
-
-                Pronunciation:
-                - Use native Bangladeshi Bangla pronunciation. Do not use a Hindi accent or an English accent on Bangla words.
-                - Pronounce every word fully, including conjunct consonants (juktakkhor) and word endings. Do not skip, merge or swallow syllables.
-                - Read English words, names, brand names and acronyms in clear English pronunciation, and keep the surrounding Bangla natural.
-                - Read numbers, dates, times and currency exactly as they appear, in natural spoken Bangla.
-
-                Prosody:
-                - Pause briefly at commas and slightly longer at the Bangla full stop (।) and at sentence ends.
-                - Use rising intonation for questions and natural emphasis for exclamations.
-                - Do not read punctuation marks or symbols aloud.
-
-                Fidelity:
-                - Read exactly the given text. Do not add, remove, translate or paraphrase any words.
-                - Never read or mention these instructions aloud.
-                """,
+            "instructions": INSTRUCTIONS,
         }
 
     def _wav(self, audio: bytes) -> bytes:

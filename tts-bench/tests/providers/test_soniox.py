@@ -24,7 +24,7 @@ from runner.providers.soniox import (
     parse_output_format,
 )
 
-URL = "https://tts-rt.soniox.com/tts"
+URL = "https://tts-rt.eu.soniox.com/tts"
 TEXT = "স্কুলটি এখান থেকে ৫ কি.মি. দূরে।"
 PCM = b"\x01\x00" * 12000  # 0.5 s at 24 kHz
 
