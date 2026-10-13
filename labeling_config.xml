@@ -1,0 +1,26 @@
+<View>
+  <Header value="Sentence"/>
+  <Text name="text" value="$text"/>
+  <Header value="Audio 1"/>
+  <Audio name="audio1" value="$audio1"/>
+  <Header value="Audio 2"/>
+  <Audio name="audio2" value="$audio2"/>
+  <Header value="Audio 3"/>
+  <Audio name="audio3" value="$audio3"/>
+  <Header value="Audio 4"/>
+  <Audio name="audio4" value="$audio4"/>
+  <Header value="Audio 5"/>
+  <Audio name="audio5" value="$audio5"/>
+  <Header value="Audio 6"/>
+  <Audio name="audio6" value="$audio6"/>
+  <Header value="Audio 7"/>
+  <Audio name="audio7" value="$audio7"/>
+  <Header value="Rate each audio (naturalness / pronunciation)"/>
+  <Rating name="rating1" toName="audio1" maxRating="5" required="true"/>
+  <Rating name="rating2" toName="audio2" maxRating="5" required="true"/>
+  <Rating name="rating3" toName="audio3" maxRating="5" required="true"/>
+  <Rating name="rating4" toName="audio4" maxRating="5" required="true"/>
+  <Rating name="rating5" toName="audio5" maxRating="5" required="true"/>
+  <Rating name="rating6" toName="audio6" maxRating="5" required="true"/>
+  <Rating name="rating7" toName="audio7" maxRating="5" required="true"/>
+</View>
