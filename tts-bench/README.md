@@ -257,8 +257,8 @@ To add a provider in Claude Code, ask it to "add <vendor> as a provider". That r
 Once the audio is generated (above), people rate it. This section covers that stage: human-rated comparison of seven text-to-speech models on Bangla. Annotators hear the same sentence from all seven models (order shuffled, model names hidden) and rate each 1–5 for naturalness and pronunciation. This folder turns those ratings into rankings and a founders dashboard.
 
 ```
-Label Studio tasks ──► ratings export ──► rankings.json ──► rankings_ui.html
- (make_tasks.py)          (i.json)      (rank_by_category.py) (build_rankings_ui.py)
+Label Studio tasks ──► annotated-task.json ──► rankings.json ──► rankings_ui.html
+ (make_tasks.py)       (ratings export)    (rank_by_category.py) (build_rankings_ui.py)
 ```
 
 ### Files
@@ -267,7 +267,7 @@ Label Studio tasks ──► ratings export ──► rankings.json ──► ra
 |---|---|
 | `make_tasks.py` | Builds Label Studio `tasks.json` and `labeling_config.xml` for the blind 7-way comparison |
 | `labeling_config.xml` | Label Studio UI config: 7 audio players with a 1–5 rating each |
-| `i.json` | Label Studio export of completed annotations (input to ranking) |
+| `annotated-task.json` | Label Studio export of completed annotations (input to ranking) |
 | `rank_by_category.py` | Computes average rating per model, per category and overall, and writes `rankings.json` |
 | `rankings.json` | Ranking results (the data behind the dashboard) |
 | `rankings_ui.html` | Riverborn-branded dashboard for founders |
@@ -303,14 +303,14 @@ Skip this step if the tasks already exist in Label Studio.
 ### Step 2: Collect ratings and export
 
 1. Annotators rate every audio from 1 to 5 in Label Studio.
-2. When done, export the project as **JSON** (not JSON-Min) and save it in this folder as `i.json`.
+2. When done, export the project as **JSON** (not JSON-Min) and save it in this folder as `annotated-task.json`.
 
 Cancelled annotations are ignored automatically.
 
 ### Step 3: Generate the rankings
 
 ```bash
-python3 rank_by_category.py -i i.json -o rankings.json
+python3 rank_by_category.py -i annotated-task.json -o rankings.json
 ```
 
 This writes `rankings.json` with, for each category and overall: rank, model, average rating, number of ratings and the 5★→1★ distribution. Ties are ordered by number of ratings, then name.
@@ -354,10 +354,10 @@ Send `rankings_ui.html` on its own. It is self-contained (it only loads Google F
 
 ### All steps in one command
 
-After exporting a new `i.json`:
+After exporting a new `annotated-task.json`:
 
 ```bash
-python3 rank_by_category.py -i i.json -o rankings.json && \
+python3 rank_by_category.py -i annotated-task.json -o rankings.json && \
 python3 build_rankings_ui.py && \
 open rankings_ui.html
 ```

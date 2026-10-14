@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Rank TTS models by average human rating, per category.
 
-Reads a Label Studio export (output.json). In each task, `rating{i}` rates
+Reads a Label Studio export (annotated-task.json). In each task, `rating{i}` rates
 `audio{i}`, which was produced by `model{i}` (the order is shuffled per task,
 so ratings are mapped back to models via the task's own model{i} field).
 
@@ -75,7 +75,7 @@ def print_table(title, rows):
 def main():
     here = Path(__file__).parent
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("-i", "--input", default=here / "i.json")
+    p.add_argument("-i", "--input", default=here / "annotated-task.json")
     p.add_argument("-c", "--category", help="e.g. ABR, CUR, DOM (case-insensitive). Omit for all.")
     p.add_argument("--json", action="store_true", help="print JSON to stdout instead of tables")
     p.add_argument("-o", "--output", help="write JSON to this file (e.g. rankings.json)")
