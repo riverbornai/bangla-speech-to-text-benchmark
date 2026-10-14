@@ -751,6 +751,10 @@ Need help with AI? We'd like to hear from you.
   `results/*per_file.csv`): from BanSpeech, redistributed under
   **[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)**,
   for non-commercial use only. See [`data/README.md`](data/README.md).
+- **Provider transcripts** (the `hyp` columns in `results/*per_file.csv`):
+  made from BanSpeech audio, so they are also released under
+  **[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)**,
+  for non-commercial use only.
 - **Audio** is not redistributed. The download script fetches it from the
   original BanSpeech dataset.
 
