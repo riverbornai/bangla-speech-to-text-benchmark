@@ -178,6 +178,61 @@ pre.cite {
 }
 .copy { font: inherit; font-size: 13px; font-weight: 600; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 5px 12px; cursor: pointer; }
 .copy:hover { border-color: var(--accent); }
+.byline { color: var(--text-3); font-size: 13px; margin-top: 14px; }
+.answer { margin-top: 24px; padding: 18px 20px; border-left: 4px solid var(--accent); }
+.answer h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); margin: 0 0 10px; }
+.answer ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 24px; }
+.answer li { font-size: 15px; color: var(--text-2); }
+.answer li b { color: var(--text); display: block; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; }
+@media (max-width: 760px) { .answer ul { grid-template-columns: 1fr; } }
+.findings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.finding { padding: 16px; }
+.finding .num { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--text-3); }
+.finding h3 { margin: 4px 0 6px; font-size: 16px; }
+.finding p { margin: 0; color: var(--text-2); font-size: 14px; }
+@media (max-width: 900px) { .findings { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .findings { grid-template-columns: 1fr; } }
+.lat { padding: 16px; }
+.lat-row { display: grid; grid-template-columns: 170px 1fr 120px; align-items: center; gap: 12px; padding: 6px 0; }
+.lat-row .name { font-weight: 600; font-size: 14px; }
+.lat-row .val { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text-2); text-align: right; }
+.lat-row .val b { color: var(--text); }
+.lat-track { position: relative; height: 16px; }
+.lat-axis { display: grid; grid-template-columns: 170px 1fr 120px; gap: 12px; color: var(--text-3); font-size: 12px; margin-top: 6px; }
+.lat-axis .ticks { position: relative; height: 14px; }
+.lat-axis .ticks span { position: absolute; transform: translateX(-50%); }
+@media (max-width: 640px) { .lat-row, .lat-axis { grid-template-columns: 110px 1fr 86px; gap: 8px; } .lat-row .name { font-size: 13px; } }
+.lat-desc { color: var(--text-2); font-size: 14px; margin: 0 0 12px; }
+.h2h { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 640px; }
+.h2h th, .h2h td { padding: 10px 12px; border-bottom: 1px solid var(--grid); text-align: left; }
+.h2h tbody tr:last-child td { border-bottom: 0; }
+.h2h th { color: var(--text-3); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+.h2h td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.verdict { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 13px; }
+.verdict .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text); }
+.verdict.tie { color: var(--text-2); font-weight: 500; }
+.verdict.tie .dot { background: transparent; border: 1.5px solid var(--text-3); }
+details.acc { border-bottom: 1px solid var(--border); }
+details.acc:last-child { border-bottom: 0; }
+details.acc summary { cursor: pointer; list-style: none; padding: 14px 18px; font-weight: 600; display: flex; justify-content: space-between; gap: 12px; }
+details.acc summary::-webkit-details-marker { display: none; }
+details.acc summary::after { content: "+"; color: var(--text-3); font-weight: 400; font-size: 18px; line-height: 1; }
+details.acc[open] summary::after { content: "–"; }
+details.acc summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+details.acc .body { padding: 0 18px 16px; color: var(--text-2); font-size: 14px; }
+details.acc .body p { margin: 0 0 8px; }
+details.acc .body ul { margin: 0 0 8px; padding-left: 18px; }
+details.acc .body li + li { margin-top: 4px; }
+table.mini { border-collapse: collapse; font-size: 13px; width: 100%; margin: 6px 0 8px; }
+table.mini th, table.mini td { padding: 6px 10px; border-bottom: 1px solid var(--grid); text-align: left; white-space: nowrap; }
+table.mini th { color: var(--text-3); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+table.mini td.num, table.mini th.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.mini tr.total td { font-weight: 700; color: var(--text); }
+.cta { margin-top: 40px; padding: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+.cta p { margin: 0; color: var(--text-2); }
+.cta p b { color: var(--text); }
+.cta a.btn { padding: 8px 16px; border-radius: 999px; background: var(--text); color: var(--bg); font-weight: 600; font-size: 14px; }
+.cta a.btn:hover { text-decoration: none; opacity: .9; }
 footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-3); font-size: 13px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
 </style>
 </head>
@@ -187,7 +242,7 @@ footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border
 <header>
   <div class="eyebrow">Open benchmark · Version 1.0</div>
   <h1>Bangla Speech-to-Text Leaderboard</h1>
-  <p class="lede">Hosted Bangla (Bengali) speech-to-text APIs, tested on <b>1,001 real audio clips</b> from <b>13 domains</b> in batch and real-time streaming mode. Every number is reproducible from the open code.</p>
+  <p class="lede">Which speech-to-text API understands Bangla best? We sent the same <b>1,001 real Bangla recordings</b>, from news bulletins to children's voices, to <b>8 hosted APIs</b> in batch and live streaming mode, and scored every transcript.</p>
   <div class="links">
     <a href="https://riverborn.com/research/bangla-speech-to-text-benchmark" target="_blank" rel="noopener">📈 Full interactive report</a>
     <a href="https://huggingface.co/datasets/riverborn/bangla-stt-benchmark-results" target="_blank" rel="noopener">📊 Results dataset</a>
@@ -195,9 +250,28 @@ footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border
     <a href="https://huggingface.co/datasets/SUST-CSE-Speech/banspeech" target="_blank" rel="noopener">🎧 BanSpeech audio</a>
     <a href="https://riverborn.com" target="_blank" rel="noopener">🏢 Riverborn</a>
   </div>
+  <div class="byline">By Nasim Uddin and Md Saiful Azad, Riverborn Limited · Published 24 September 2026 · Tested September 2026 · v1.0</div>
 </header>
 
 <div class="stats" id="stats"></div>
+
+<div class="card answer">
+  <h2>The short answer</h2>
+  <ul id="short-answer"></ul>
+</div>
+
+<section>
+  <h2>Key findings</h2>
+  <p class="hint">Character error rate (CER) is the share of characters that a transcript gets wrong. 6.9% CER means about 7 errors in 100 characters.</p>
+  <div class="findings">
+    <div class="card finding"><div class="num">01</div><h3>Bangla specialists win</h3><p>Sarvam (6.9%) and Soniox (8.1%) lead batch, and change places in streaming. The gap between them is small, but statistically real.</p></div>
+    <div class="card finding"><div class="num">02</div><h3>Live can beat batch</h3><p>The Soniox real-time model (7.4%) was more accurate than its own batch model (8.1%). Streaming does not always mean lower accuracy.</p></div>
+    <div class="card finding"><div class="num">03</div><h3>Big global names trail</h3><p>OpenAI gpt-4o-transcribe (28.7%) and Whisper large-v3 (30.7%) make 4 to 5 times the errors of the leaders on Bangla.</p></div>
+    <div class="card finding"><div class="num">04</div><h3>Domain matters a lot</h3><p>ElevenLabs is mid-table overall (14.7%), but it gets 47.1% CER on medicine. Check the domain that is nearest to your audio.</p></div>
+    <div class="card finding"><div class="num">05</div><h3>Cheapest is near the top</h3><p>Soniox batch costs $0.10 per audio hour, one tenth of Google Chirp 2, and has the second-best accuracy.</p></div>
+    <div class="card finding"><div class="num">06</div><h3>Streaming latency varies 5×</h3><p>After the speaker stops, Sarvam gives the final transcript in 0.9 s (median). OpenAI takes 4.2 s and Gemini Live takes more than 10 s.</p></div>
+  </div>
+</section>
 
 <section id="board-section">
   <h2>Leaderboard</h2>
@@ -208,6 +282,32 @@ footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border
   </div>
   <div class="card scroll"><table class="board" id="board"></table></div>
   <p class="hint" id="board-note" style="margin-top:10px"></p>
+</section>
+
+<section>
+  <h2>Streaming latency</h2>
+  <p class="hint">For live use, accuracy is not sufficient. These measures tell if a voice product feels fast or slow. Bar = median of 1,001 clips. Thin line = 95th percentile (the slow tail).</p>
+  <div class="tabs" role="tablist" aria-label="Latency metric">
+    <button role="tab" aria-selected="true" data-lat="finalization">After speech ends</button>
+    <button role="tab" aria-selected="false" data-lat="first_partial">First words</button>
+    <button role="tab" aria-selected="false" data-lat="first_final">First sentence</button>
+  </div>
+  <div class="card lat">
+    <p class="lat-desc" id="lat-desc"></p>
+    <div id="lat"></div>
+  </div>
+  <p class="hint" style="margin-top:10px">Audio was streamed from Dhaka in 100 ms chunks at real-time pace. Each figure includes the network trip to the provider's servers, which were mostly in the US. Your latency will be different.</p>
+</section>
+
+<section>
+  <h2>Head-to-head: is the difference real?</h2>
+  <p class="hint">A paired bootstrap over the clips that both providers transcribed tells you if the gap between neighbours in the ranking is real or noise.</p>
+  <div class="tabs" role="tablist" aria-label="Head-to-head mode">
+    <button role="tab" aria-selected="true" data-h2h="batch">Batch</button>
+    <button role="tab" aria-selected="false" data-h2h="streaming">Streaming</button>
+  </div>
+  <div class="card scroll"><table class="h2h" id="h2h"></table></div>
+  <p class="hint" style="margin-top:10px">“Ahead” means the 95% interval of the CER gap does not include zero. “Tie” means that the test cannot separate the two providers.</p>
 </section>
 
 <section>
@@ -232,41 +332,174 @@ footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border
 </section>
 
 <section>
-  <h2>Read before you compare</h2>
-  <div class="notes">
-    <div class="card note">
-      <h3>Test set</h3>
-      <p>1,001 clips from the <a href="https://huggingface.co/datasets/SUST-CSE-Speech/banspeech" target="_blank" rel="noopener">BanSpeech</a> dataset by the SUST CSE Speech Group, 77 from each of its 13 domains. Clips are 3 seconds long on average. This is typical of voice commands and conversation turns.</p>
-    </div>
-    <div class="card note">
-      <h3>Latency</h3>
-      <p>We ran the benchmark from a laptop in Bangladesh on a regular internet connection. All latency figures include the network distance to each provider. Your latency will be different.</p>
-    </div>
-    <div class="card note">
-      <h3>Prices</h3>
-      <p id="price-note"></p>
-    </div>
-    <div class="card note">
-      <h3>Versions</h3>
-      <ul>
-        <li id="tested-note"></li>
-        <li>Vendors update models often. Run the benchmark again before you make a purchase decision.</li>
-        <li>BanSpeech is public, so a provider can have trained on some clips.</li>
-      </ul>
-    </div>
+  <h2>Method</h2>
+  <p class="hint">The full details are in the <a href="https://github.com/riverbornai/bangla-speech-to-text-benchmark#methodology" target="_blank" rel="noopener">GitHub README</a>, down to the prompt and the normalization rules.</p>
+  <div class="card">
+    <details class="acc" open>
+      <summary>Test set: 1,001 clips from BanSpeech</summary>
+      <div class="body">
+        <p>We sampled 77 clips at random from each of the 13 domains of <a href="https://huggingface.co/datasets/SUST-CSE-Speech/banspeech" target="_blank" rel="noopener">BanSpeech</a> (SUST CSE Speech Group, CC BY-NC 4.0). Regional dialect clips are not included. Clips are 16 kHz WAV, 0.7 s to 26.8 s long (median 2.1 s), 50.0 minutes in total, with 7,996 reference words and 43,411 characters. 97% of clips are shorter than 10 seconds, like voice commands and conversation turns.</p>
+        <div class="scroll"><table class="mini">
+          <thead><tr><th>Domain</th><th class="num">Clips</th><th class="num">Minutes</th><th class="num">Mean length</th><th class="num">Words</th></tr></thead>
+          <tbody>
+            <tr><td>Audiobooks</td><td class="num">77</td><td class="num">2.2</td><td class="num">1.7 s</td><td class="num">409</td></tr>
+            <tr><td>Biography</td><td class="num">77</td><td class="num">3.0</td><td class="num">2.3 s</td><td class="num">396</td></tr>
+            <tr><td>Celebrity interview</td><td class="num">77</td><td class="num">5.2</td><td class="num">4.1 s</td><td class="num">854</td></tr>
+            <tr><td>Class lecture</td><td class="num">77</td><td class="num">5.0</td><td class="num">3.9 s</td><td class="num">943</td></tr>
+            <tr><td>Documentary</td><td class="num">77</td><td class="num">3.1</td><td class="num">2.4 s</td><td class="num">457</td></tr>
+            <tr><td>Drama series</td><td class="num">77</td><td class="num">4.4</td><td class="num">3.4 s</td><td class="num">774</td></tr>
+            <tr><td>Kids' cartoon</td><td class="num">77</td><td class="num">3.4</td><td class="num">2.7 s</td><td class="num">524</td></tr>
+            <tr><td>Kids' voices</td><td class="num">77</td><td class="num">6.5</td><td class="num">5.0 s</td><td class="num">947</td></tr>
+            <tr><td>Medicine</td><td class="num">77</td><td class="num">3.5</td><td class="num">2.7 s</td><td class="num">481</td></tr>
+            <tr><td>Parliament</td><td class="num">77</td><td class="num">3.9</td><td class="num">3.0 s</td><td class="num">596</td></tr>
+            <tr><td>Political talk show</td><td class="num">77</td><td class="num">3.0</td><td class="num">2.4 s</td><td class="num">498</td></tr>
+            <tr><td>Sports</td><td class="num">77</td><td class="num">3.3</td><td class="num">2.6 s</td><td class="num">586</td></tr>
+            <tr><td>TV news</td><td class="num">77</td><td class="num">3.4</td><td class="num">2.6 s</td><td class="num">531</td></tr>
+            <tr class="total"><td>Total</td><td class="num">1,001</td><td class="num">50.0</td><td class="num">3.0 s</td><td class="num">7,996</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </details>
+    <details class="acc">
+      <summary>Metrics: CER, WER and confidence intervals</summary>
+      <div class="body">
+        <p><b>CER</b> (primary) is the number of character substitutions, deletions and insertions that change a transcript into the reference, divided by the reference length. <b>WER</b> is the same at word level. Both are corpus-level: total edits across all clips divided by total reference length, not an average of per-clip rates.</p>
+        <p>We rank on CER because Bangla word spacing is not consistent between annotators and engines. One spacing difference, for example a split compound, counts as two word errors even when every letter is correct. This is why WER is much higher than CER for every provider.</p>
+        <p>95% confidence intervals come from 10,000 bootstrap resamples of the clips. A failed request is not included in the score of that provider. It is not counted as 100% error. Every provider covered at least 99.4% of the clips.</p>
+      </div>
+    </details>
+    <details class="acc">
+      <summary>Text normalization</summary>
+      <div class="body">
+        <p>The same normalizer runs on the references and on every transcript before scoring, so formatting choices do not count as errors:</p>
+        <ul>
+          <li>Unicode NFC normalization.</li>
+          <li>Remove zero-width characters (ZWNJ, ZWJ, BOM).</li>
+          <li>Map Bangla digits ০–৯ to 0–9.</li>
+          <li>Replace punctuation (including the danda ।) with a space.</li>
+          <li>Lowercase Latin text, then collapse whitespace.</li>
+        </ul>
+        <p>Without this step, formatting choices alone change scores by 10 to 20%. Source: <a href="https://github.com/riverbornai/bangla-speech-to-text-benchmark/blob/main/src/normalize.py" target="_blank" rel="noopener"><code>src/normalize.py</code></a>.</p>
+      </div>
+    </details>
+    <details class="acc">
+      <summary>Batch and streaming setup</summary>
+      <div class="body">
+        <ul>
+          <li><b>Batch:</b> one request for each clip, one at a time. Latency is the wall-clock request time.</li>
+          <li><b>Streaming:</b> 16-bit PCM audio, sent in 100 ms chunks. Each chunk is sent only after that much real time has passed, like a live microphone. Accuracy is scored on the final transcript, so the batch and streaming tables are directly comparable.</li>
+          <li><b>Settings:</b> provider defaults, except for the language. No custom vocabulary and no fine-tuning. Only Gemini batch received a prompt (“Transcribe this Bengali (Bangla) audio verbatim…”).</li>
+          <li><b>Environment:</b> a MacBook in Bangladesh on a regular internet connection. Provider servers were in the US, Europe or India. Google Chirp 2 ran in <code>us-central1</code>.</li>
+        </ul>
+      </div>
+    </details>
+    <details class="acc">
+      <summary>Models and language settings</summary>
+      <div class="body">
+        <div class="scroll"><table class="mini">
+          <thead><tr><th>Provider</th><th>Batch model</th><th>Streaming model</th><th>Language</th></tr></thead>
+          <tbody>
+            <tr><td>Sarvam AI</td><td><code>saarika:v2.5</code></td><td><code>saaras:v3-realtime</code></td><td><code>bn-IN</code></td></tr>
+            <tr><td>Soniox</td><td><code>stt-async-v5</code></td><td><code>stt-rt-v5</code></td><td>hint <code>bn</code></td></tr>
+            <tr><td>Deepgram</td><td><code>nova-3</code></td><td><code>nova-3</code></td><td><code>bn</code></td></tr>
+            <tr><td>Google Gemini</td><td><code>gemini-2.5-flash</code></td><td><code>gemini-2.5-flash-native-audio</code> (Live API)</td><td>named in prompt</td></tr>
+            <tr><td>ElevenLabs</td><td><code>scribe_v1</code></td><td><code>scribe_v2_realtime</code></td><td><code>ben</code></td></tr>
+            <tr><td>Google Cloud STT</td><td><code>chirp_2</code></td><td><code>chirp_2</code></td><td><code>bn-BD</code></td></tr>
+            <tr><td>OpenAI</td><td><code>gpt-4o-transcribe</code></td><td><code>gpt-4o-transcribe</code> (Realtime API)</td><td><code>bn</code></td></tr>
+            <tr><td>Groq</td><td><code>whisper-large-v3</code></td><td>none</td><td><code>bn</code></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </details>
+    <details class="acc">
+      <summary>Pricing</summary>
+      <div class="body">
+        <p id="price-note"></p>
+        <ul>
+          <li><b>Groq</b> bills at least 10 seconds for each request. On our short clips, it costs 3.4× its list price.</li>
+          <li><b>Sarvam</b> and <b>Google</b> round each request up to the next second. This adds about 17% on our clips.</li>
+          <li><b>Soniox real-time</b> bills the streaming session time, which includes the wait for the final transcript. This adds about 40% on our clips.</li>
+          <li><b>Sarvam</b> prices in rupees. We converted at ₹95.96 per US$ (ECB reference rate, 24 September 2026).</li>
+          <li>Token-billed prices (Soniox, OpenAI) are estimates. Gemini prices are minimums, because they include only the audio input.</li>
+        </ul>
+      </div>
+    </details>
+    <details class="acc">
+      <summary>Limitations</summary>
+      <div class="body">
+        <ul>
+          <li id="tested-note"></li>
+          <li>Mostly read and broadcast speech. No phone audio, heavy noise, regional dialects or Bangla-English code-switching.</li>
+          <li>Language tags are different for each provider (<code>bn</code>, <code>bn-IN</code>, <code>bn-BD</code>, <code>ben</code>). This can have an effect on the results.</li>
+          <li>Gemini Live returned no interim transcripts, and its adapter set no language hint.</li>
+          <li>ElevenLabs batch requested <code>scribe_v1</code>, which was scheduled for removal. Every request succeeded, so we cannot tell which version served them.</li>
+          <li>Latency includes the network distance from Bangladesh, which has a different effect on each provider.</li>
+          <li>Only hosted APIs were tested. Self-hosted open-weight models are not included in v1.0.</li>
+        </ul>
+      </div>
+    </details>
+    <details class="acc">
+      <summary>Conflict of interest</summary>
+      <div class="body">
+        <p>Riverborn Limited funded and ran this benchmark, and paid for all API usage. We build AI and voice products. We have no commercial relationship with any provider that we tested: we are not a partner, reseller or investor of any of them. No provider sponsored or reviewed this benchmark before publication. All code, prompts, settings, transcripts and scores are public, so anyone can check the results.</p>
+      </div>
+    </details>
   </div>
 </section>
 
 <section>
+  <h2>FAQ</h2>
+  <div class="card">
+    <details class="acc">
+      <summary>What is the best speech-to-text API for Bangla?</summary>
+      <div class="body"><p>In our September 2026 test, Sarvam AI (<code>saarika:v2.5</code>) was the most accurate for recorded audio at 6.9% CER. Soniox (<code>stt-rt-v5</code>) was the most accurate for live streaming at 7.4%. Soniox batch was a close second at 8.1%, and it was the cheapest option that we tested.</p></div>
+    </details>
+    <details class="acc">
+      <summary>What is the best real-time (streaming) API for Bangla?</summary>
+      <div class="body"><p>Soniox (<code>stt-rt-v5</code>) was the most accurate streaming API at 7.4% CER, statistically ahead of Sarvam AI (9.0%). Sarvam gave the final transcript fastest after the speaker stopped (0.9 s median, against 2.5 s for Soniox). Thus Sarvam can be a better fit for voice agents that must reply quickly.</p></div>
+    </details>
+    <details class="acc">
+      <summary>What is the cheapest speech-to-text API for Bangla?</summary>
+      <div class="body"><p>Soniox was the cheapest in both modes: $0.10 per audio hour for batch and $0.17 for streaming (effective price on our clips). It also had the second-best batch accuracy (8.1% CER). Google Cloud Speech-to-Text (Chirp 2) was the most expensive at $1.12 per hour. We checked prices on 24 September 2026.</p></div>
+    </details>
+    <details class="acc">
+      <summary>How accurate is Google Cloud Speech-to-Text (Chirp 2) on Bangla?</summary>
+      <div class="body"><p>Chirp 2 (language <code>bn-BD</code>) scored 21.9% CER in batch and 23.6% in streaming. It ranked 6 of 8 in batch. Google Gemini 2.5 Flash did better in batch at 13.3%, but poorly through the Live API (69.6%).</p></div>
+    </details>
+    <details class="acc">
+      <summary>Does Whisper work well for Bangla?</summary>
+      <div class="body"><p>Not on this test. Whisper large-v3 (served by Groq) scored 30.7% CER and 71.7% WER. This was the lowest accuracy of the 8 batch APIs, about 4.5 times the error rate of the leader. It was the fastest to respond (0.66 s for each clip). Groq has no streaming API.</p></div>
+    </details>
+    <details class="acc">
+      <summary>Which Bangla language code should I use: bn, bn-BD or bn-IN?</summary>
+      <div class="body"><p>Use the code that the provider supports. In this benchmark, Sarvam used <code>bn-IN</code>, Google Chirp 2 used <code>bn-BD</code>, ElevenLabs used <code>ben</code>, and Deepgram, OpenAI, Groq and Soniox used <code>bn</code>. The audio is standard Bangla from BanSpeech (SUST, Bangladesh). We did not test if a different code changes the accuracy.</p></div>
+    </details>
+    <details class="acc">
+      <summary>Does it cover phone calls, dialects or code-switching?</summary>
+      <div class="body"><p>No. The audio is mostly read and broadcast-style standard Bangla in 13 domains. Regional dialect clips were not included, and there are no phone calls, heavy noise or Bangla-English code-switching. Test on your own audio before you choose a provider.</p></div>
+    </details>
+    <details class="acc">
+      <summary>Can I reproduce the results?</summary>
+      <div class="body"><p>Yes. The <a href="https://github.com/riverbornai/bangla-speech-to-text-benchmark" target="_blank" rel="noopener">repository</a> has the test set definition, the provider adapters, the scoring code and the confidence-interval code under the MIT license. Add your API keys and run the scripts. You can also check the published numbers with no API keys: the per-clip results are in the <a href="https://huggingface.co/datasets/riverborn/bangla-stt-benchmark-results" target="_blank" rel="noopener">results dataset</a>.</p></div>
+    </details>
+  </div>
+</section>
+
+<div class="card cta">
+  <p><b>Want to explore every transcript?</b> The full report has a decision helper, a clip explorer for all 1,001 clips, and head-to-head tests for any two providers.</p>
+  <a class="btn" href="https://riverborn.com/research/bangla-speech-to-text-benchmark" target="_blank" rel="noopener">Open the full report</a>
+</div>
+
+<section>
   <h2>Cite</h2>
   <p class="hint">If you use these results, cite the benchmark and the BanSpeech dataset.</p>
-  <pre class="cite" id="bibtex">@misc{uddin2026banglastt,
+  <pre class="cite" id="bibtex">@misc{riverborn2026banglastt,
   title        = {Bangla Speech-to-Text Benchmark: Hosted Bengali ASR APIs on BanSpeech},
   author       = {Uddin, Nasim and Azad, Saiful},
+  organization = {Riverborn Limited},
   year         = {2026},
   version      = {1.0.0},
-  publisher    = {Riverborn Limited},
-  howpublished = {\url{https://github.com/riverbornai/bangla-speech-to-text-benchmark}}
+  url          = {https://github.com/riverbornai/bangla-speech-to-text-benchmark}
 }</pre>
   <p style="margin-top:10px"><button class="copy" id="copy-bib">Copy BibTeX</button></p>
 </section>
@@ -314,6 +547,95 @@ function renderStats() {
   document.getElementById("stats").innerHTML = tiles.map(([l, v, s]) =>
     `<div class="stat"><div class="label">${l}</div><div class="value">${v}</div><div class="sub">${esc(s)}</div></div>`
   ).join("");
+}
+
+/* ---------- Short answer ---------- */
+function renderShortAnswer() {
+  const b = DATA.batch[0], s = DATA.streaming[0];
+  const cheapest = [...DATA.batch].filter(r => r.cost_type !== "minimum")
+    .sort((x, y) => x.effective_usd_per_hour - y.effective_usd_per_hour)[0];
+  const fastest = [...DATA.streaming].filter(r => r.finalization_p50_s != null)
+    .sort((x, y) => x.finalization_p50_s - y.finalization_p50_s)[0];
+  const items = [
+    ["Most accurate, recorded audio", `${b.provider} (<code>${esc(b.model_id)}</code>) at ${pct(b.cer)} CER`],
+    ["Most accurate, live streaming", `${s.provider} (<code>${esc(s.model_id)}</code>) at ${pct(s.cer)} CER`],
+    ["Cheapest", `${cheapest.provider} at ${usd(cheapest.effective_usd_per_hour)} per audio hour (batch), rank ${cheapest.rank} on accuracy`],
+    ["Fastest live transcript", `${fastest.provider}: final text ${fastest.finalization_p50_s.toFixed(1)} s after the speaker stops (median)`],
+  ];
+  document.getElementById("short-answer").innerHTML =
+    items.map(([k, v]) => `<li><b>${k}</b>${v}</li>`).join("");
+}
+
+/* ---------- Streaming latency ---------- */
+const LAT = {
+  finalization: {
+    desc: "Time from when the speaker stops to when the full transcript is ready. For a voice agent, this is the silence before it can reply.",
+    p50: "finalization_p50_s", p95: "finalization_p95_s",
+  },
+  first_partial: {
+    desc: "Time to the first interim (not yet final) text. This is how fast live captions start to show.",
+    p50: "first_partial_p50_s", p95: "first_partial_p95_s",
+  },
+  first_final: {
+    desc: "Time to the first finalized segment of text.",
+    p50: "first_final_p50_s", p95: "first_final_p95_s",
+  },
+};
+const latState = { metric: "finalization" };
+function renderLatency() {
+  const m = LAT[latState.metric];
+  document.getElementById("lat-desc").textContent = m.desc;
+  const rows = [...DATA.streaming].sort((a, b) => {
+    if (a[m.p50] == null) return 1;
+    if (b[m.p50] == null) return -1;
+    return a[m.p50] - b[m.p50];
+  });
+  const CAP = 10;
+  const x = v => Math.min(v, CAP) / CAP * 100;
+  const fmt = v => (v == null ? "n/a" : v.toFixed(2) + " s");
+  const html = rows.map(r => {
+    const p50 = r[m.p50], p95 = r[m.p95];
+    if (p50 == null) {
+      return `<div class="lat-row"><div class="name">${esc(r.provider)}</div><div class="lat-track" style="color:var(--text-3);font-size:12px;line-height:16px">No interim results</div><div class="val">n/a</div></div>`;
+    }
+    const over = p95 > CAP;
+    return `<div class="lat-row" data-p="${esc(r.provider)}" data-m="${esc(r.model_id)}" data-a="${p50}" data-b="${p95}">
+      <div class="name">${esc(r.provider)}</div>
+      <div class="lat-track"><svg width="100%" height="16" aria-hidden="true">
+        <line x1="${x(p50)}%" x2="${x(p95)}%" y1="8" y2="8" stroke="var(--whisker)" stroke-width="1.5"/>
+        <line x1="${x(p95)}%" x2="${x(p95)}%" y1="3" y2="13" stroke="var(--whisker)" stroke-width="1.5"/>
+        <rect x="0" y="3" width="${Math.max(x(p50), 0.8)}%" height="10" rx="4" fill="var(--bar)"/>
+      </svg></div>
+      <div class="val"><b>${fmt(p50)}</b> · p95 ${p95.toFixed(1)} s${over ? " ›" : ""}</div>
+    </div>`;
+  }).join("");
+  const ticks = [0, 2, 4, 6, 8, 10].map(t => `<span style="left:${t * 10}%">${t}${t === 10 ? "+" : ""} s</span>`).join("");
+  document.getElementById("lat").innerHTML = html + `<div class="lat-axis"><span></span><div class="ticks">${ticks}</div><span></span></div>`;
+  document.querySelectorAll("#lat .lat-row[data-p]").forEach(el => {
+    const h = `<b>${el.dataset.p}</b> · <code>${el.dataset.m}</code><br>Median ${(+el.dataset.a).toFixed(2)} s · p95 ${(+el.dataset.b).toFixed(2)} s`;
+    el.addEventListener("mousemove", e => showTip(h, e.clientX, e.clientY));
+    el.addEventListener("mouseleave", hideTip);
+  });
+}
+
+/* ---------- Head-to-head ---------- */
+function renderH2H(mode) {
+  const rows = DATA.pairwise.filter(r => r.mode === mode);
+  const head = `<thead><tr><th>Higher rank</th><th>Lower rank</th><th class="num">CER gap</th><th class="num">95% CI</th><th class="num">Clips</th><th>Verdict</th></tr></thead>`;
+  const body = rows.map(r => {
+    const sig = r.gap_ci_low > 0;
+    const gap = (r.cer_gap_b_minus_a * 100).toFixed(1);
+    const ci = `${(r.gap_ci_low * 100).toFixed(1)} to ${(r.gap_ci_high * 100).toFixed(1)}`;
+    const verdict = sig
+      ? `<span class="verdict"><span class="dot"></span>${esc(r.provider_a)} ahead</span>`
+      : `<span class="verdict tie"><span class="dot"></span>Tie</span>`;
+    return `<tr>
+      <td><b>${esc(r.provider_a)}</b> <span class="model"><code>${esc(r.model_id_a)}</code></span></td>
+      <td>${esc(r.provider_b)} <span class="model"><code>${esc(r.model_id_b)}</code></span></td>
+      <td class="num">${gap} pts</td><td class="num">${ci}</td><td class="num">${r.shared_files.toLocaleString()}</td>
+      <td>${verdict}</td></tr>`;
+  }).join("");
+  document.getElementById("h2h").innerHTML = head + `<tbody>${body}</tbody>`;
 }
 
 /* ---------- Leaderboard ---------- */
@@ -481,6 +803,12 @@ document.querySelectorAll("[data-mode]").forEach(b => b.addEventListener("click"
   state.mode = b.dataset.mode; state.sort = "cer"; state.dir = 1;
   setTabs("mode", state.mode); renderBoard(); renderScatter();
 }));
+document.querySelectorAll("[data-lat]").forEach(b => b.addEventListener("click", () => {
+  latState.metric = b.dataset.lat; setTabs("lat", latState.metric); renderLatency();
+}));
+document.querySelectorAll("[data-h2h]").forEach(b => b.addEventListener("click", () => {
+  setTabs("h2h", b.dataset.h2h); renderH2H(b.dataset.h2h);
+}));
 document.querySelectorAll("[data-heat]").forEach(b => b.addEventListener("click", () => {
   state.heat = b.dataset.heat; setTabs("heat", state.heat); renderHeat();
 }));
@@ -492,10 +820,10 @@ document.getElementById("copy-bib").addEventListener("click", e => {
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderHeat);
 
 document.getElementById("price-note").textContent =
-  `Pay-as-you-go list prices in USD, checked on ${DATA.prices_checked}. “≥” means a minimum: it prices audio input only. Free credits and volume discounts are not included. Sources for each price are in the results dataset.`;
-document.getElementById("tested-note").textContent = `Tested in ${DATA.tested}, with the exact model IDs shown in the table.`;
+  `List prices are the pay-as-you-go rates in USD, checked on ${DATA.prices_checked} on each provider's pricing page. The “on our clips” price applies each provider's billing rules (rounding, minimum length, token conversion) to these exact clips. “≥” means a minimum. Free credits and volume discounts are not included. Each rate and its source text is in prices.yaml in the results dataset.`;
+document.getElementById("tested-note").textContent = `A snapshot of these APIs in ${DATA.tested}. Providers update their models often. Run the benchmark again before you make a purchase decision.`;
 
-renderStats(); renderBoard(); renderScatter(); renderHeat();
+renderStats(); renderShortAnswer(); renderBoard(); renderLatency(); renderH2H("batch"); renderScatter(); renderHeat();
 </script>
 </body>
 </html>

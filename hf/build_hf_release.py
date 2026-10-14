@@ -169,8 +169,15 @@ def write_space(tables):
         "streaming": round_records(
             tables["leaderboard_streaming"],
             ["rank", "provider", "model_id", "cer", "cer_ci_low", "cer_ci_high", "wer",
-             "first_partial_p50_s", "finalization_p50_s", "total_latency_mean_s",
-             "list_usd_per_hour", "effective_usd_per_hour", "cost_type", "coverage"],
+             "first_partial_p50_s", "first_partial_p95_s", "first_final_p50_s",
+             "first_final_p95_s", "finalization_p50_s", "finalization_p95_s",
+             "total_latency_mean_s", "list_usd_per_hour", "effective_usd_per_hour",
+             "cost_type", "coverage"],
+        ),
+        "pairwise": round_records(
+            tables["pairwise"],
+            ["mode", "provider_a", "model_id_a", "provider_b", "model_id_b", "shared_files",
+             "cer_gap_b_minus_a", "gap_ci_low", "gap_ci_high", "p_a_better"],
         ),
         "by_domain": round_records(
             tables["by_domain"], ["mode", "provider", "model_id", "domain", "cer"]
