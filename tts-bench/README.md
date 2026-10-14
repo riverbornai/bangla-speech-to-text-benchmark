@@ -249,3 +249,147 @@ To add a provider in Claude Code, ask it to "add <vendor> as a provider". That r
 | `.claude/rules/providers/<name>.md` | Only that provider's module and test |
 | `.claude/skills/add-tts-provider/` | On demand, when adding a provider |
 | `.claude/settings.json` | Permissions: plan allowed, apply/destroy denied, secret files unreadable |
+
+---
+
+## Human evaluation and rankings dashboard
+
+Once the audio is generated (above), people rate it. This section covers that stage: human-rated comparison of seven text-to-speech models on Bangla. Annotators hear the same sentence from all seven models (order shuffled, model names hidden) and rate each 1–5 for naturalness and pronunciation. This folder turns those ratings into rankings and a founders dashboard.
+
+```
+Label Studio tasks ──► ratings export ──► rankings.json ──► rankings_ui.html
+ (make_tasks.py)          (i.json)      (rank_by_category.py) (build_rankings_ui.py)
+```
+
+### Files
+
+| File | Purpose |
+|---|---|
+| `make_tasks.py` | Builds Label Studio `tasks.json` and `labeling_config.xml` for the blind 7-way comparison |
+| `labeling_config.xml` | Label Studio UI config: 7 audio players with a 1–5 rating each |
+| `i.json` | Label Studio export of completed annotations (input to ranking) |
+| `rank_by_category.py` | Computes average rating per model, per category and overall, and writes `rankings.json` |
+| `rankings.json` | Ranking results (the data behind the dashboard) |
+| `rankings_ui.html` | Riverborn-branded dashboard for founders |
+| `build_rankings_ui.py` | Embeds the latest `rankings.json` into the dashboard for offline viewing |
+
+### Requirements
+
+- Python 3.9+. These scripts use the standard library only, so no `pip install` or virtualenv is needed (the runner above is separate and needs 3.12)
+- A modern browser (Chrome, Safari, Firefox)
+
+All commands below run from this folder:
+
+```bash
+cd ~/Desktop/bangla-speech-to-text-benchmark/tts-bench
+```
+
+---
+
+### Step 1: Create the annotation tasks
+
+Skip this step if the tasks already exist in Label Studio.
+
+1. Put one `*_batch_manifest.jsonl` per TTS model in this folder.
+2. Run, pointing `--bucket` at the URL where the `runs/` audio folder is hosted:
+
+   ```bash
+   python3 make_tasks.py --bucket https://your-host/audio
+   ```
+
+   Useful options: `--seed 42` (shuffle seed, keep it fixed for reproducibility), `--text-model azure-prod` (whose text is shown to annotators).
+3. Import the generated `tasks.json` into Label Studio and paste `labeling_config.xml` into the project's labeling interface.
+
+### Step 2: Collect ratings and export
+
+1. Annotators rate every audio from 1 to 5 in Label Studio.
+2. When done, export the project as **JSON** (not JSON-Min) and save it in this folder as `i.json`.
+
+Cancelled annotations are ignored automatically.
+
+### Step 3: Generate the rankings
+
+```bash
+python3 rank_by_category.py -i i.json -o rankings.json
+```
+
+This writes `rankings.json` with, for each category and overall: rank, model, average rating, number of ratings and the 5★→1★ distribution. Ties are ordered by number of ratings, then name.
+
+Handy variants:
+
+```bash
+python3 rank_by_category.py                 # print tables in the terminal
+python3 rank_by_category.py -c CMX          # one category only
+```
+
+### Step 4: Build the dashboard
+
+```bash
+python3 build_rankings_ui.py
+```
+
+This embeds the current `rankings.json` into `rankings_ui.html` so the page also works when opened straight from disk. Run it every time `rankings.json` changes.
+
+### Step 5: View the dashboard
+
+**Option A: open the file** (offline snapshot)
+
+```bash
+open rankings_ui.html          # macOS
+```
+
+**Option B: serve the folder** (reads `rankings.json` live)
+
+```bash
+python3 -m http.server 8000
+```
+
+Open <http://localhost:8000/rankings_ui.html>. Stop with `Ctrl+C`.
+
+### Step 6: Share with founders
+
+Send `rankings_ui.html` on its own. It is self-contained (it only loads Google Fonts when online) and shows the data from the last time Step 4 was run.
+
+---
+
+### All steps in one command
+
+After exporting a new `i.json`:
+
+```bash
+python3 rank_by_category.py -i i.json -o rankings.json && \
+python3 build_rankings_ui.py && \
+open rankings_ui.html
+```
+
+### Reading the dashboard
+
+- **Average rating** is the mean of all 1–5 ratings for a model. **Overall** pools every rating, so categories with more sentences weigh more.
+- **Ties** are shown as `=`.
+- Small categories (for example Long-form, 6 sentences) swing easily. Treat gaps under about 0.3 as noise.
+- Category names and model display names are set at the top of the script in `rankings_ui.html` (`CATS` and `MODELS`). Edit them there, then re-run Step 4.
+
+| Code | Category |
+|---|---|
+| ABR | Abbreviations |
+| CMX | Code-mixed (Bangla + English) |
+| CUR | Currency |
+| DOM | Banking & commerce messages |
+| DTM | Dates & times |
+| EDG | Edge cases (URLs, emails) |
+| G2P | Pronunciation (conjuncts) |
+| LNG | Long-form |
+| NUM | Numbers |
+| PLN | Plain sentences |
+| PRN | Place names |
+| PRS | Prosody (questions, intonation) |
+
+### Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| Dashboard shows "Couldn't load rankings" | Run `python3 build_rankings_ui.py`, or serve the folder (Step 5, Option B) |
+| Dashboard shows old numbers | Re-run Steps 3 and 4, then hard-refresh the browser |
+| `Unknown category` error | Use a code from the table above (case-insensitive) |
+| Fonts look different offline | Expected. The page falls back to system fonts without internet |
+| `python3: command not found` | Install Python 3 from python.org or `brew install python` |
