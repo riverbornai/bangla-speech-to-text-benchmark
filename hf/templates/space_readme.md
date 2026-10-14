@@ -27,4 +27,5 @@ Batch and streaming results for 8 hosted Bangla speech-to-text APIs on
 - Interactive report: [riverborn.com/research/bangla-speech-to-text-benchmark](https://riverborn.com/research/bangla-speech-to-text-benchmark)
 - Results data: [riverborn/bangla-stt-benchmark-results](https://huggingface.co/datasets/riverborn/bangla-stt-benchmark-results)
 - Code and method: [riverbornai/bangla-speech-to-text-benchmark](https://github.com/riverbornai/bangla-speech-to-text-benchmark)
+- DOI (all versions): [10.5281/zenodo.22946242](https://doi.org/10.5281/zenodo.22946242)
 - Research by [Riverborn Limited](https://riverborn.com)

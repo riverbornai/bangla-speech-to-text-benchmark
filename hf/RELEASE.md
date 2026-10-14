@@ -52,6 +52,12 @@ Set both repos to **Public** in each repo's Settings page. Then tag the dataset:
 hf repos tag create riverborn/bangla-stt-benchmark-results v1.0 --repo-type dataset -m "Benchmark v1.0, tested September 2026"
 ```
 
+## Upload without the CLI
+
+You can also create both repos on huggingface.co and drag the files from
+`hf/dist/results/` (keep the `data/` folder) and `hf/dist/leaderboard/` onto
+each repo's "Upload files" page.
+
 ## 5. After release
 
 - Make a collection "Bangla Speech-to-Text Benchmark" with the Space, the results dataset and `SUST-CSE-Speech/banspeech`.
