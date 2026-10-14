@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bangla TTS Rankings · Riverborn</title>
+<meta name="description" content="Human-rated ranking of seven text-to-speech models on Bangla, overall and across twelve categories.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230D2B22'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23D4F53C'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#0D2B22; --lime:#D4F53C; --frost:#F2FFEE; --midnight:#060F0C; --mist:#9FCEBE;
+  --forest-2:#123a2e; --forest-3:#194a3b; --line:rgba(159,206,190,.18); --line-2:rgba(159,206,190,.32);
+  --muted:rgba(242,255,238,.62); --warn:#E58A6E;
+  --star5:#D4F53C; --star4:#9FE08C; --star3:#9FCEBE; --star2:#6F8F86; --star1:#E58A6E;
+  --font-head:'Sora',system-ui,sans-serif; --font-body:'Inter',system-ui,sans-serif; --font-mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--midnight);color:var(--frost);font-family:var(--font-body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.mono{font-family:var(--font-mono)}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mist);display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--lime)}
+h1,h2,h3{font-family:var(--font-head);letter-spacing:-.02em;line-height:1.05}
+h2{font-size:clamp(28px,4vw,44px);font-weight:700;margin:14px 0 10px}
+h2 .dot,h1 .dot,.logo .dot{color:var(--lime)}
+.lede{color:var(--muted);max-width:640px}
+section{padding:72px 0;position:relative}
+
+/* nav */
+nav{position:sticky;top:0;z-index:50;background:rgba(6,15,12,.78);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.logo{font-family:var(--font-head);font-weight:800;font-size:22px;letter-spacing:-.03em;color:var(--frost);text-decoration:none}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-2);border-radius:999px;padding:7px 14px;font-family:var(--font-mono);font-size:12px;color:var(--mist);background:transparent}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px var(--lime)}
+
+/* hero */
+.hero{padding:88px 0 56px;background:radial-gradient(1100px 500px at 85% -10%,rgba(212,245,60,.10),transparent 60%),var(--forest);border-bottom:1px solid var(--line);overflow:hidden}
+.topo{position:absolute;inset:0;opacity:.35;pointer-events:none}
+.hero h1{font-size:clamp(40px,7vw,84px);font-weight:800;margin:18px 0 20px;max-width:900px}
+.hero .lede{font-size:18px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:48px;position:relative}
+.stat{background:rgba(13,43,34,.92);padding:22px 24px}
+.stat b{display:block;font-family:var(--font-head);font-size:clamp(28px,4vw,44px);font-weight:700;letter-spacing:-.03em;color:var(--lime)}
+.stat span{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mist)}
+
+/* podium */
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:36px 0 28px}
+.pod{border:1px solid var(--line);border-radius:18px;padding:24px;background:linear-gradient(180deg,var(--forest-2),var(--forest));position:relative;overflow:hidden}
+.pod.first{background:var(--lime);color:var(--midnight);border-color:var(--lime)}
+.pod .rk{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+.pod h3{font-size:26px;font-weight:700;margin:14px 0 2px}
+.pod .id{font-family:var(--font-mono);font-size:12px;opacity:.6}
+.pod .score{font-family:var(--font-head);font-weight:800;font-size:56px;letter-spacing:-.04em;margin-top:18px;line-height:1}
+.pod .score small{font-size:16px;font-weight:600;opacity:.6;margin-left:4px}
+.pod .sub{font-size:13px;opacity:.75;margin-top:8px}
+
+/* leaderboard */
+.board{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:rgba(13,43,34,.55)}
+.row{display:grid;grid-template-columns:56px minmax(150px,1.1fr) minmax(180px,1.5fr) minmax(200px,1.6fr) 56px;gap:18px;align-items:center;padding:16px 22px;border-top:1px solid var(--line);transition:background .2s}
+.row:first-child{border-top:0}
+.row:not(.head):hover{background:rgba(212,245,60,.045)}
+.row.head{font-family:var(--font-mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--mist);padding-top:13px;padding-bottom:13px;background:rgba(6,15,12,.35)}
+.rank{font-family:var(--font-head);font-weight:700;font-size:22px;color:var(--mist)}
+.row.top .rank{color:var(--lime)}
+.mname{font-family:var(--font-head);font-weight:600;font-size:17px;letter-spacing:-.01em}
+.mid{font-family:var(--font-mono);font-size:11.5px;color:var(--muted)}
+.avgcell{display:flex;align-items:center;gap:12px}
+.bar{flex:1;height:10px;border-radius:999px;background:rgba(159,206,190,.12);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:999px;background:var(--mist);width:0;transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.row.top .bar i{background:var(--lime)}
+.avg{font-family:var(--font-mono);font-weight:600;font-size:16px;min-width:44px;text-align:right}
+.dist{display:flex;height:10px;border-radius:999px;overflow:hidden;gap:2px;background:rgba(159,206,190,.08)}
+.dist i{display:block;height:100%;min-width:0}
+.dist-legend{display:flex;gap:14px;margin:14px 2px 0;font-family:var(--font-mono);font-size:11.5px;color:var(--muted);flex-wrap:wrap}
+.dist-legend span{display:inline-flex;align-items:center;gap:6px}
+.dist-legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.n{font-family:var(--font-mono);font-size:12px;color:var(--muted);text-align:right}
+.tie{font-family:var(--font-mono);font-size:10px;color:var(--mist);border:1px solid var(--line-2);border-radius:999px;padding:1px 7px;margin-left:8px;vertical-align:middle;letter-spacing:.08em}
+
+/* category explorer */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 22px}
+.chip{border:1px solid var(--line-2);background:transparent;color:var(--frost);border-radius:999px;padding:9px 16px;font-family:var(--font-body);font-size:14px;font-weight:500;cursor:pointer;transition:all .18s}
+.chip small{font-family:var(--font-mono);font-size:10.5px;opacity:.6;margin-left:6px;letter-spacing:.06em}
+.chip:hover{border-color:var(--lime)}
+.chip[aria-pressed="true"]{background:var(--lime);color:var(--midnight);border-color:var(--lime)}
+.chip:focus-visible,.hm td.cell:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.cathead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:18px}
+.cathead h3{font-size:28px;font-weight:700}
+.cathead p{color:var(--muted);font-size:15px;margin-top:4px;max-width:560px}
+.winner{border:1px solid var(--line-2);border-radius:14px;padding:12px 18px;font-size:14px;background:var(--forest-2)}
+.winner b{color:var(--lime);font-family:var(--font-head)}
+.winner span{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mist);margin-bottom:2px}
+
+/* heatmap */
+.hmwrap{overflow-x:auto;border:1px solid var(--line);border-radius:18px;margin-top:32px;background:rgba(13,43,34,.55)}
+table.hm{border-collapse:separate;border-spacing:4px;width:100%;min-width:860px;padding:8px}
+.hm th{font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);padding:8px 4px}
+.hm th.col{cursor:pointer}
+.hm th.col:hover{color:var(--lime)}
+.hm th.mod{text-align:left;font-family:var(--font-head);font-size:14px;letter-spacing:-.01em;text-transform:none;color:var(--frost);font-weight:600;white-space:nowrap;padding:0 14px 0 10px}
+.hm td.cell{text-align:center;font-family:var(--font-mono);font-size:13.5px;font-weight:600;border-radius:8px;height:46px;cursor:pointer;transition:transform .15s}
+.hm td.cell:hover{transform:scale(1.07);position:relative;z-index:2}
+.hm td.best{box-shadow:inset 0 0 0 2px var(--frost)}
+.hm .sep{width:10px}
+.hmnote{font-size:13px;color:var(--muted);margin-top:12px}
+
+/* takeaways */
+.take{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}
+.card{border:1px solid var(--line);border-radius:18px;padding:26px;background:linear-gradient(180deg,var(--forest-2),var(--forest))}
+.card .eyebrow{margin-bottom:12px}
+.card h3{font-size:22px;font-weight:700;margin-bottom:8px;letter-spacing:-.02em;line-height:1.2}
+.card p{color:var(--muted);font-size:14.5px}
+.card p b{color:var(--frost);font-weight:600}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:56px 0 0;overflow:hidden;background:var(--forest)}
+.method{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;margin-bottom:56px}
+.method p{color:var(--muted);font-size:14.5px;margin-top:10px}
+.method ul{list-style:none;margin-top:10px;display:grid;gap:8px;color:var(--muted);font-size:14px}
+.method li::before{content:"→";color:var(--lime);margin-right:10px;font-family:var(--font-mono)}
+.cta{display:inline-flex;margin-top:22px;background:var(--lime);color:var(--midnight);font-family:var(--font-head);font-weight:700;border-radius:999px;padding:13px 24px;text-decoration:none;font-size:15px;transition:transform .2s}
+.cta:hover{transform:translateY(-2px)}
+.giant{font-family:var(--font-head);font-weight:800;font-size:clamp(80px,19vw,260px);letter-spacing:-.05em;line-height:.8;color:transparent;-webkit-text-stroke:1.5px rgba(159,206,190,.28);white-space:nowrap;user-select:none;margin-bottom:-.06em}
+.err{padding:80px 24px;text-align:center;color:var(--mist)}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s,transform .7s}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.bar i{transition:none}html{scroll-behavior:auto}}
+
+@media (max-width:900px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .podium,.take,.method{grid-template-columns:1fr}
+  .row{grid-template-columns:40px 1fr 56px;grid-template-areas:"rk nm n" "av av av" "ds ds ds";gap:10px 14px;padding:16px}
+  .row.head{display:none}
+  .row .rank{grid-area:rk}.row .mcell{grid-area:nm}.row .avgcell{grid-area:av}.row .distcell{grid-area:ds}.row .n{grid-area:n}
+  section{padding:56px 0}
+  .hero{padding-top:56px}
+}
+@media (max-width:480px){.wrap{padding:0 16px}.pill.src{display:none}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="#top">Riverborn<span class="dot">.</span></a>
+    <span class="pill src"><i></i><span id="srcPill">Founders view</span></span>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <svg class="topo" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g fill="none" stroke="#9FCEBE" stroke-width="1" opacity=".5">
+      <path d="M-20 420C140 360 220 470 380 430S620 330 760 380 1040 470 1220 380"/>
+      <path d="M-20 460C150 400 230 510 390 470S630 370 770 420 1050 510 1220 420"/>
+      <path d="M-20 500C160 440 240 550 400 510S640 410 780 460 1060 550 1220 460"/>
+      <path d="M-20 380C130 320 210 430 370 390S610 290 750 340 1030 430 1220 340"/>
+      <path d="M-20 340C120 280 200 390 360 350S600 250 740 300 1020 390 1220 300"/>
+      <path d="M-20 300C110 240 190 350 350 310S590 210 730 260 1010 350 1220 260"/>
+    </g>
+  </svg>
+  <div class="wrap" style="position:relative">
+    <div class="eyebrow">Bangla TTS benchmark · Founders view</div>
+    <h1>Who speaks Bangla best<span class="dot">.</span></h1>
+    <p class="lede">Seven text-to-speech models, blind-rated by humans on naturalness and pronunciation. Ranked overall and across twelve real-world categories.</p>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+
+<main id="app"><div class="err">Loading rankings…</div></main>
+
+<footer>
+  <div class="wrap">
+    <div class="method">
+      <div>
+        <div class="eyebrow">How to read this</div>
+        <h2 style="font-size:30px">Built on human ears<span class="dot">.</span></h2>
+        <p>Every sentence was synthesised by all seven models, shuffled per sentence so raters never knew which voice they were hearing, then scored 1–5 for naturalness and pronunciation. A model's score is its mean rating.</p>
+        <a class="cta" href="https://riverborn.com" target="_blank" rel="noopener">At Riverborn, we build AI you can trust.</a>
+      </div>
+      <div>
+        <div class="eyebrow">Read with care</div>
+        <ul>
+          <li>Small categories (e.g. Long-form, 6 sentences) swing easily. Treat gaps under ~0.3 as noise.</li>
+          <li>Ties are shown as “=”. Overall pools every rating, so busier categories weigh more.</li>
+          <li>Category descriptions are inferred from each category's test sentences.</li>
+          <li id="srcLine"></li>
+        </ul>
+      </div>
+    </div>
+    <div class="giant" aria-hidden="true">Riverborn</div>
+  </div>
+</footer>
+
+<!-- Snapshot of rankings.json, refreshed by build_rankings_ui.py. Used when rankings.json can't be fetched (e.g. file:// double-click). -->
+<script id="embedded-data" type="application/json">{"source":"i.json","categories":{"ABR":{"tasks":16,"ranking":[{"model":"elevenlabs-v4","avg_rating":4.56,"n":16,"distribution":{"5":11,"4":3,"3":2,"2":0,"1":0},"rank":1},{"model":"gemini-3-8","avg_rating":4.38,"n":16,"distribution":{"5":9,"4":5,"3":1,"2":1,"1":0},"rank":2},{"model":"soniox-prod","avg_rating":3.56,"n":16,"distribution":{"5":6,"4":5,"3":1,"2":0,"1":4},"rank":3},{"model":"sarvem","avg_rating":2.94,"n":16,"distribution":{"5":1,"4":3,"3":8,"2":2,"1":2},"rank":4},{"model":"cartesia-3-6","avg_rating":2.62,"n":16,"distribution":{"5":1,"4":3,"3":5,"2":3,"1":4},"rank":5},{"model":"openai-prod","avg_rating":2.56,"n":16,"distribution":{"5":1,"4":1,"3":8,"2":2,"1":4},"rank":6},{"model":"azure-prod","avg_rating":1.75,"n":16,"distribution":{"5":1,"4":1,"3":2,"2":1,"1":11},"rank":7}]},"CMX":{"tasks":20,"ranking":[{"model":"soniox-prod","avg_rating":4.55,"n":20,"distribution":{"5":15,"4":3,"3":1,"2":0,"1":1},"rank":1},{"model":"elevenlabs-v4","avg_rating":4.4,"n":20,"distribution":{"5":15,"4":2,"3":1,"2":0,"1":2},"rank":2},{"model":"gemini-3-8","avg_rating":4.2,"n":20,"distribution":{"5":13,"4":2,"3":2,"2":2,"1":1},"rank":3},{"model":"cartesia-3-6","avg_rating":3.85,"n":20,"distribution":{"5":6,"4":9,"3":3,"2":0,"1":2},"rank":4},{"model":"sarvem","avg_rating":3.8,"n":20,"distribution":{"5":6,"4":6,"3":6,"2":2,"1":0},"rank":5},{"model":"openai-prod","avg_rating":3.45,"n":20,"distribution":{"5":4,"4":7,"3":5,"2":2,"1":2},"rank":6},{"model":"azure-prod","avg_rating":2.7,"n":20,"distribution":{"5":4,"4":2,"3":5,"2":2,"1":7},"rank":7}]},"CUR":{"tasks":13,"ranking":[{"model":"elevenlabs-v4","avg_rating":4.62,"n":13,"distribution":{"5":10,"4":1,"3":2,"2":0,"1":0},"rank":1},{"model":"gemini-3-8","avg_rating":4.0,"n":13,"distribution":{"5":6,"4":4,"3":1,"2":1,"1":1},"rank":2},{"model":"soniox-prod","avg_rating":4.0,"n":13,"distribution":{"5":5,"4":5,"3":1,"2":2,"1":0},"rank":3},{"model":"cartesia-3-6","avg_rating":2.77,"n":13,"distribution":{"5":2,"4":3,"3":2,"2":2,"1":4},"rank":4},{"model":"azure-prod","avg_rating":2.69,"n":13,"distribution":{"5":4,"4":1,"3":1,"2":1,"1":6},"rank":5},{"model":"sarvem","avg_rating":2.69,"n":13,"distribution":{"5":3,"4":2,"3":0,"2":4,"1":4},"rank":6},{"model":"openai-prod","avg_rating":2.31,"n":13,"distribution":{"5":1,"4":1,"3":3,"2":4,"1":4},"rank":7}]},"DOM":{"tasks":21,"ranking":[{"model":"gemini-3-8","avg_rating":4.52,"n":21,"distribution":{"5":17,"4":2,"3":0,"2":0,"1":2},"rank":1},{"model":"elevenlabs-v4","avg_rating":4.33,"n":21,"distribution":{"5":11,"4":8,"3":1,"2":0,"1":1},"rank":2},{"model":"soniox-prod","avg_rating":3.76,"n":21,"distribution":{"5":10,"4":5,"3":1,"2":1,"1":4},"rank":3},{"model":"sarvem","avg_rating":3.29,"n":21,"distribution":{"5":2,"4":10,"3":4,"2":2,"1":3},"rank":4},{"model":"azure-prod","avg_rating":2.52,"n":21,"distribution":{"5":1,"4":5,"3":5,"2":3,"1":7},"rank":5},{"model":"openai-prod","avg_rating":2.48,"n":21,"distribution":{"5":2,"4":3,"3":6,"2":2,"1":8},"rank":6},{"model":"cartesia-3-6","avg_rating":2.33,"n":21,"distribution":{"5":0,"4":2,"3":9,"2":4,"1":6},"rank":7}]},"DTM":{"tasks":15,"ranking":[{"model":"elevenlabs-v4","avg_rating":4.8,"n":15,"distribution":{"5":13,"4":1,"3":1,"2":0,"1":0},"rank":1},{"model":"gemini-3-8","avg_rating":4.73,"n":15,"distribution":{"5":12,"4":2,"3":1,"2":0,"1":0},"rank":2},{"model":"sarvem","avg_rating":3.4,"n":15,"distribution":{"5":5,"4":4,"3":1,"2":2,"1":3},"rank":3},{"model":"soniox-prod","avg_rating":3.13,"n":15,"distribution":{"5":4,"4":5,"3":0,"2":1,"1":5},"rank":4},{"model":"cartesia-3-6","avg_rating":2.27,"n":15,"distribution":{"5":1,"4":3,"3":2,"2":2,"1":7},"rank":5},{"model":"azure-prod","avg_rating":2.13,"n":15,"distribution":{"5":2,"4":1,"3":2,"2":2,"1":8},"rank":6},{"model":"openai-prod","avg_rating":1.6,"n":15,"distribution":{"5":0,"4":2,"3":0,"2":3,"1":10},"rank":7}]},"EDG":{"tasks":13,"ranking":[{"model":"elevenlabs-v4","avg_rating":4.92,"n":13,"distribution":{"5":12,"4":1,"3":0,"2":0,"1":0},"rank":1},{"model":"gemini-3-8","avg_rating":4.38,"n":13,"distribution":{"5":10,"4":0,"3":2,"2":0,"1":1},"rank":2},{"model":"sarvem","avg_rating":4.23,"n":13,"distribution":{"5":6,"4":4,"3":3,"2":0,"1":0},"rank":3},{"model":"openai-prod","avg_rating":3.62,"n":13,"distribution":{"5":5,"4":2,"3":4,"2":0,"1":2},"rank":4},{"model":"azure-prod","avg_rating":3.38,"n":13,"distribution":{"5":3,"4":4,"3":3,"2":1,"1":2},"rank":5},{"model":"soniox-prod","avg_rating":3.23,"n":13,"distribution":{"5":3,"4":4,"3":2,"2":1,"1":3},"rank":6},{"model":"cartesia-3-6","avg_rating":3.15,"n":13,"distribution":{"5":1,"4":3,"3":7,"2":1,"1":1},"rank":7}]},"G2P":{"tasks":24,"ranking":[{"model":"elevenlabs-v4","avg_rating":4.75,"n":24,"distribution":{"5":21,"4":1,"3":1,"2":1,"1":0},"rank":1},{"model":"gemini-3-8","avg_rating":4.71,"n":24,"distribution":{"5":19,"4":4,"3":0,"2":1,"1":0},"rank":2},{"model":"sarvem","avg_rating":4.21,"n":24,"distribution":{"5":11,"4":9,"3":2,"2":2,"1":0},"rank":3},{"model":"soniox-prod","avg_rating":4.21,"n":24,"distribution":{"5":8,"4":13,"3":3,"2":0,"1":0},"rank":4},{"model":"cartesia-3-6","avg_rating":4.08,"n":24,"distribution":{"5":9,"4":9,"3":5,"2":1,"1":0},"rank":5},{"model":"azure-prod","avg_rating":2.92,"n":24,"distribution":{"5":2,"4":8,"3":6,"2":2,"1":6},"rank":6},{"model":"openai-prod","avg_rating":2.79,"n":24,"distribution":{"5":1,"4":6,"3":10,"2":1,"1":6},"rank":7}]},"LNG":{"tasks":6,"ranking":[{"model":"elevenlabs-v4","avg_rating":5.0,"n":6,"distribution":{"5":6,"4":0,"3":0,"2":0,"1":0},"rank":1},{"model":"gemini-3-8","avg_rating":5.0,"n":6,"distribution":{"5":6,"4":0,"3":0,"2":0,"1":0},"rank":2},{"model":"cartesia-3-6","avg_rating":3.83,"n":6,"distribution":{"5":2,"4":1,"3":3,"2":0,"1":0},"rank":3},{"model":"soniox-prod","avg_rating":3.83,"n":6,"distribution":{"5":2,"4":3,"3":0,"2":0,"1":1},"rank":4},{"model":"sarvem","avg_rating":3.5,"n":6,"distribution":{"5":0,"4":4,"3":1,"2":1,"1":0},"rank":5},{"model":"azure-prod","avg_rating":2.17,"n":6,"distribution":{"5":0,"4":1,"3":2,"2":0,"1":3},"rank":6},{"model":"openai-prod","avg_rating":2.17,"n":6,"distribution":{"5":0,"4":0,"3":3,"2":1,"1":2},"rank":7}]},"NUM":{"tasks":28,"ranking":[{"model":"elevenlabs-v4","avg_rating":4.71,"n":28,"distribution":{"5":22,"4":4,"3":2,"2":0,"1":0},"rank":1},{"model":"gemini-3-8","avg_rating":4.36,"n":28,"distribution":{"5":17,"4":7,"3":2,"2":1,"1":1},"rank":2},{"model":"soniox-prod","avg_rating":3.61,"n":28,"distribution":{"5":7,"4":10,"3":7,"2":1,"1":3},"rank":3},{"model":"cartesia-3-6","avg_rating":3.21,"n":28,"distribution":{"5":4,"4":8,"3":11,"2":0,"1":5},"rank":4},{"model":"sarvem","avg_rating":2.79,"n":28,"distribution":{"5":3,"4":5,"3":10,"2":3,"1":7},"rank":5},{"model":"azure-prod","avg_rating":1.86,"n":28,"distribution":{"5":0,"4":1,"3":9,"2":3,"1":15},"rank":6},{"model":"openai-prod","avg_rating":1.75,"n":28,"distribution":{"5":2,"4":1,"3":3,"2":4,"1":18},"rank":7}]},"PLN":{"tasks":27,"ranking":[{"model":"elevenlabs-v4","avg_rating":4.74,"n":27,"distribution":{"5":22,"4":3,"3":2,"2":0,"1":0},"rank":1},{"model":"gemini-3-8","avg_rating":4.7,"n":27,"distribution":{"5":22,"4":2,"3":3,"2":0,"1":0},"rank":2},{"model":"soniox-prod","avg_rating":4.26,"n":27,"distribution":{"5":12,"4":10,"3":5,"2":0,"1":0},"rank":3},{"model":"azure-prod","avg_rating":4.19,"n":27,"distribution":{"5":11,"4":10,"3":6,"2":0,"1":0},"rank":4},{"model":"cartesia-3-6","avg_rating":3.78,"n":27,"distribution":{"5":8,"4":7,"3":11,"2":0,"1":1},"rank":5},{"model":"sarvem","avg_rating":3.74,"n":27,"distribution":{"5":10,"4":8,"3":5,"2":0,"1":4},"rank":6},{"model":"openai-prod","avg_rating":3.37,"n":27,"distribution":{"5":5,"4":4,"3":16,"2":0,"1":2},"rank":7}]},"PRN":{"tasks":12,"ranking":[{"model":"elevenlabs-v4","avg_rating":4.75,"n":12,"distribution":{"5":10,"4":1,"3":1,"2":0,"1":0},"rank":1},{"model":"gemini-3-8","avg_rating":4.58,"n":12,"distribution":{"5":8,"4":3,"3":1,"2":0,"1":0},"rank":2},{"model":"soniox-prod","avg_rating":4.33,"n":12,"distribution":{"5":4,"4":8,"3":0,"2":0,"1":0},"rank":3},{"model":"sarvem","avg_rating":3.92,"n":12,"distribution":{"5":3,"4":7,"3":0,"2":2,"1":0},"rank":4},{"model":"azure-prod","avg_rating":3.5,"n":12,"distribution":{"5":1,"4":6,"3":3,"2":2,"1":0},"rank":5},{"model":"cartesia-3-6","avg_rating":3.5,"n":12,"distribution":{"5":0,"4":6,"3":6,"2":0,"1":0},"rank":6},{"model":"openai-prod","avg_rating":3.25,"n":12,"distribution":{"5":0,"4":5,"3":5,"2":2,"1":0},"rank":7}]},"PRS":{"tasks":16,"ranking":[{"model":"elevenlabs-v4","avg_rating":5.0,"n":16,"distribution":{"5":16,"4":0,"3":0,"2":0,"1":0},"rank":1},{"model":"gemini-3-8","avg_rating":4.69,"n":16,"distribution":{"5":11,"4":5,"3":0,"2":0,"1":0},"rank":2},{"model":"soniox-prod","avg_rating":4.12,"n":16,"distribution":{"5":2,"4":14,"3":0,"2":0,"1":0},"rank":3},{"model":"sarvem","avg_rating":3.75,"n":16,"distribution":{"5":0,"4":12,"3":4,"2":0,"1":0},"rank":4},{"model":"cartesia-3-6","avg_rating":3.25,"n":16,"distribution":{"5":3,"4":2,"3":9,"2":0,"1":2},"rank":5},{"model":"openai-prod","avg_rating":3.19,"n":16,"distribution":{"5":0,"4":5,"3":10,"2":0,"1":1},"rank":6},{"model":"azure-prod","avg_rating":3.0,"n":16,"distribution":{"5":0,"4":2,"3":13,"2":0,"1":1},"rank":7}]}},"overall":{"tasks":211,"ranking":[{"model":"elevenlabs-v4","avg_rating":4.69,"n":211,"distribution":{"5":169,"4":25,"3":13,"2":1,"1":3},"rank":1},{"model":"gemini-3-8","avg_rating":4.51,"n":211,"distribution":{"5":150,"4":36,"3":13,"2":6,"1":6},"rank":2},{"model":"soniox-prod","avg_rating":3.91,"n":211,"distribution":{"5":78,"4":85,"3":21,"2":6,"1":21},"rank":3},{"model":"sarvem","avg_rating":3.51,"n":211,"distribution":{"5":50,"4":74,"3":44,"2":20,"1":23},"rank":4},{"model":"cartesia-3-6","avg_rating":3.25,"n":211,"distribution":{"5":37,"4":56,"3":73,"2":13,"1":32},"rank":5},{"model":"azure-prod","avg_rating":2.77,"n":211,"distribution":{"5":29,"4":42,"3":57,"2":17,"1":66},"rank":6},{"model":"openai-prod","avg_rating":2.72,"n":211,"distribution":{"5":21,"4":37,"3":73,"2":21,"1":59},"rank":7}]}}</script>
+
+<script>
+/* ---------- config ---------- */
+const MODELS = {
+  'elevenlabs-v4': 'ElevenLabs v4',
+  'gemini-3-8':    'Gemini 3.8 Flash',
+  'soniox-prod':   'Soniox',
+  'sarvem':        'Sarvam',
+  'cartesia-3-6':  'Cartesia 3.6',
+  'azure-prod':    'Azure Speech',
+  'openai-prod':   'OpenAI'
+};
+const CATS = {
+  ABR:['Abbreviations','Titles and abbreviations like ড., ডা., মো.'],
+  CMX:['Code-mixed','Bangla sentences with English words mixed in'],
+  CUR:['Currency','Taka amounts in ৳, Tk and written forms'],
+  DOM:['Banking & commerce','Realistic account, card and order messages'],
+  DTM:['Dates & times','Bangla dates, days and clock times'],
+  EDG:['Edge cases','URLs, emails and other awkward strings'],
+  G2P:['Pronunciation','Conjuncts and tricky grapheme-to-sound cases'],
+  LNG:['Long-form','Multi-sentence passages'],
+  NUM:['Numbers','Counts, digits, ordinals and large numbers'],
+  PLN:['Plain sentences','Short, everyday phrases'],
+  PRN:['Place names','Districts, cities and proper nouns'],
+  PRS:['Prosody','Questions and intonation']
+};
+const STARS = ['5','4','3','2','1'];
+const STAR_COLORS = {5:'var(--star5)',4:'var(--star4)',3:'var(--star3)',2:'var(--star2)',1:'var(--star1)'};
+
+const mName = id => MODELS[id] || id.replace(/[-_]prod$/,'').replace(/[-_]/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+const cName = c => (CATS[c]||[c])[0];
+const cDesc = c => (CATS[c]||['',''])[1];
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const f2 = v => Number(v).toFixed(2);
+
+/* competition ranking with ties on equal avg */
+function withTies(rows){
+  return rows.map((r,i)=>{
+    const same = rows.filter(x=>x.avg_rating===r.avg_rating).length>1;
+    const first = rows.findIndex(x=>x.avg_rating===r.avg_rating);
+    return {...r, shown:first+1, tied:same};
+  });
+}
+
+/* ---------- load ---------- */
+async function load(){
+  try{
+    const res = await fetch('rankings.json',{cache:'no-store'});
+    if(!res.ok) throw new Error(res.status);
+    return {data:await res.json(), live:true};
+  }catch(e){
+    const raw = document.getElementById('embedded-data').textContent.trim();
+    if(raw && !raw.startsWith('__')) return {data:JSON.parse(raw), live:false};
+    throw e;
+  }
+}
+
+/* ---------- render ---------- */
+let D, state={cat:'overall'};
+
+function distBar(r){
+  const total = STARS.reduce((a,s)=>a+(r.distribution[s]||0),0)||1;
+  const title = STARS.map(s=>`${s}★ ${r.distribution[s]||0}`).join(' · ');
+  return `<div class="dist" title="${title}" role="img" aria-label="${title}">`+
+    STARS.map(s=>`<i style="width:${(r.distribution[s]||0)/total*100}%;background:${STAR_COLORS[s]}"></i>`).join('')+`</div>`;
+}
+
+function boardHTML(ranking, showHead=true){
+  const rows = withTies(ranking);
+  return `<div class="board" role="table">`+
+   (showHead?`<div class="row head" role="row"><div>Rank</div><div>Model</div><div>Avg rating</div><div>Rating mix</div><div style="text-align:right">Ratings</div></div>`:'')+
+   rows.map(r=>`
+    <div class="row ${r.shown===1?'top':''}" role="row">
+      <div class="rank">${r.tied?'=':''}${r.shown}</div>
+      <div class="mcell"><div class="mname">${esc(mName(r.model))}</div><div class="mid">${esc(r.model)}</div></div>
+      <div class="avgcell"><div class="bar"><i data-w="${r.avg_rating/5*100}"></i></div><div class="avg">${f2(r.avg_rating)}</div></div>
+      <div class="distcell">${distBar(r)}</div>
+      <div class="n">${r.n}</div>
+    </div>`).join('')+`</div>`;
+}
+
+const legend = `<div class="dist-legend">${STARS.map(s=>`<span><i style="background:${STAR_COLORS[s]}"></i>${s}★</span>`).join('')}<span style="margin-left:auto">Share of ratings by score</span></div>`;
+
+function animateBars(root){
+  requestAnimationFrame(()=>requestAnimationFrame(()=>
+    root.querySelectorAll('.bar i[data-w]').forEach(b=>b.style.width=b.dataset.w+'%')));
+}
+
+function podium(){
+  const rows = withTies(D.overall.ranking).slice(0,3);
+  const labels=['Overall leader','Runner-up','Third place'];
+  return `<div class="podium">`+rows.map((r,i)=>`
+    <div class="pod ${i===0?'first':''}">
+      <div class="rk">${labels[i]}</div>
+      <h3>${esc(mName(r.model))}</h3><div class="id">${esc(r.model)}</div>
+      <div class="score">${f2(r.avg_rating)}<small>/ 5</small></div>
+      <div class="sub">${Math.round((r.distribution['5']||0)/r.n*100)}% of ratings were 5★ · ${r.n} ratings</div>
+    </div>`).join('')+`</div>`;
+}
+
+function catPanel(){
+  const key = state.cat;
+  const blk = key==='overall'?D.overall:D.categories[key];
+  const title = key==='overall'?'Overall':cName(key);
+  const desc = key==='overall'?`All ${D.overall.tasks} sentences pooled across every category.`:cDesc(key);
+  const r = blk.ranking, lead=r[0], second=r[1];
+  const gap = lead.avg_rating-second.avg_rating;
+  const tie = gap===0;
+  return `
+   <div class="cathead">
+     <div><h3>${esc(title)}${key!=='overall'?` <span class="mid" style="font-weight:400">${key}</span>`:''}</h3><p>${esc(desc)} <span class="mid">${blk.tasks} sentences</span></p></div>
+     <div class="winner"><span>${tie?'Joint leaders':'Category leader'}</span><b>${esc(mName(lead.model))}${tie?` &amp; ${esc(mName(second.model))}`:''}</b> · ${tie?'level on '+f2(lead.avg_rating):`+${f2(gap)} ahead of ${esc(mName(second.model))}`}</div>
+   </div>${boardHTML(r)}${legend}`;
+}
+
+function heat(v){
+  const t=Math.max(0,Math.min(1,(v-1)/4)), a=[22,58,46], b=[212,245,60];
+  const k=Math.pow(t,1.6);
+  const c=a.map((x,i)=>Math.round(x+(b[i]-x)*k));
+  return {bg:`rgb(${c})`, fg:k>.45?'#060F0C':'#F2FFEE'};
+}
+
+function heatmap(){
+  const cats = Object.keys(D.categories).sort();
+  const order = withTies(D.overall.ranking).map(r=>r.model);
+  const get=(c,m)=>D.categories[c].ranking.find(r=>r.model===m);
+  const overallAvg = m=>D.overall.ranking.find(r=>r.model===m).avg_rating;
+  const head = `<tr><th></th>`+cats.map(c=>`<th class="col" data-cat="${c}" title="${esc(cName(c))}">${c}</th>`).join('')+`<th class="sep"></th><th class="col" data-cat="overall">ALL</th></tr>`;
+  const body = order.map(m=>{
+    const cells = cats.map(c=>{
+      const r=get(c,m); if(!r) return `<td class="cell" style="opacity:.3">–</td>`;
+      const best = D.categories[c].ranking[0].avg_rating===r.avg_rating;
+      const h=heat(r.avg_rating);
+      return `<td class="cell ${best?'best':''}" tabindex="0" data-cat="${c}" style="background:${h.bg};color:${h.fg}" title="${esc(mName(m))} · ${esc(cName(c))} · ${f2(r.avg_rating)} (rank ${r.rank})">${r.avg_rating.toFixed(1)}</td>`;
+    }).join('');
+    const o=heat(overallAvg(m));
+    return `<tr><th class="mod">${esc(mName(m))}</th>${cells}<td class="sep"></td><td class="cell" tabindex="0" data-cat="overall" style="background:${o.bg};color:${o.fg};outline:1px solid rgba(242,255,238,.35)">${overallAvg(m).toFixed(2)}</td></tr>`;
+  }).join('');
+  return `<div class="hmwrap"><table class="hm"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+    <p class="hmnote">Average rating per model and category, models ordered by overall rank. Outlined cells mark each category's best score. Click any cell or column to open that category above.</p>`;
+}
+
+function takeaways(){
+  const cats=Object.keys(D.categories);
+  const overall=D.overall.ranking, lead=overall[0], sec=overall[1];
+  const wins={};
+  cats.forEach(c=>{const top=D.categories[c].ranking[0].avg_rating;
+    D.categories[c].ranking.filter(r=>r.avg_rating===top).forEach(r=>wins[r.model]=(wins[r.model]||0)+1);});
+  const leadWins=wins[lead.model]||0;
+  const beaten=cats.filter(c=>{const t=D.categories[c].ranking[0].avg_rating; return !D.categories[c].ranking.some(r=>r.model===lead.model&&r.avg_rating===t);});
+  const beatenTxt = beaten.length? beaten.map(c=>{
+      const w=D.categories[c].ranking[0]; return `<b>${esc(cName(c))}</b> (${esc(mName(w.model))}, ${f2(w.avg_rating)})`;}).join(', ') : 'none';
+  // hardest category: lowest mean across models
+  const means=cats.map(c=>{const r=D.categories[c].ranking;return {c,m:r.reduce((a,x)=>a+x.avg_rating,0)/r.length};}).sort((a,b)=>a.m-b.m);
+  const hard=means[0], easy=means[means.length-1];
+  // biggest spread
+  const spreads=cats.map(c=>{const r=D.categories[c].ranking;return {c,s:r[0].avg_rating-r[r.length-1].avg_rating,lo:r[r.length-1]};}).sort((a,b)=>b.s-a.s)[0];
+  const bottom=overall.slice(-2);
+  const gap23 = sec.avg_rating-overall[2].avg_rating;
+  const tiers =`${f2(overall[2].avg_rating)} → ${f2(overall[overall.length-1].avg_rating)}`;
+  return `<div class="take">
+    <div class="card"><div class="eyebrow">The leader</div>
+      <h3>${esc(mName(lead.model))} leads, but not everywhere.</h3>
+      <p>Tops the overall table at <b>${f2(lead.avg_rating)}</b>, ${f2(lead.avg_rating-sec.avg_rating)} ahead of ${esc(mName(sec.model))}. Wins or shares <b>${leadWins} of ${cats.length}</b> categories. Beaten in: ${beatenTxt}.</p></div>
+    <div class="card"><div class="eyebrow">The gap</div>
+      <h3>${gap23>=0.4?'The top two pull away':'A tight field'}<span style="color:var(--lime)">.</span></h3>
+      <p>${esc(mName(lead.model))} (<b>${f2(lead.avg_rating)}</b>) and ${esc(mName(sec.model))} (<b>${f2(sec.avg_rating)}</b>) lead; third place, ${esc(mName(overall[2].model))}, is <b>${f2(gap23)}</b> behind ${esc(mName(sec.model))}. The remaining models span <b>${tiers}</b>, with ${esc(mName(bottom[0].model))} and ${esc(mName(bottom[1].model))} at the bottom.</p></div>
+    <div class="card"><div class="eyebrow">The hard parts</div>
+      <h3>${esc(cName(hard.c))} breaks most voices.</h3>
+      <p>Lowest category average across all models: <b>${esc(cName(hard.c))}</b> (${f2(hard.m)}). Widest spread: <b>${esc(cName(spreads.c))}</b>, from ${f2(D.categories[spreads.c].ranking[0].avg_rating)} down to ${f2(spreads.lo.avg_rating)} (${esc(mName(spreads.lo.model))}). Easiest: <b>${esc(cName(easy.c))}</b> (${f2(easy.m)}).</p></div>
+  </div>`;
+}
+
+function render(){
+  const cats=Object.keys(D.categories).sort();
+  const ratings = D.overall.ranking.reduce((a,r)=>a+r.n,0);
+  document.getElementById('stats').innerHTML =
+    [[D.overall.ranking.length,'Models tested'],[D.overall.tasks,'Sentences'],[cats.length,'Categories'],[ratings.toLocaleString('en-US'),'Human ratings']]
+    .map(([v,l])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
+
+  document.getElementById('app').innerHTML = `
+  <section id="overall"><div class="wrap reveal">
+    <div class="eyebrow">Overall ranking</div>
+    <h2>The leaderboard<span class="dot">.</span></h2>
+    <p class="lede">Every rating from every category, pooled. Higher is better, 5 is perfect.</p>
+    ${podium()}
+    ${boardHTML(D.overall.ranking)}${legend}
+  </div></section>
+
+  <section id="categories" style="background:var(--forest);border-block:1px solid var(--line)"><div class="wrap reveal">
+    <div class="eyebrow">By category</div>
+    <h2>Where each model wins<span class="dot">.</span></h2>
+    <p class="lede">Pick a category to see how the field stacks up on that kind of text.</p>
+    <div class="chips" id="chips"></div>
+    <div id="catpanel"></div>
+  </div></section>
+
+  <section id="matrix"><div class="wrap reveal">
+    <div class="eyebrow">The full picture</div>
+    <h2>Every model, every category<span class="dot">.</span></h2>
+    <p class="lede">One glance at strengths and weak spots. Brighter lime means closer to a perfect 5.</p>
+    ${heatmap()}
+  </div></section>
+
+  <section id="takeaways" style="background:var(--forest);border-top:1px solid var(--line)"><div class="wrap reveal">
+    <div class="eyebrow">Takeaways</div>
+    <h2>What this means<span class="dot">.</span></h2>
+    ${takeaways()}
+  </div></section>`;
+
+  drawChips(); drawPanel();
+  document.querySelectorAll('.hm [data-cat]').forEach(el=>{
+    const go=()=>{state.cat=el.dataset.cat;drawChips();drawPanel();document.getElementById('categories').scrollIntoView({behavior:'smooth'});};
+    el.addEventListener('click',go);
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
+  });
+  animateBars(document.getElementById('overall'));
+
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.08});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+}
+
+function drawChips(){
+  const cats=Object.keys(D.categories).sort();
+  document.getElementById('chips').innerHTML =
+    [['overall','Overall',D.overall.tasks],...cats.map(c=>[c,cName(c),D.categories[c].tasks])]
+    .map(([k,l,n])=>`<button class="chip" data-k="${k}" aria-pressed="${state.cat===k}">${esc(l)}<small>${n}</small></button>`).join('');
+  document.querySelectorAll('#chips .chip').forEach(b=>b.addEventListener('click',()=>{state.cat=b.dataset.k;drawChips();drawPanel();}));
+}
+function drawPanel(){
+  const p=document.getElementById('catpanel'); p.innerHTML=catPanel(); animateBars(p);
+}
+
+load().then(({data,live})=>{
+  D=data; render();
+  document.getElementById('srcLine').textContent = `Data: ${D.source||'rankings.json'}${live?' (live from rankings.json)':' (embedded snapshot)'}.`;
+  document.getElementById('srcPill').textContent = `${D.overall.tasks} sentences · ${D.overall.ranking.length} models`;
+}).catch(err=>{
+  document.getElementById('app').innerHTML = `<div class="err"><div class="eyebrow" style="justify-content:center">Couldn't load rankings</div><p style="margin-top:10px">Serve this folder (python3 -m http.server) or run build_rankings_ui.py to embed the data.</p></div>`;
+  console.error(err);
+});
+</script>
+</body>
+</html>
