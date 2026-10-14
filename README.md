@@ -9,6 +9,7 @@
 ![Tested: September 2026](https://img.shields.io/badge/tested-Sep%202026-eda100)
 [![License: MIT](https://img.shields.io/badge/license-MIT-e87ba4)](LICENSE)
 [![Research by Riverborn Limited](https://img.shields.io/badge/research%20by-Riverborn%20Limited-0b0b0b)](https://riverborn.com)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22946242.svg)](https://doi.org/10.5281/zenodo.22946242)
 
 **An open benchmark of 8 hosted Bengali speech-to-text (ASR) APIs on 1,001
 real Bangla audio clips across 13 domains, covering both batch
@@ -758,6 +759,19 @@ Need help with AI? We'd like to hear from you.
 If you use this benchmark, please cite it using [`CITATION.cff`](CITATION.cff)
 (GitHub's "Cite this repository" button) and also cite the
 [BanSpeech dataset](https://huggingface.co/datasets/SUST-CSE-Speech/banspeech).
+
+DOI (all versions): [10.5281/zenodo.22946242](https://doi.org/10.5281/zenodo.22946242)
+
+```bibtex
+@software{riverborn2026banglastt,
+  title     = {Bangla Speech-to-Text Benchmark: Hosted Bengali ASR APIs on BanSpeech},
+  author    = {Uddin, Nasim and Azad, Saiful},
+  publisher = {Zenodo},
+  year      = {2026},
+  doi       = {10.5281/zenodo.22946242},
+  url       = {https://doi.org/10.5281/zenodo.22946242}
+}
+```
 
 ## Acknowledgements
 

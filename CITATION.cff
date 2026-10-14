@@ -1,10 +1,15 @@
 cff-version: 1.2.0
 message: "If you use this benchmark, please cite it as below, and also cite the BanSpeech dataset."
 title: "Bangla Speech-to-Text Benchmark: Hosted Bengali ASR APIs on BanSpeech"
-version: 1.0.0
-date-released: 2026-09-24
+version: 1.0.1
+date-released: 2026-10-14
+doi: 10.5281/zenodo.22946242
 license: MIT
 repository-code: "https://github.com/riverbornai/bangla-speech-to-text-benchmark"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.22946242
+    description: "Concept DOI for all versions (Zenodo)"
 keywords:
   - speech-to-text
   - ASR
