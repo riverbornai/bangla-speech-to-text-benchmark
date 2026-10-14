@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bangla STT Leaderboard</title>
+<meta name="description" content="Open leaderboard of hosted Bangla speech-to-text APIs, batch and streaming, on 1,001 real BanSpeech clips. Research by Riverborn Limited.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #fcfcfb;
+  --surface: #ffffff;
+  --surface-2: #f4f3f0;
+  --border: #e4e2dc;
+  --grid: #ecebe6;
+  --text: #0b0b0b;
+  --text-2: #52514e;
+  --text-3: #7a7974;
+  --accent: #2a78d6;
+  --accent-soft: #e6f0fc;
+  --bar: #2a78d6;
+  --whisker: #0d366b;
+  --gold: #a87400;
+  --seq: #f4f8fe,#cde2fb,#9ec5f4,#6da7ec,#3987e5,#256abf,#184f95,#0d366b;
+  --seq-ink-flip: 4;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --bg: #121211;
+    --surface: #1a1a19;
+    --surface-2: #232321;
+    --border: #33332f;
+    --grid: #2a2a27;
+    --text: #f0efec;
+    --text-2: #c3c2b7;
+    --text-3: #8f8e86;
+    --accent: #5598e7;
+    --accent-soft: #1d2d42;
+    --bar: #3987e5;
+    --whisker: #cde2fb;
+    --gold: #eda100;
+    --seq: #1f2733,#104281,#184f95,#1c5cab,#256abf,#3987e5,#6da7ec,#9ec5f4;
+    --seq-ink-flip: 6;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121211;
+  --surface: #1a1a19;
+  --surface-2: #232321;
+  --border: #33332f;
+  --grid: #2a2a27;
+  --text: #f0efec;
+  --text-2: #c3c2b7;
+  --text-3: #8f8e86;
+  --accent: #5598e7;
+  --accent-soft: #1d2d42;
+  --bar: #3987e5;
+  --whisker: #cde2fb;
+  --gold: #eda100;
+  --seq: #1f2733,#104281,#184f95,#1c5cab,#256abf,#3987e5,#6da7ec,#9ec5f4;
+  --seq-ink-flip: 6;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.55 "Outfit", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.mono, code { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.86em; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 32px 16px 64px; }
+
+header .eyebrow { color: var(--text-3); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; }
+header h1 { font-size: clamp(28px, 5vw, 42px); line-height: 1.1; margin: 8px 0 12px; font-weight: 700; letter-spacing: -.02em; }
+header p.lede { color: var(--text-2); max-width: 760px; margin: 0; font-size: 17px; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.links a {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border: 1px solid var(--border); border-radius: 999px;
+  background: var(--surface); color: var(--text); font-size: 14px; font-weight: 500;
+}
+.links a:hover { border-color: var(--accent); text-decoration: none; }
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 28px 0 8px; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.stat .label { color: var(--text-3); font-size: 13px; }
+.stat .value { font-size: 26px; font-weight: 700; letter-spacing: -.01em; }
+.stat .sub { color: var(--text-2); font-size: 13px; }
+@media (max-width: 760px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+section { margin-top: 40px; }
+section h2 { font-size: 22px; margin: 0 0 4px; letter-spacing: -.01em; }
+section .hint { color: var(--text-2); margin: 0 0 16px; font-size: 14px; }
+
+.tabs { display: inline-flex; background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 3px; gap: 2px; margin-bottom: 16px; }
+.tabs button {
+  font: inherit; font-weight: 600; font-size: 14px; color: var(--text-2);
+  background: transparent; border: 0; border-radius: 8px; padding: 7px 16px; cursor: pointer;
+}
+.tabs button[aria-selected="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; }
+.scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+table.board { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 760px; }
+table.board th, table.board td { padding: 11px 12px; text-align: left; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+table.board tbody tr:last-child td { border-bottom: 0; }
+table.board th { color: var(--text-3); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+table.board th.sortable { cursor: pointer; user-select: none; }
+table.board th.sortable:hover { color: var(--text); }
+table.board th .arrow { opacity: .8; margin-left: 4px; }
+table.board td.num, table.board th.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.board tbody tr:hover { background: var(--surface-2); }
+.rank { font-weight: 700; color: var(--text-2); width: 28px; }
+.rank.top { color: var(--gold); }
+.prov { font-weight: 600; }
+.model { color: var(--text-2); white-space: normal !important; min-width: 190px; max-width: 280px; }
+.model .tag { white-space: nowrap; }
+.cer-cell { display: flex; align-items: center; gap: 10px; justify-content: flex-end; }
+.cer-cell strong { min-width: 48px; text-align: right; }
+.ci { color: var(--text-3); font-size: 12px; min-width: 74px; }
+.bar { width: 120px; height: 14px; position: relative; flex: none; }
+.bar svg { display: block; }
+.tag { display: inline-block; font-size: 11px; color: var(--text-2); border: 1px solid var(--border); border-radius: 4px; padding: 0 5px; margin-left: 6px; vertical-align: 1px; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.chart-card { padding: 16px; }
+.chart-card h3 { margin: 0 0 2px; font-size: 16px; }
+.chart-card p { margin: 0 0 8px; color: var(--text-2); font-size: 13px; }
+#scatter svg { width: 100%; height: auto; display: block; overflow: visible; }
+.axis text, .lbl { fill: var(--text-2); font: 12px "Outfit", system-ui, sans-serif; }
+.axis-title { fill: var(--text-3); font: 12px "Outfit", system-ui, sans-serif; }
+.gridline { stroke: var(--grid); stroke-width: 1; }
+.baseline { stroke: var(--border); stroke-width: 1; }
+.pt { fill: var(--bar); stroke: var(--surface); stroke-width: 2; }
+.pt-hit { fill: transparent; cursor: pointer; }
+.pt-label { fill: var(--text); font: 600 12px "Outfit", system-ui, sans-serif; }
+
+.tooltip {
+  position: fixed; pointer-events: none; z-index: 10; opacity: 0; transition: opacity .1s;
+  background: var(--text); color: var(--bg); border-radius: 8px; padding: 8px 10px; font-size: 13px; line-height: 1.4; max-width: 260px;
+}
+.tooltip b { font-weight: 600; }
+
+table.heat { table-layout: fixed; border-collapse: separate; border-spacing: 2px; font-size: 13px; min-width: 820px; width: 100%; }
+table.heat th { font-weight: 600; color: var(--text-2); padding: 6px 8px; text-align: center; font-size: 12px; line-height: 1.25; }
+table.heat th.row { width: 150px; text-align: left; color: var(--text); white-space: nowrap; }
+table.heat td { text-align: center; padding: 8px 4px; border-radius: 4px; font-variant-numeric: tabular-nums; cursor: default; }
+table.heat td.best { font-weight: 700; outline: 2px solid var(--gold); outline-offset: -2px; }
+.legend { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: var(--text-2); font-size: 12px; margin-top: 12px; }
+.legend .sw { display: inline-flex; }
+.legend .sw span { width: 28px; height: 10px; display: inline-block; }
+.legend .sw span:first-child { border-radius: 3px 0 0 3px; }
+.legend .sw span:last-child { border-radius: 0 3px 3px 0; }
+.legend .best-key { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--gold); border-radius: 3px; vertical-align: -3px; margin-right: 4px; }
+
+.notes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.note { padding: 16px; }
+.note h3 { margin: 0 0 6px; font-size: 15px; }
+.note p, .note li { color: var(--text-2); font-size: 14px; margin: 0; }
+.note ul { margin: 0; padding-left: 18px; }
+.note li + li { margin-top: 4px; }
+@media (max-width: 760px) { .notes { grid-template-columns: 1fr; } }
+
+pre.cite {
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px; overflow-x: auto; font-size: 12.5px; margin: 0; color: var(--text);
+}
+.copy { font: inherit; font-size: 13px; font-weight: 600; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 5px 12px; cursor: pointer; }
+.copy:hover { border-color: var(--accent); }
+footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-3); font-size: 13px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Open benchmark · Version 1.0</div>
+  <h1>Bangla Speech-to-Text Leaderboard</h1>
+  <p class="lede">Hosted Bangla (Bengali) speech-to-text APIs, tested on <b>1,001 real audio clips</b> from <b>13 domains</b> in batch and real-time streaming mode. Every number is reproducible from the open code.</p>
+  <div class="links">
+    <a href="https://huggingface.co/datasets/riverborn/bangla-stt-benchmark-results" target="_blank" rel="noopener">📊 Results dataset</a>
+    <a href="https://github.com/riverbornai/bangla-speech-to-text-benchmark" target="_blank" rel="noopener">💻 Code and method</a>
+    <a href="https://huggingface.co/datasets/SUST-CSE-Speech/banspeech" target="_blank" rel="noopener">🎧 BanSpeech audio</a>
+    <a href="https://riverborn.com" target="_blank" rel="noopener">🏢 Riverborn</a>
+  </div>
+</header>
+
+<div class="stats" id="stats"></div>
+
+<section id="board-section">
+  <h2>Leaderboard</h2>
+  <p class="hint">Ranked by character error rate (CER). Lower is better. Brackets show the 95% bootstrap confidence interval. Click a column to sort.</p>
+  <div class="tabs" role="tablist" aria-label="Mode">
+    <button role="tab" aria-selected="true" data-mode="batch">Batch</button>
+    <button role="tab" aria-selected="false" data-mode="streaming">Streaming</button>
+  </div>
+  <div class="card scroll"><table class="board" id="board"></table></div>
+  <p class="hint" id="board-note" style="margin-top:10px"></p>
+</section>
+
+<section>
+  <h2>Accuracy and price</h2>
+  <p class="hint">The best-ranked APIs are also among the cheapest. Hover a point for details.</p>
+  <div class="card chart-card">
+    <h3 id="scatter-title"></h3>
+    <p>Character error rate against list price per hour of audio. Lower left is better.</p>
+    <div id="scatter"></div>
+  </div>
+</section>
+
+<section>
+  <h2>Accuracy by domain</h2>
+  <p class="hint">CER for each domain (77 clips each). Columns follow the overall rank. With 77 clips, treat small differences in one domain as ties.</p>
+  <div class="tabs" role="tablist" aria-label="Domain mode">
+    <button role="tab" aria-selected="true" data-heat="batch">Batch</button>
+    <button role="tab" aria-selected="false" data-heat="streaming">Streaming</button>
+  </div>
+  <div class="card scroll" style="padding:10px"><table class="heat" id="heat"></table></div>
+  <div class="legend" id="heat-legend"></div>
+</section>
+
+<section>
+  <h2>Read before you compare</h2>
+  <div class="notes">
+    <div class="card note">
+      <h3>Test set</h3>
+      <p>1,001 clips from the <a href="https://huggingface.co/datasets/SUST-CSE-Speech/banspeech" target="_blank" rel="noopener">BanSpeech</a> dataset by the SUST CSE Speech Group, 77 from each of its 13 domains. Clips are 3 seconds long on average. This is typical of voice commands and conversation turns.</p>
+    </div>
+    <div class="card note">
+      <h3>Latency</h3>
+      <p>We ran the benchmark from a laptop in Bangladesh on a regular internet connection. All latency figures include the network distance to each provider. Your latency will be different.</p>
+    </div>
+    <div class="card note">
+      <h3>Prices</h3>
+      <p id="price-note"></p>
+    </div>
+    <div class="card note">
+      <h3>Versions</h3>
+      <ul>
+        <li id="tested-note"></li>
+        <li>Vendors update models often. Run the benchmark again before you make a purchase decision.</li>
+        <li>BanSpeech is public, so a provider can have trained on some clips.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Cite</h2>
+  <p class="hint">If you use these results, cite the benchmark and the BanSpeech dataset.</p>
+  <pre class="cite" id="bibtex">@misc{uddin2026banglastt,
+  title        = {Bangla Speech-to-Text Benchmark: Hosted Bengali ASR APIs on BanSpeech},
+  author       = {Uddin, Nasim and Azad, Saiful},
+  year         = {2026},
+  version      = {1.0.0},
+  publisher    = {Riverborn Limited},
+  howpublished = {\url{https://github.com/riverbornai/bangla-speech-to-text-benchmark}}
+}</pre>
+  <p style="margin-top:10px"><button class="copy" id="copy-bib">Copy BibTeX</button></p>
+</section>
+
+<footer>
+  <span>Research by <a href="https://riverborn.com" target="_blank" rel="noopener">Riverborn Limited</a>, Dhaka, Bangladesh · <a href="mailto:hello@riverborn.com">hello@riverborn.com</a></span>
+  <span>Data: CC-BY-NC-4.0 · Code: MIT</span>
+</footer>
+</div>
+
+<div class="tooltip" id="tip" role="tooltip"></div>
+
+<script>
+const DATA = __BENCHMARK_DATA__;
+
+const pct = v => (v == null ? "n/a" : (v * 100).toFixed(1) + "%");
+const sec = v => (v == null ? "n/a" : v.toFixed(2) + " s");
+const usd = (v, type) => (v == null ? "n/a" : (type === "minimum" ? "≥ " : "") + "$" + v.toFixed(2));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* ---------- Tooltip ---------- */
+const tip = document.getElementById("tip");
+function showTip(html, x, y) {
+  tip.innerHTML = html;
+  tip.style.opacity = 1;
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let left = x + 14, top = y + 14;
+  if (left + w > window.innerWidth - 8) left = x - w - 14;
+  if (top + h > window.innerHeight - 8) top = y - h - 14;
+  tip.style.left = Math.max(8, left) + "px";
+  tip.style.top = Math.max(8, top) + "px";
+}
+function hideTip() { tip.style.opacity = 0; }
+
+/* ---------- Stat tiles ---------- */
+function renderStats() {
+  const b = DATA.batch[0], s = DATA.streaming[0];
+  const providers = new Set(DATA.batch.map(r => r.provider)).size;
+  const tiles = [
+    ["Best batch CER", pct(b.cer), `${b.provider} · ${b.model_id}`],
+    ["Best streaming CER", pct(s.cer), `${s.provider} · ${s.model_id}`],
+    ["Test set", DATA.clips.toLocaleString(), `clips across ${Object.keys(DATA.domains).length} domains`],
+    ["Providers", providers, `tested ${DATA.tested}`],
+  ];
+  document.getElementById("stats").innerHTML = tiles.map(([l, v, s]) =>
+    `<div class="stat"><div class="label">${l}</div><div class="value">${v}</div><div class="sub">${esc(s)}</div></div>`
+  ).join("");
+}
+
+/* ---------- Leaderboard ---------- */
+const COLUMNS = {
+  batch: [
+    { key: "wer", label: "WER", fmt: r => pct(r.wer) },
+    { key: "mean_latency_s", label: "Mean latency", fmt: r => sec(r.mean_latency_s) },
+    { key: "list_usd_per_hour", label: "List price / h", fmt: r => usd(r.list_usd_per_hour, r.cost_type) },
+    { key: "effective_usd_per_hour", label: "On our clips / h", fmt: r => usd(r.effective_usd_per_hour, r.cost_type) },
+  ],
+  streaming: [
+    { key: "wer", label: "WER", fmt: r => pct(r.wer) },
+    { key: "first_partial_p50_s", label: "First partial p50", fmt: r => sec(r.first_partial_p50_s) },
+    { key: "finalization_p50_s", label: "Final after speech p50", fmt: r => sec(r.finalization_p50_s) },
+    { key: "list_usd_per_hour", label: "List price / h", fmt: r => usd(r.list_usd_per_hour, r.cost_type) },
+    { key: "effective_usd_per_hour", label: "On our clips / h", fmt: r => usd(r.effective_usd_per_hour, r.cost_type) },
+  ],
+};
+const NOTES = {
+  batch: "Each clip is sent as one file. “On our clips” applies each provider's billing rules (minimum length, rounding) to our short clips.",
+  streaming: "Audio is sent at real-time pace, like a live microphone. Groq has no streaming API. Gemini Live returned no interim results, so its first-partial time is n/a.",
+};
+const state = { mode: "batch", sort: "cer", dir: 1, heat: "batch" };
+
+function ciBar(r, max) {
+  const w = 120, h = 14, x = v => (v / max) * w;
+  const lo = x(r.cer_ci_low), hi = x(r.cer_ci_high), v = x(r.cer);
+  return `<svg width="${w}" height="${h}" aria-hidden="true">
+    <rect x="0" y="3" width="${Math.max(v, 4)}" height="8" rx="4" fill="var(--bar)"/>
+    <line x1="${lo}" x2="${hi}" y1="7" y2="7" stroke="var(--whisker)" stroke-width="1.5"/>
+    <line x1="${lo}" x2="${lo}" y1="3" y2="11" stroke="var(--whisker)" stroke-width="1.5"/>
+    <line x1="${hi}" x2="${hi}" y1="3" y2="11" stroke="var(--whisker)" stroke-width="1.5"/>
+  </svg>`;
+}
+
+function renderBoard() {
+  const rows = [...DATA[state.mode]];
+  const cols = COLUMNS[state.mode];
+  const k = state.sort;
+  rows.sort((a, b) => {
+    const av = a[k], bv = b[k];
+    if (av == null) return 1;
+    if (bv == null) return -1;
+    return (av - bv) * state.dir;
+  });
+  const max = Math.max(...DATA[state.mode].map(r => r.cer_ci_high));
+  const arrow = key => (state.sort === key ? `<span class="arrow">${state.dir > 0 ? "↑" : "↓"}</span>` : "");
+  const head = `<thead><tr>
+    <th>#</th><th>Provider</th><th>Model</th>
+    <th class="num sortable" data-key="cer">CER [95% CI]${arrow("cer")}</th>
+    ${cols.map(c => `<th class="num sortable" data-key="${c.key}">${c.label}${arrow(c.key)}</th>`).join("")}
+  </tr></thead>`;
+  const body = rows.map(r => `<tr>
+    <td class="rank ${r.rank <= 3 ? "top" : ""}">${r.rank}</td>
+    <td class="prov">${esc(r.provider)}</td>
+    <td class="model"><code>${esc(r.model_id)}</code>${r.coverage < 1 ? `<span class="tag" title="Clips scored">${(r.coverage * 100).toFixed(1)}% clips</span>` : ""}</td>
+    <td class="num"><div class="cer-cell"><strong>${pct(r.cer)}</strong><span class="ci">[${(r.cer_ci_low * 100).toFixed(1)}–${(r.cer_ci_high * 100).toFixed(1)}]</span><span class="bar">${ciBar(r, max)}</span></div></td>
+    ${cols.map(c => `<td class="num">${c.fmt(r)}</td>`).join("")}
+  </tr>`).join("");
+  const table = document.getElementById("board");
+  table.innerHTML = head + `<tbody>${body}</tbody>`;
+  table.querySelectorAll("th.sortable").forEach(th => th.addEventListener("click", () => {
+    const key = th.dataset.key;
+    if (state.sort === key) state.dir *= -1; else { state.sort = key; state.dir = 1; }
+    renderBoard();
+  }));
+  document.getElementById("board-note").textContent = NOTES[state.mode];
+}
+
+/* ---------- Scatter: CER vs list price ---------- */
+function renderScatter() {
+  const rows = DATA[state.mode].filter(r => r.list_usd_per_hour != null);
+  document.getElementById("scatter-title").textContent = (state.mode === "batch" ? "Batch" : "Streaming") + " mode";
+  const W = 760, H = 340, m = { t: 16, r: 120, b: 44, l: 52 };
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const xMax = Math.ceil(Math.max(...rows.map(r => r.list_usd_per_hour)) * 10) / 10 + 0.05;
+  const yMax = Math.ceil(Math.max(...rows.map(r => r.cer)) * 10) / 10;
+  const x = v => m.l + (v / xMax) * iw;
+  const y = v => m.t + ih - (v / yMax) * ih;
+  const xt = [], yt = [];
+  for (let v = 0; v <= xMax + 1e-9; v += 0.2) xt.push(+v.toFixed(2));
+  const ys = yMax > 0.4 ? 0.1 : 0.05;
+  for (let v = 0; v <= yMax + 1e-9; v += ys) yt.push(+v.toFixed(2));
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Scatter chart of CER against list price">`;
+  svg += yt.map(v => `<line class="gridline" x1="${m.l}" x2="${m.l + iw}" y1="${y(v)}" y2="${y(v)}"/>
+    <text class="axis" x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end"><tspan class="lbl">${Math.round(v * 100)}%</tspan></text>`).join("");
+  svg += `<line class="baseline" x1="${m.l}" x2="${m.l + iw}" y1="${m.t + ih}" y2="${m.t + ih}"/>`;
+  svg += xt.map(v => `<text class="lbl" x="${x(v)}" y="${m.t + ih + 18}" text-anchor="middle">$${v.toFixed(2)}</text>`).join("");
+  svg += `<text class="axis-title" x="${m.l + iw / 2}" y="${H - 6}" text-anchor="middle">List price, USD per hour of audio</text>`;
+  svg += `<text class="axis-title" transform="translate(14 ${m.t + ih / 2}) rotate(-90)" text-anchor="middle">CER</text>`;
+
+  // Place labels, then push down any that overlap.
+  const placed = rows.map(r => ({ r, px: x(r.list_usd_per_hour), py: y(r.cer), ly: y(r.cer) + 4 }))
+    .sort((a, b) => a.py - b.py);
+  for (let i = 1; i < placed.length; i++) {
+    for (let j = 0; j < i; j++) {
+      const a = placed[j], b = placed[i];
+      if (Math.abs(a.px - b.px) < 110 && Math.abs(a.ly - b.ly) < 15) b.ly = a.ly + 15;
+    }
+  }
+  placed.forEach((p, i) => {
+    svg += `<circle class="pt" cx="${p.px}" cy="${p.py}" r="6"/>`;
+    svg += `<text class="pt-label" x="${p.px + 11}" y="${p.ly}">${esc(p.r.provider)}</text>`;
+    svg += `<circle class="pt-hit" cx="${p.px}" cy="${p.py}" r="16" data-i="${i}"/>`;
+  });
+  svg += `</svg>`;
+  const host = document.getElementById("scatter");
+  host.innerHTML = svg;
+  host.querySelectorAll(".pt-hit").forEach(el => {
+    const p = placed[+el.dataset.i].r;
+    const html = `<b>${esc(p.provider)}</b> · <code>${esc(p.model_id)}</code><br>CER ${pct(p.cer)} · WER ${pct(p.wer)}<br>List ${usd(p.list_usd_per_hour, p.cost_type)} / h · on our clips ${usd(p.effective_usd_per_hour, p.cost_type)} / h`;
+    el.addEventListener("mousemove", e => showTip(html, e.clientX, e.clientY));
+    el.addEventListener("mouseleave", hideTip);
+  });
+}
+
+/* ---------- Domain heatmap ---------- */
+const BINS = [0.05, 0.08, 0.12, 0.18, 0.25, 0.35, 0.5];
+const BIN_LABELS = ["<5%", "5–8%", "8–12%", "12–18%", "18–25%", "25–35%", "35–50%", "≥50%"];
+function seq() { return getComputedStyle(document.documentElement).getPropertyValue("--seq").split(",").map(s => s.trim()); }
+function inkFlip() { return parseInt(getComputedStyle(document.documentElement).getPropertyValue("--seq-ink-flip"), 10); }
+function isDark() {
+  const t = document.documentElement.dataset.theme;
+  return t === "dark" || (t !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+}
+function binOf(v) { let i = 0; while (i < BINS.length && v >= BINS[i]) i++; return i; }
+
+function renderHeat() {
+  const mode = state.heat;
+  const order = DATA[mode];
+  const ramp = seq(), flip = inkFlip();
+  const cells = {};
+  DATA.by_domain.filter(d => d.mode === mode).forEach(d => { cells[d.domain + "|" + d.model_id] = d.cer; });
+  const head = `<thead><tr><th class="row"></th>${order.map(r => `<th>${esc(r.provider)}</th>`).join("")}</tr></thead>`;
+  const body = Object.entries(DATA.domains).map(([key, label]) => {
+    const vals = order.map(r => cells[key + "|" + r.model_id]);
+    const best = Math.min(...vals.filter(v => v != null));
+    return `<tr><th class="row">${esc(label)}</th>${vals.map((v, i) => {
+      if (v == null) return `<td>n/a</td>`;
+      const b = binOf(v);
+      // Past the flip step the cell is dark on light theme (light on dark theme), so the ink flips too.
+      const color = b >= flip ? (isDark() ? "#0b0b0b" : "#ffffff") : "var(--text)";
+      return `<td class="${v === best ? "best" : ""}" style="background:${ramp[b]};color:${color}" data-p="${esc(order[i].provider)}" data-m="${esc(order[i].model_id)}" data-d="${esc(label)}" data-v="${v}">${pct(v)}</td>`;
+    }).join("")}</tr>`;
+  }).join("");
+  const table = document.getElementById("heat");
+  table.innerHTML = head + `<tbody>${body}</tbody>`;
+  table.querySelectorAll("td[data-v]").forEach(td => {
+    const html = `<b>${td.dataset.p}</b> · <code>${td.dataset.m}</code><br>${td.dataset.d}: CER ${pct(+td.dataset.v)}`;
+    td.addEventListener("mousemove", e => showTip(html, e.clientX, e.clientY));
+    td.addEventListener("mouseleave", hideTip);
+  });
+  document.getElementById("heat-legend").innerHTML =
+    `<span>CER</span><span class="sw">${ramp.map(c => `<span style="background:${c}"></span>`).join("")}</span>
+     <span>${BIN_LABELS[0]} to ${BIN_LABELS[BIN_LABELS.length - 1]}</span>
+     <span style="margin-left:12px"><span class="best-key"></span>Best in domain</span>`;
+}
+
+/* ---------- Wiring ---------- */
+function setTabs(attr, value) {
+  document.querySelectorAll(`[data-${attr}]`).forEach(b => b.setAttribute("aria-selected", b.dataset[attr] === value));
+}
+document.querySelectorAll("[data-mode]").forEach(b => b.addEventListener("click", () => {
+  state.mode = b.dataset.mode; state.sort = "cer"; state.dir = 1;
+  setTabs("mode", state.mode); renderBoard(); renderScatter();
+}));
+document.querySelectorAll("[data-heat]").forEach(b => b.addEventListener("click", () => {
+  state.heat = b.dataset.heat; setTabs("heat", state.heat); renderHeat();
+}));
+document.getElementById("copy-bib").addEventListener("click", e => {
+  const text = document.getElementById("bibtex").textContent;
+  const done = () => { e.target.textContent = "Copied"; setTimeout(() => (e.target.textContent = "Copy BibTeX"), 1500); };
+  try { navigator.clipboard.writeText(text).then(done, () => {}); } catch (err) { /* clipboard not available */ }
+});
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderHeat);
+
+document.getElementById("price-note").textContent =
+  `Pay-as-you-go list prices in USD, checked on ${DATA.prices_checked}. “≥” means a minimum: it prices audio input only. Free credits and volume discounts are not included. Sources for each price are in the results dataset.`;
+document.getElementById("tested-note").textContent = `Tested in ${DATA.tested}, with the exact model IDs shown in the table.`;
+
+renderStats(); renderBoard(); renderScatter(); renderHeat();
+</script>
+</body>
+</html>
