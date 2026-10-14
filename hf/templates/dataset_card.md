@@ -57,6 +57,7 @@ Results of an open benchmark of **8 hosted Bangla (Bengali) speech-to-text
 APIs** on **1,001 real audio clips** across **13 domains**, in **batch** and
 **real-time streaming** mode. Tested in **September 2026**.
 
+- 📈 **Interactive report:** [riverborn.com/research/bangla-speech-to-text-benchmark](https://riverborn.com/research/bangla-speech-to-text-benchmark)
 - 🏆 **Leaderboard:** [riverborn/bangla-stt-leaderboard](https://huggingface.co/spaces/riverborn/bangla-stt-leaderboard)
 - 💻 **Code, method and full report:** [github.com/riverbornai/bangla-speech-to-text-benchmark](https://github.com/riverbornai/bangla-speech-to-text-benchmark)
 - 🎧 **Audio and reference text:** [SUST-CSE-Speech/banspeech](https://huggingface.co/datasets/SUST-CSE-Speech/banspeech)
@@ -157,7 +158,7 @@ To transcribe the audio yourself and add a provider, use the scripts in the
 - **Environment:** a laptop in Bangladesh on a regular internet connection.
 
 The full method, the normalization rules and the limitations are in the
-[GitHub README](https://github.com/riverbornai/bangla-speech-to-text-benchmark#methodology).
+[interactive report](https://riverborn.com/research/bangla-speech-to-text-benchmark) and the [GitHub README](https://github.com/riverbornai/bangla-speech-to-text-benchmark#methodology).
 
 ## Limitations
 
