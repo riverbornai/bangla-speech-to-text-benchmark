@@ -18,7 +18,7 @@ from runner.providers.base import (
     ProviderError,
     SynthesisResult,
     collect_chunks,
-    pcm_to_wav,
+    to_wav,
 )
 
 TIMEOUT_SEC = 120.0
@@ -77,17 +77,18 @@ class SonioxProvider:
         self.config = config
         self.codec, self.sample_rate = parse_output_format(config.output_format)
         self._client = SonioxClient(
-            api_key=api_key, timeout_sec=TIMEOUT_SEC, tts_api_base_url="https://tts-rt.eu.soniox.com"
+            api_key=api_key,
+            timeout_sec=TIMEOUT_SEC,
+            tts_api_base_url="https://tts-rt.eu.soniox.com",  # EU region: REST and WebSocket must match
+            tts_websocket_base_url="wss://tts-rt.eu.soniox.com/tts-websocket",
         )
 
     def supports(self, item: DatasetItem) -> bool:
         return self.config.max_chars is None or len(item.text) <= self.config.max_chars
 
     def _result(self, audio: bytes, text: str, ttfb_ms: float | None, total_ms: float) -> SynthesisResult:
-        if self.codec == "pcm":
-            audio = pcm_to_wav(audio, self.sample_rate)
         return SynthesisResult(
-            audio=audio,
+            audio=to_wav(audio, self.sample_rate),  # Soniox's WAV header has a placeholder data length
             format=self.format,
             sample_rate=self.sample_rate,
             ttfb_ms=ttfb_ms,

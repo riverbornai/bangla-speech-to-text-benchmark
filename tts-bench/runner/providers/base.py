@@ -70,6 +70,17 @@ def pcm_to_wav(pcm: bytes, sample_rate: int) -> bytes:
     return buf.getvalue()
 
 
+def _data_start(audio: bytes) -> int:
+    """Offset of the PCM after the `data` chunk header, found by walking the RIFF chunks (fmt, LIST, ...)."""
+    at = 12  # after "RIFF" <size> "WAVE"
+    while at + 8 <= len(audio):
+        if audio[at : at + 4] == b"data":
+            return at + 8
+        size = int.from_bytes(audio[at + 4 : at + 8], "little")
+        at += 8 + size + (size & 1)  # chunks are padded to an even length
+    raise ProviderError(200, "bad_wav")
+
+
 def _trailing_chunk(audio: bytes, start: int) -> int:
     """Index where trailing RIFF metadata begins, or len(audio). Gemini appends a C2PA (content credentials)
     chunk after the audio; it is a chunk header (id + size) whose size runs exactly to the end of the file."""
@@ -90,9 +101,6 @@ def to_wav(audio: bytes, sample_rate: int) -> bytes:
     that cut, Gemini's C2PA chunk would play as a burst of static at the end of the clip.
     """
     if audio[:4] == b"RIFF":
-        at = audio.find(b"data")
-        if at < 0:
-            raise ProviderError(200, "bad_wav")
-        start = at + 8  # skip the "data" tag and its 4-byte length
+        start = _data_start(audio)
         audio = audio[start : _trailing_chunk(audio, start)]
     return pcm_to_wav(audio[: len(audio) - len(audio) % 2], sample_rate)

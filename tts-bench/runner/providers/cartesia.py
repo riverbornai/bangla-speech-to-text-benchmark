@@ -16,7 +16,7 @@ from runner.providers.base import (
     ProviderError,
     SynthesisResult,
     collect_chunks,
-    pcm_to_wav,
+    to_wav,
 )
 
 TIMEOUT_S = 120
@@ -108,7 +108,7 @@ class CartesiaBatch(CartesiaProvider):
         if not audio:
             raise ProviderError(200, "empty_audio")
         return SynthesisResult(
-            audio=audio,
+            audio=to_wav(audio, self.sample_rate),  # re-wrap: the header's data length can be a placeholder
             format=self.format,
             sample_rate=self.sample_rate,
             ttfb_ms=None,  # batch: the whole clip arrives in one body
@@ -143,7 +143,7 @@ class CartesiaStream(CartesiaProvider):
         with sdk_errors():
             pcm, ttfb_ms, total_ms = collect_chunks(start, self._chunks(text))
         return SynthesisResult(
-            audio=pcm_to_wav(pcm, self.sample_rate),
+            audio=to_wav(pcm, self.sample_rate),
             format=self.format,
             sample_rate=self.sample_rate,
             ttfb_ms=ttfb_ms,

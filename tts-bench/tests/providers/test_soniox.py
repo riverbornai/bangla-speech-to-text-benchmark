@@ -100,6 +100,21 @@ def test_batch_sends_exact_text_and_returns_wav(provider: SonioxProvider) -> Non
 
 
 @respx.mock
+def test_streaming_style_wav_header_gets_a_real_length(provider: SonioxProvider) -> None:
+    """Soniox's WAV is written by ffmpeg: a LIST chunk, then `data` with length 0xFFFFFFFF. Left as is, the
+    duration read from the header is hours long and RTF rounds to 0.0."""
+    info = b"INFO" + b"ISFT" + (13).to_bytes(4, "little") + b"Lavf61.7.103\x00" + b"\x00"
+    header = (
+        b"RIFF" + b"\xff" * 4 + b"WAVE" + _wav(b"")[12:36] + b"LIST" + len(info).to_bytes(4, "little") + info
+    )
+    raw = header + b"data" + b"\xff" * 4 + PCM
+    respx.post(URL).mock(return_value=httpx.Response(200, content=raw))
+    result = provider.synthesize(TEXT)
+    with wave.open(io.BytesIO(result.audio)) as w:
+        assert w.getnframes() == 12000  # 0.5 s, not 89478 s
+
+
+@respx.mock
 def test_batch_with_pcm_format_is_wrapped_as_wav(config_path: Path) -> None:
     config = load_provider_config(config_path, "soniox", "stream")  # pcm_24000
     provider = SonioxBatch(config, api_key="k")

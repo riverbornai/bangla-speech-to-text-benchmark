@@ -15,7 +15,7 @@ from runner.providers.base import (
     ProviderError,
     SynthesisResult,
     collect_chunks,
-    pcm_to_wav,
+    to_wav,
 )
 
 TIMEOUT_S = 120
@@ -117,7 +117,7 @@ class OpenAITTSProvider:
         }
 
     def _wav(self, audio: bytes) -> bytes:
-        return pcm_to_wav(audio, self.sample_rate) if self._codec == "pcm" else audio
+        return to_wav(audio, self.sample_rate)  # PCM gets a header; a WAV's placeholder length is fixed
 
     def _result(
         self, audio: bytes, text: str, ttfb_ms: float | None, total_ms: float, request_id: str | None

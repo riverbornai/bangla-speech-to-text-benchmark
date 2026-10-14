@@ -1,0 +1,8 @@
+[
+  {
+    "origin": ["http://192.168.68.64:8080"],
+    "method": ["GET", "HEAD", "OPTIONS"],
+    "responseHeader": ["Content-Type", "Range", "Accept-Ranges", "Content-Length"],
+    "maxAgeSeconds": 3600
+  }
+]

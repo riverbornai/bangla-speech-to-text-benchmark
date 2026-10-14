@@ -9,12 +9,12 @@ import time
 from collections.abc import Iterator
 from contextlib import contextmanager
 from typing import Any
-import time
+
 import httpx
 
 from runner.config import ConfigError, ProviderConfig
 from runner.dataset import DatasetItem
-from runner.providers.base import Mode, ProviderError, SynthesisResult, collect_chunks
+from runner.providers.base import Mode, ProviderError, SynthesisResult, collect_chunks, to_wav
 
 REQUEST_OPTIONS = {
     "timeout_in_seconds": 120,
@@ -108,7 +108,7 @@ class SarvamBatch(SarvamProvider):
         if not audio:
             raise ProviderError(200, "empty_audio", resp.request_id)
         return SynthesisResult(
-            audio=audio,
+            audio=to_wav(audio, self.sample_rate),  # re-wrap: the header's data length can be a placeholder
             format=self.format,
             sample_rate=self.sample_rate,
             ttfb_ms=None,  # batch: the whole clip arrives in one JSON body
@@ -130,7 +130,7 @@ class SarvamStream(SarvamProvider):
                 start, self._client.text_to_speech.convert_stream(**self._params(text))
             )
         return SynthesisResult(
-            audio=audio,
+            audio=to_wav(audio, self.sample_rate),
             format=self.format,
             sample_rate=self.sample_rate,
             ttfb_ms=ttfb_ms,
